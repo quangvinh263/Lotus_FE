@@ -1,0 +1,390 @@
+/* Sign Up Container */
+.signup-container {
+  min-height: 100vh;
+  background-color: #FBFBFB;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 99px 50px;
+}
+
+.signup-card {
+  width: 100%;
+  max-width: 1017px;
+  min-height: 825px;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(102, 102, 102, 0.5);
+  border-radius: 24px;
+  overflow: visible;
+  position: relative;
+}
+
+.signup-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 110px 66px;
+  gap: 40px;
+  min-height: 825px;
+}
+
+/* Form Section */
+.signup-form-section {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 534px;
+}
+
+.signup-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 0;
+}
+
+.signup-title {
+  font-family: 'EB Garamond', serif;
+  font-weight: 500;
+  font-size: 35px;
+  line-height: 1.305;
+  color: #14274A;
+  margin: 0;
+}
+
+.signup-login-link {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.5;
+  color: #666666;
+  margin: 0;
+  padding: 2px;
+}
+
+.signup-login-link a {
+  color: #608BC1;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.signup-login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Form Fields */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 534px;
+}
+
+.field-label {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.305;
+  color: #666666;
+  height: 27px;
+  display: flex;
+  align-items: center;
+}
+
+.text-input {
+  width: 100%;
+  height: 56px;
+  background-color: transparent;
+  border: 1px solid rgba(102, 102, 102, 0.35);
+  border-radius: 12px;
+  padding: 0 16px;
+  font-family: 'EB Garamond', serif;
+  font-size: 18px;
+  color: #333333;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: #608BC1;
+}
+
+.text-input::placeholder {
+  color: #999999;
+}
+
+/* Password Section */
+.password-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.password-fields {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.password-field {
+  flex: 1;
+  min-width: 259px;
+  max-width: 259px;
+}
+
+.password-hint {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.305;
+  color: #666666;
+  margin: 0;
+}
+
+/* Show Password Checkbox */
+.show-password-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px 8px 0;
+}
+
+.show-password-checkbox input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid #666666;
+  border-radius: 4px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  background-color: #FFFFFF;
+}
+
+.show-password-checkbox input[type="checkbox"]:checked {
+  background-color: #608BC1;
+  border-color: #608BC1;
+}
+
+.show-password-checkbox input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.show-password-checkbox label {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.305;
+  color: #333333;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* CTA Section */
+.cta-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 534px;
+  height: 64px;
+  margin-top: 0;
+}
+
+.signin-instead-btn {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.305;
+  color: #111111;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: color 0.3s ease;
+  align-self: center;
+}
+
+.signin-instead-btn:hover {
+  color: #608BC1;
+  text-decoration: underline;
+}
+
+.create-account-btn {
+  width: 259px;
+  height: 64px;
+  background-color: #608BC1;
+  border: none;
+  border-radius: 32px;
+  font-family: 'EB Garamond', serif;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.305;
+  color: #F3F3E0;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-account-btn:hover {
+  background-color: #4a7199;
+}
+
+.create-account-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+/* Illustration Section */
+.signup-illustration {
+  flex-shrink: 0;
+  width: 363px;
+  height: 283px;
+  position: relative;
+  margin-top: 148px;
+}
+
+.illustration-placeholder {
+  width: 80%;
+  height: 100%;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.illustration-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .signup-content {
+    flex-direction: column;
+    padding: 60px 40px;
+    min-height: auto;
+  }
+
+  .signup-card {
+    min-height: auto;
+  }
+
+  .signup-form-section {
+    max-width: 100%;
+  }
+
+  .signup-illustration {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 363px;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .signup-content {
+    padding: 40px 24px;
+  }
+
+  .signup-title {
+    font-size: 28px;
+  }
+
+  .signup-login-link {
+    font-size: 16px;
+  }
+
+  .form-field {
+    max-width: 100%;
+  }
+
+  .password-fields {
+    flex-direction: column;
+  }
+
+  .password-field {
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  .cta-section {
+    flex-direction: column;
+    height: auto;
+    gap: 16px;
+    max-width: 100%;
+  }
+
+  .signin-instead-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .create-account-btn {
+    width: 100%;
+  }
+
+  .signup-illustration {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 363 / 283;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-card {
+    border-radius: 16px;
+  }
+
+  .signup-content {
+    padding: 30px 20px;
+  }
+
+  .signup-title {
+    font-size: 24px;
+  }
+
+  .field-label {
+    font-size: 18px;
+  }
+
+  .text-input {
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .create-account-btn {
+    font-size: 20px;
+    height: 56px;
+  }
+}

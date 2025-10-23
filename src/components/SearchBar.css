@@ -1,0 +1,190 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap');
+
+/* SearchBar Container */
+.search-bar {
+  width: 100%;
+  max-width: 1364px;
+  margin: 0 auto;
+  height: 115px;
+  background: #FFFFFF;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 39px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Search Fields Container */
+.search-fields {
+  display: flex;
+  align-items: center;
+  gap: 235px;
+  padding: 10px;
+}
+
+/* Individual Search Field */
+.search-field {
+  display: flex;
+  flex-direction: column;
+  height: 70px;
+}
+
+.field-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.field-icon {
+  width: 25px;
+  height: 25px;
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+.field-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.field-label {
+  font-family: 'EB Garamond', serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.125;
+  letter-spacing: 0.1em;
+  color: #608BC1;
+}
+
+.field-input {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.125;
+  letter-spacing: 0.1em;
+  color: #133E87;
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 288px;
+  padding: 0;
+}
+
+.field-input::placeholder {
+  color: #133E87;
+  opacity: 0.8;
+}
+
+/* Find Rooms Button */
+.search-button {
+  width: 378px;
+  height: 57px;
+  background: #CBDCEB;
+  border-radius: 50px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 18px 106px;
+}
+
+.search-button:hover {
+  background: #B5CFEA;
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 12px rgba(19, 62, 135, 0.2);
+}
+
+.search-button:active {
+  transform: translateY(0);
+}
+
+.search-icon {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.search-text {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 1.125;
+  letter-spacing: 0.1em;
+  color: #133E87;
+  white-space: nowrap;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .search-bar {
+    width: 100%;
+    max-width: 1364px;
+    padding: 13px 30px;
+  }
+
+  .search-fields {
+    gap: 150px;
+  }
+
+  .search-button {
+    width: 320px;
+    padding: 18px 80px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .search-bar {
+    height: auto;
+    flex-direction: column;
+    padding: 30px;
+    gap: 20px;
+  }
+
+  .search-fields {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .search-field {
+    width: 100%;
+  }
+
+  .field-input {
+    width: 100%;
+  }
+
+  .search-button {
+    width: 100%;
+    max-width: 378px;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    padding: 20px;
+  }
+
+  .field-label {
+    font-size: 18px;
+  }
+
+  .field-input {
+    font-size: 18px;
+  }
+
+  .search-text {
+    font-size: 20px;
+  }
+
+  .search-button {
+    height: 50px;
+    padding: 15px 60px;
+  }
+}
