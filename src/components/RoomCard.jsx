@@ -14,7 +14,7 @@ const RoomCard = ({
       <div className="room-content">
         <div className="room-text">
           <h2 className="room-title">{title}</h2>
-          <p className="room-description">{description}</p>
+          <p className="room-description-card">{description}</p>
           <button className="room-explore-btn" onClick={onExplore}>
             Explore
           </button>
