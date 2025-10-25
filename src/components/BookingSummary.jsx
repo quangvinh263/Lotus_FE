@@ -40,7 +40,7 @@ const BookingSummary = ({
       {/* Room Details */}
       <div className="room-details">
         <div className="room-header">
-          <h3 className="room-title">{bookingData.roomType}</h3>
+          <h3 className="room-title-summarize">{bookingData.roomType}</h3>
           <button className="delete-button" onClick={onDelete}>
             <img src={BinIcon} alt="Delete" className="delete-icon" />
           </button>
