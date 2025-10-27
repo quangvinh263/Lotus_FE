@@ -26,7 +26,7 @@
   color: #133E87;
   margin: 0;
   flex: 1;
-  padding-left: 172px;
+  padding-left: 300px;
 }
 
 .room-detail-book-wrapper {
@@ -108,7 +108,7 @@
 
 .room-detail-price {
   font-family: 'EB Garamond', serif;
-  font-weight: 400;
+  font-weight: 700;
   font-size: 16px;
   line-height: 1.125em;
   color: #133E87;
