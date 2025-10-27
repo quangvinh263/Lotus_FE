@@ -1,0 +1,331 @@
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap');
+
+.room-detail-section {
+  width: 100%;
+  max-width: 1335px;
+  margin: 0 auto;
+  padding: 16px 0;
+}
+
+/* Header */
+.room-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0 70px;
+}
+
+.room-detail-title {
+  font-family: 'EB Garamond', serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.125em;
+  text-align: center;
+  color: #133E87;
+  margin: 0;
+  flex: 1;
+  padding-left: 172px;
+}
+
+.room-detail-book-wrapper {
+  width: 267px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.room-detail-book-btn {
+  width: 149px;
+  height: 34px;
+  background: #133E87;
+  color: #F3F3E0;
+  border: none;
+  border-radius: 5px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.211em;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 7px 12px;
+  transition: background 0.3s ease;
+}
+
+.room-detail-book-btn:hover {
+  background: #0F2E65;
+}
+
+.room-detail-book-btn svg {
+  width: 17.15px;
+  height: 18.13px;
+}
+
+/* Main content area */
+.room-detail-main {
+  height: 600px;  
+  display: flex;
+  justify-content: center;
+  padding: 0 70px;
+  margin-bottom: 28px;
+}
+
+.room-detail-left {
+  position: relative;
+  width: 1066px;
+}
+
+.room-detail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  margin-bottom: 115px;
+}
+
+/* Info box */
+.room-detail-info-box {
+  position: absolute;
+  top: 130px;
+  left: -120px;
+  width: 251px;
+  background: #CBDCEB;
+  padding: 18px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
+}
+
+.room-detail-price-desc {
+  margin-bottom: 10px;
+}
+
+.room-detail-price {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.125em;
+  color: #133E87;
+  margin: 0 0 8px 0;
+}
+
+.room-detail-description {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.125em;
+  color: #133E87;
+  margin: 0;
+}
+
+.room-detail-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.room-detail-spec-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.667em;
+  color: #133E87;
+}
+
+.room-detail-icon {
+  width: 15px;
+  height: 15px;
+  margin-top: 5px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+/* Features Section */
+.room-detail-features-section {
+  padding: 0 90px;
+  margin-bottom: 60px;
+}
+
+.room-detail-section-title {
+  font-family: 'Garamond';
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.25em;
+  text-align: center;
+  color: #133E87;
+  margin: 0 0 20px 0;
+}
+
+.room-detail-features-intro {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.125em;
+  text-align: left;
+  color: #133E87;
+  margin: 0 0 16px 0;
+}
+
+.room-detail-divider {
+  width: 100%;
+  height: 0.5px;
+  background: #133E87;
+  margin-bottom: 25px;
+}
+
+.room-detail-features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 90px;
+  padding: 0 8px;
+}
+
+.room-detail-feature-column h3 {
+  font-family: 'Garamond';
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0 0 12px 0;
+}
+
+.room-detail-feature-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.room-detail-feature-column li {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.5em;
+  color: #133E87;
+  margin-bottom: 4px;
+}
+
+/* Related Rooms Section */
+.room-detail-related-section {
+  padding: 0 30px;
+}
+
+.room-detail-related-rooms {
+  display: flex;
+  justify-content: center;
+  gap: 35px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .room-detail-header {
+    padding: 0 40px;
+  }
+
+  .room-detail-title {
+    font-size: 32px;
+    padding-left: 100px;
+  }
+
+  .room-detail-main {
+    padding: 0 40px;
+  }
+
+  .room-detail-left {
+    width: 100%;
+  }
+
+  .room-detail-image {
+    height: 400px;
+  }
+
+  .room-detail-info-box {
+    top: 150px;
+    left: 40px;
+  }
+
+  .room-detail-features-section {
+    padding: 0 40px;
+  }
+
+  .room-detail-features-grid {
+    gap: 30px 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .room-detail-header {
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+  }
+
+  .room-detail-title {
+    font-size: 28px;
+    padding-left: 0;
+  }
+
+  .room-detail-book-wrapper {
+    width: 100%;
+  }
+
+  .room-detail-book-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .room-detail-main {
+    padding: 0 20px;
+  }
+
+  .room-detail-image {
+    height: 300px;
+    margin-bottom: 80px;
+  }
+
+  .room-detail-info-box {
+    position: static;
+    width: 100%;
+    margin-top: -60px;
+  }
+
+  .room-detail-features-section {
+    padding: 0 20px;
+  }
+
+  .room-detail-features-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .room-detail-feature-column h3 {
+    font-size: 18px;
+  }
+
+  .room-detail-feature-column li {
+    font-size: 16px;
+  }
+
+  .room-detail-related-section {
+    padding: 0 20px;
+  }
+
+  .room-detail-related-rooms {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .room-detail-section-title {
+    font-size: 32px;
+  }
+}
