@@ -9,7 +9,7 @@ import BookingSummary from '../components/BookingSummary';
 
 const BookingPage = () => {
   const navigate = useNavigate();
-  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedRooms, setSelectedRooms] = useState([]);
   const [filterData, setFilterData] = useState({
     checkInDate: new Date(2025, 9, 18), // Oct 18, 2025
     checkOutDate: new Date(2025, 9, 19), // Oct 19, 2025
@@ -101,31 +101,47 @@ const BookingPage = () => {
   };
 
   const handleRoomSelect = (roomId) => {
-    setSelectedRoom(roomId);
+    setSelectedRooms(prev => {
+      // Check if room already selected
+      if (prev.includes(roomId)) {
+        // Remove it
+        return prev.filter(id => id !== roomId);
+      } else {
+        // Add it
+        return [...prev, roomId];
+      }
+    });
   };
 
   const handleBook = () => {
-    if (selectedRoom) {
-      const selectedRoomData = rooms.find(room => room.id === selectedRoom);
+    if (selectedRooms.length > 0) {
+      const selectedRoomsData = rooms.filter(room => selectedRooms.includes(room.id));
       const nights = calculateNights();
+      
+      // Calculate total
+      const totalPrice = selectedRoomsData.reduce((sum, room) => {
+        const price = parseInt(room.price.replace(/[^\d]/g, ''));
+        return sum + (price * nights);
+      }, 0);
       
       // Navigate to guest info page with booking data
       navigate('/guest-info', {
         state: {
-          roomType: selectedRoomData.name,
+          rooms: selectedRoomsData,
+          roomCount: selectedRooms.length,
           checkIn: formatDateRange().split(' - ')[0],
           checkOut: formatDateRange().split(' - ')[1],
           guests: `${filterData.guests} adult${filterData.guests > 1 ? 's' : ''}`,
           nights: nights,
-          total: selectedRoomData.price,
-          pricePerNight: selectedRoomData.price
+          total: `VND ${totalPrice.toLocaleString()}`,
+          pricePerNight: selectedRoomsData[0]?.price
         }
       });
     }
   };
 
-  const handleDeleteRoom = () => {
-    setSelectedRoom(null);
+  const handleDeleteRoom = (roomId) => {
+    setSelectedRooms(prev => prev.filter(id => id !== roomId));
   };
 
   const handleOpenDatePicker = () => {
@@ -164,18 +180,32 @@ const BookingPage = () => {
     return diffDays;
   };
 
-  const selectedRoomData = rooms.find(room => room.id === selectedRoom);
   const nights = calculateNights();
 
-  const bookingData = selectedRoomData ? {
+  // Prepare selected rooms data
+  const selectedRoomsData = selectedRooms.map(roomId => {
+    const room = rooms.find(r => r.id === roomId);
+    return room;
+  }).filter(Boolean);
+
+  // Calculate total price
+  const totalPrice = selectedRoomsData.reduce((sum, room) => {
+    const price = parseInt(room.price.replace(/[^\d]/g, ''));
+    return sum + (price * nights);
+  }, 0);
+
+  const bookingData = selectedRooms.length > 0 ? {
     dates: formatDateRange(),
-    rooms: `${filterData.rooms} room${filterData.rooms > 1 ? 's' : ''}, ${filterData.guests} guest${filterData.guests > 1 ? 's' : ''}`,
+    rooms: `${selectedRooms.length} room${selectedRooms.length > 1 ? 's' : ''}, ${filterData.guests} guest${filterData.guests > 1 ? 's' : ''}`,
     nights: `${nights} night${nights > 1 ? 's' : ''}`,
-    roomType: selectedRoomData.name,
-    roomDetails: `${filterData.guests} guest${filterData.guests > 1 ? 's' : ''}, ${nights} night${nights > 1 ? 's' : ''}\nNon-refundable`,
-    price: selectedRoomData.price,
-    totalPrice: `${selectedRoomData.price} total`,
-    deposit: `Deposit: ${selectedRoomData.price}`
+    selectedRooms: selectedRoomsData.map(room => ({
+      id: room.id,
+      name: room.name,
+      price: room.price,
+      details: `${filterData.guests} guest${filterData.guests > 1 ? 's' : ''}, ${nights} night${nights > 1 ? 's' : ''}\nNon-refundable`
+    })),
+    totalPrice: `VND ${totalPrice.toLocaleString()} total`,
+    deposit: `Deposit: VND ${totalPrice.toLocaleString()}`
   } : {
     dates: formatDateRange(),
     rooms: `${filterData.rooms} room${filterData.rooms > 1 ? 's' : ''}, ${filterData.guests} guest${filterData.guests > 1 ? 's' : ''}`,
@@ -211,7 +241,7 @@ const BookingPage = () => {
                 <RoomBooking
                   key={room.id}
                   variant={room.unavailable ? 'variant2' : 'default'}
-                  isSelected={selectedRoom === room.id}
+                  isSelected={selectedRooms.includes(room.id)}
                   unavailableDates={room.unavailable ? room.unavailableDates : null}
                   onSelect={() => !room.unavailable && handleRoomSelect(room.id)}
                   onOpenDatePicker={handleOpenDatePicker}
@@ -222,10 +252,10 @@ const BookingPage = () => {
             {/* Booking Summary Sidebar */}
             <div className="booking-sidebar">
               <BookingSummary
-                variant={selectedRoom ? 'default' : 'variant2'}
+                variant={selectedRooms.length > 0 ? 'default' : 'variant2'}
                 bookingData={bookingData}
                 onBook={handleBook}
-                onDelete={handleDeleteRoom}
+                onDeleteRoom={handleDeleteRoom}
               />
             </div>
           </div>
