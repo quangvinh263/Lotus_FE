@@ -1,0 +1,264 @@
+.guest-info-page {
+  min-height: 100vh;
+  background-color: #FFFFFF;
+}
+
+.guest-info-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 60px 70px;
+}
+
+.guest-info-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.guest-info-back-button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guest-info-back-button:hover {
+  opacity: 0.7;
+}
+
+.guest-info-header h1 {
+  font-family: 'EB Garamond', serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+.guest-info-content-wrapper {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.guest-booking-summary-card {
+  flex: 0 0 300px;
+  background-color: #F3F3E0;
+  border-radius: 15px;
+  padding: 32px;
+}
+
+.guest-booking-summary-card h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0 0 16px 0;
+}
+
+.guest-summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.guest-summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 24px;
+}
+
+.guest-summary-item .label {
+  font-family: 'Garamond', serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.5em;
+  color: #133E87;
+}
+
+.guest-summary-item .value {
+  font-family: 'Garamond', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5em;
+  color: #133E87;
+}
+
+.guest-info-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.guest-form-card {
+  background-color: #F3F3E0;
+  border-radius: 15px;
+  padding: 32px;
+}
+
+.guest-form-card h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0 0 24px 0;
+}
+
+.guest-form-group {
+  margin-bottom: 24px;
+}
+
+.guest-form-group:last-child {
+  margin-bottom: 0;
+}
+
+.guest-form-group label {
+  display: block;
+  font-family: 'Garamond', serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.5em;
+  color: #133E87;
+  margin-bottom: 8px;
+}
+
+.guest-form-group input,
+.guest-form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #FFFFFF;
+  border: 1.6px solid #133E87;
+  border-radius: 5px;
+  font-family: 'Garamond', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.125em;
+  color: #133E87;
+  box-sizing: border-box;
+}
+
+.guest-form-group input::placeholder,
+.guest-form-group textarea::placeholder {
+  color: rgba(19, 62, 135, 0.5);
+}
+
+.guest-form-group input:focus,
+.guest-form-group textarea:focus {
+  outline: none;
+  border-color: #133E87;
+  box-shadow: 0 0 0 2px rgba(19, 62, 135, 0.1);
+}
+
+.guest-form-group input.error,
+.guest-form-group textarea.error {
+  border-color: #dc3545;
+}
+
+.guest-error-message {
+  display: block;
+  margin-top: 4px;
+  font-family: 'Garamond', serif;
+  font-size: 14px;
+  color: #dc3545;
+}
+
+.guest-form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.guest-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.guest-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.guest-btn-back,
+.guest-btn-continue {
+  padding: 16px 32px;
+  border-radius: 5px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.5em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.guest-btn-back {
+  background-color: #F3F3E0;
+  color: #133E87;
+}
+
+.guest-btn-back:hover {
+  background-color: #e8e8d0;
+}
+
+.guest-btn-continue {
+  background-color: #133E87;
+  color: #F3F3E0;
+}
+
+.guest-btn-continue:hover {
+  background-color: #0f2f66;
+}
+
+@media (max-width: 1024px) {
+  .guest-info-container {
+    padding: 40px 30px;
+  }
+
+  .guest-info-content-wrapper {
+    flex-direction: column;
+  }
+
+  .guest-booking-summary-card {
+    flex: 1;
+    width: 100%;
+  }
+
+  .guest-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .guest-info-container {
+    padding: 30px 20px;
+  }
+
+  .guest-info-header h1 {
+    font-size: 32px;
+  }
+
+  .guest-form-card h2,
+  .guest-booking-summary-card h2 {
+    font-size: 22px;
+  }
+
+  .guest-form-actions {
+    flex-direction: column;
+  }
+
+  .guest-btn-back,
+  .guest-btn-continue {
+    width: 100%;
+  }
+}

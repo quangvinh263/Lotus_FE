@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/BookingPage.css';
 import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
@@ -7,6 +8,7 @@ import RoomBooking from '../components/RoomBooking';
 import BookingSummary from '../components/BookingSummary';
 
 const BookingPage = () => {
+  const navigate = useNavigate();
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [filterData, setFilterData] = useState({
     checkInDate: new Date(2025, 9, 18), // Oct 18, 2025
@@ -104,8 +106,21 @@ const BookingPage = () => {
 
   const handleBook = () => {
     if (selectedRoom) {
-      console.log('Booking room:', selectedRoom);
-      // Add booking logic here
+      const selectedRoomData = rooms.find(room => room.id === selectedRoom);
+      const nights = calculateNights();
+      
+      // Navigate to guest info page with booking data
+      navigate('/guest-info', {
+        state: {
+          roomType: selectedRoomData.name,
+          checkIn: formatDateRange().split(' - ')[0],
+          checkOut: formatDateRange().split(' - ')[1],
+          guests: `${filterData.guests} adult${filterData.guests > 1 ? 's' : ''}`,
+          nights: nights,
+          total: selectedRoomData.price,
+          pricePerNight: selectedRoomData.price
+        }
+      });
     }
   };
 
