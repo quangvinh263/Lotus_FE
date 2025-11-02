@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/ProfilePage.css';
+import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
 import ProfileHeader from '../components/ProfileHeader';
 import PersonalInfo from '../components/PersonalInfo';
@@ -68,6 +69,7 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
+      <Navbar />
       <ProfileHeader />
       
       <div className="profile-container">

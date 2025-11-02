@@ -136,4 +136,47 @@
   color: #F3F3E0;
 }
 
+/* User Info Section */
+.navbar-user-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 6px 20px;
+  border: 1px solid #133E87;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  min-width: 181px;
+  height: 38px;
+}
+
+.navbar-user-info:hover {
+  background-color: #133E87;
+}
+
+.navbar-user-info:hover .navbar-user-name {
+  color: #F3F3E0;
+}
+
+.navbar-user-info:hover .navbar-user-icon {
+  filter: brightness(0) invert(1);
+}
+
+.navbar-user-icon {
+  width: 24px;
+  height: 24px;
+  transition: filter 0.3s ease;
+}
+
+.navbar-user-name {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.18;
+  letter-spacing: 0.1em;
+  color: #133E87;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
 

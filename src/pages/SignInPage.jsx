@@ -23,17 +23,32 @@ const SignIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Sign in form submitted:', formData);
+    
+    // Set login state in localStorage
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userName', formData.email.split('@')[0]); // Use email username as display name
+    
     // After successful login, navigate to profile page
     navigate('/profile');
   };
 
   const handleGoogleSignIn = () => {
     console.log('Sign in with Google');
+    
+    // Set login state in localStorage
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userName', 'Google User');
+    
     navigate('/profile');
   };
 
   const handleFacebookSignIn = () => {
     console.log('Sign in with Facebook');
+    
+    // Set login state in localStorage
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userName', 'Facebook User');
+    
     navigate('/profile');
   };
 

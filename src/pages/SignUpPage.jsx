@@ -25,8 +25,13 @@ const SignUp = () => {
     e.preventDefault();
     // Handle form submission
     console.log('Form submitted:', formData);
-    // After successful signup, navigate to signin page
-    navigate('/signin');
+    
+    // Set login state in localStorage after successful signup
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userName', formData.username || formData.email.split('@')[0]);
+    
+    // After successful signup, navigate to profile page
+    navigate('/profile');
   };
 
   return (

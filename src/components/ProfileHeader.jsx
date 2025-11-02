@@ -10,6 +10,8 @@ const ProfileHeader = () => {
     // Add your sign out logic here
     if (window.confirm('Are you sure you want to sign out?')) {
       // Clear user session/token
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userName');
       navigate('/signin');
     }
   };
