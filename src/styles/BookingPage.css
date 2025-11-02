@@ -1,0 +1,132 @@
+/* Booking Page Layout */
+.booking-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hero Section */
+.booking-hero {
+  position: relative;
+  width: 100%;
+  height: 685px;
+  background-image: url('../assets/images/BookingImage.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 39, 74, 0.5);
+}
+
+/* Main Content */
+.booking-content {
+  width: 100%;
+  flex: 1;
+  padding: 50px 0;
+}
+
+.booking-container {
+  max-width: 1440px;
+  width: 100%;
+  position: center;
+  margin: 0 auto;
+  padding: 0px 150px;
+}
+
+/* Filter Section */
+.filter-section {
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Booking Layout - Two Column */
+.booking-layout {
+  display: grid;
+  grid-template-columns: 735px 364px;
+  gap: 40px;
+  align-items: start;
+  justify-content: flex-start;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Rooms List */
+.rooms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0px 0px;
+}
+
+/* Booking Sidebar */
+.booking-sidebar {
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .booking-container {
+    padding: 0 50px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .booking-sidebar {
+    position: static;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .booking-container {
+    padding: 0 20px;
+  }
+
+  .booking-hero {
+    height: 400px;
+  }
+
+  .booking-content {
+    padding: 30px 0;
+  }
+
+  .filter-section {
+    margin-bottom: 30px;
+  }
+
+  .rooms-list {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-hero {
+    height: 300px;
+  }
+
+  .booking-container {
+    padding: 0 15px;
+  }
+
+  .booking-content {
+    padding: 20px 0;
+  }
+}

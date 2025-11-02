@@ -1,0 +1,44 @@
+.profile-page {
+  min-height: 100vh;
+  background-color: #FBFBFB;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-container {
+  flex: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.bookings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.upcoming-reservations h2,
+.past-stays h2 {
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #14274A;
+  margin-bottom: 16px;
+}
+
+.booking-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

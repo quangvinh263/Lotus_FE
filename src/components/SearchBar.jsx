@@ -20,7 +20,7 @@ const SearchBar = () => {
               <path d="M12.5 2C8.63 2 5.5 5.13 5.5 9C5.5 14.25 12.5 22 12.5 22C12.5 22 19.5 14.25 19.5 9C19.5 5.13 16.37 2 12.5 2ZM12.5 11.5C11.12 11.5 10 10.38 10 9C10 7.62 11.12 6.5 12.5 6.5C13.88 6.5 15 7.62 15 9C15 10.38 13.88 11.5 12.5 11.5Z" fill="#608BC1"/>
             </svg>
             <div className="field-text">
-              <div className="field-label">DESTINATION</div>
+              <div className="searchbar-field-label">DESTINATION</div>
               <input 
                 type="text" 
                 className="field-input" 
@@ -39,7 +39,7 @@ const SearchBar = () => {
               <path d="M19.5 3.5H18.5V1.5H16.5V3.5H8.5V1.5H6.5V3.5H5.5C4.39 3.5 3.51 4.4 3.51 5.5L3.5 21.5C3.5 22.6 4.39 23.5 5.5 23.5H19.5C20.6 23.5 21.5 22.6 21.5 21.5V5.5C21.5 4.4 20.6 3.5 19.5 3.5ZM19.5 21.5H5.5V8.5H19.5V21.5ZM7.5 10.5H12.5V15.5H7.5V10.5Z" fill="#608BC1"/>
             </svg>
             <div className="field-text">
-              <div className="field-label">DATES</div>
+              <div className="searchbar-field-label">DATES</div>
               <input 
                 type="text" 
                 className="field-input" 

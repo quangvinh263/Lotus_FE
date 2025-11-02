@@ -1,0 +1,178 @@
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.popup-box {
+  width: 100%;
+  max-width: 517px;
+  background-color: #F3F3E0;
+  border-radius: 15px;
+  padding: 48px;
+  position: relative;
+  animation: slideUp 0.3s ease-out;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.popup-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 32px;
+  width: 80px;
+  height: 80px;
+}
+
+.popup-icon svg {
+  width: 80px;
+  height: 80px;
+}
+
+.popup-heading {
+  font-family: 'EB Garamond', serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.5em;
+  text-align: center;
+  color: #133E87;
+  margin: 0 0 16px 0;
+}
+
+.popup-message {
+  font-family: 'Garamond', serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5em;
+  text-align: center;
+  color: #133E87;
+  margin: 0 0 48px 0;
+}
+
+.booking-reference-box {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reference-label {
+  font-family: 'Garamond', serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.5em;
+  text-align: center;
+  color: #133E87;
+  margin: 0;
+}
+
+.reference-code {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.5em;
+  letter-spacing: 0.07em;
+  text-align: center;
+  color: #133E87;
+  margin: 0;
+}
+
+.popup-button {
+  display: block;
+  width: 100%;
+  max-width: 232px;
+  margin: 0 auto;
+  padding: 12px 32px;
+  background-color: #133E87;
+  color: #F3F3E0;
+  border: none;
+  border-radius: 5px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.5em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.popup-button:hover {
+  background-color: #0f2f66;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(19, 62, 135, 0.3);
+}
+
+.popup-button:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .popup-box {
+    padding: 32px 24px;
+  }
+
+  .popup-heading {
+    font-size: 32px;
+  }
+
+  .popup-message {
+    font-size: 16px;
+  }
+
+  .reference-code {
+    font-size: 24px;
+  }
+
+  .popup-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .popup-icon svg {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 400px) {
+  .popup-heading {
+    font-size: 28px;
+  }
+
+  .reference-code {
+    font-size: 20px;
+    word-break: break-all;
+  }
+}
