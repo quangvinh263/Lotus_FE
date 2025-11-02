@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import '../styles/SignUp.css';
 import SignUpImage from '../assets/images/SignUpImage.png';
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -23,6 +25,8 @@ const SignUp = () => {
     e.preventDefault();
     // Handle form submission
     console.log('Form submitted:', formData);
+    // After successful signup, navigate to signin page
+    navigate('/signin');
   };
 
   return (
@@ -33,7 +37,7 @@ const SignUp = () => {
             <div className="signup-header">
               <h1 className="signup-title">Create an account</h1>
               <p className="signup-login-link">
-                Already have an account? <a href="/signin">Sign in</a>
+                Already have an account? <Link to="/signin">Sign in</Link>
               </p>
             </div>
 
