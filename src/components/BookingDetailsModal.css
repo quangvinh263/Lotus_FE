@@ -1,0 +1,228 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid rgba(102, 102, 102, 0.2);
+}
+
+.modal-header h2 {
+  font-family: 'EB Garamond', serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #14274A;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666666;
+  transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+  color: #14274A;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-booking-image {
+  width: 100%;
+  height: 250px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.modal-booking-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.modal-booking-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-hotel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.modal-hotel-header h3 {
+  font-family: 'EB Garamond', serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #14274A;
+  margin: 0;
+}
+
+.modal-status-badge {
+  background-color: rgba(96, 139, 193, 0.1);
+  color: #608BC1;
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.modal-location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-location img {
+  width: 18px;
+  height: 18px;
+}
+
+.modal-location span {
+  font-size: 16px;
+  color: #666666;
+  line-height: 1.5;
+}
+
+.modal-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.modal-detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background-color: rgba(96, 139, 193, 0.05);
+  border-radius: 10px;
+}
+
+.modal-detail-item img {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+
+.modal-detail-item div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-label {
+  font-size: 14px;
+  color: #666666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.detail-value {
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #14274A;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  padding: 24px;
+  border-top: 1px solid rgba(102, 102, 102, 0.2);
+}
+
+.btn-cancel-booking,
+.btn-close-modal {
+  flex: 1;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-cancel-booking {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-cancel-booking:hover {
+  background-color: #c82333;
+}
+
+.btn-close-modal {
+  background-color: white;
+  color: #608BC1;
+  border: 1px solid #608BC1;
+}
+
+.btn-close-modal:hover {
+  background-color: rgba(96, 139, 193, 0.1);
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 100%;
+    margin: 0;
+    border-radius: 14px 14px 0 0;
+    max-height: 95vh;
+  }
+  
+  .modal-details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-footer {
+    flex-direction: column-reverse;
+  }
+  
+  .btn-cancel-booking,
+  .btn-close-modal {
+    width: 100%;
+  }
+}

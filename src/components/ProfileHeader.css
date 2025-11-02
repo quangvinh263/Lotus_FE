@@ -1,0 +1,126 @@
+.profile-header {
+  background-color: #14274A;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: white;
+}
+
+.profile-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.profile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #608BC1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'EB Garamond', serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: white;
+}
+
+.profile-welcome h1 {
+  font-family: 'EB Garamond', serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: white;
+  margin: 0;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-setting,
+.btn-signout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 0.8px solid white;
+  background-color: transparent;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-setting:hover,
+.btn-signout:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-setting img,
+.btn-signout svg {
+  width: 16px;
+  height: 16px;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.stat-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 16px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 200px;
+  height: 84px;
+}
+
+.stat-label {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.stat-value {
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .profile-header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .profile-stats {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  
+  .stat-card {
+    width: 100%;
+  }
+}
