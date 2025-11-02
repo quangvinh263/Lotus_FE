@@ -1,0 +1,146 @@
+/* Filter Component */
+.filter-component {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 190px;
+  padding: 11px 162px;
+  background-color: #F3F3E0;
+  border: 2px solid #14274A;
+  border-radius: 15px;
+  width: fit-content;
+}
+
+/* Filter Group */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  width: 313px;
+  height: 70px;
+  position: relative;
+}
+
+/* Filter Label */
+.filter-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 1.211em;
+  color: rgba(20, 39, 74, 0.8);
+  text-align: left;
+  padding-left: 4px;
+  height: 33.33px;
+  margin-bottom: -3.33px;
+}
+
+/* Filter Input Field */
+.filter-input-field {
+  width: 313px;
+  height: 40px;
+  background-color: #CBDCEB;
+  border: 1px solid #133E87;
+  border-radius: 10px;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filter-input-field:hover {
+  background-color: #b8cfe0;
+  border-color: #0f2e63;
+}
+
+.filter-input-field:active {
+  background-color: #a5c2d6;
+}
+
+.filter-input-field:focus {
+  outline: 2px solid #133E87;
+  outline-offset: 2px;
+}
+
+/* Input Content */
+.input-content {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Input Icon */
+.input-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+/* Input Text */
+.input-text {
+  font-family: 'Garamond';
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.211em;
+  color: rgba(20, 39, 74, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .filter-component {
+    padding: 11px 80px;
+    gap: 100px;
+  }
+}
+
+@media (max-width: 900px) {
+  .filter-component {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    padding: 20px;
+    width: auto;
+  }
+  
+  .filter-group {
+    width: 100%;
+    height: auto;
+  }
+  
+  .filter-input-field {
+    width: 100%;
+  }
+  
+  .filter-label {
+    height: auto;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-component {
+    padding: 15px;
+  }
+  
+  .filter-label {
+    font-size: 22px;
+  }
+  
+  .input-text {
+    font-size: 18px;
+  }
+  
+  .input-icon {
+    width: 20px;
+    height: 20px;
+  }
+}

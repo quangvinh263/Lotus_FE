@@ -13,8 +13,8 @@ const RoomCard = ({
       {/* Content Section */}
       <div className="room-content">
         <div className="room-text">
-          <h2 className="room-title">{title}</h2>
-          <p className="room-description">{description}</p>
+          <h2 className="room-title-card">{title}</h2>
+          <p className="room-description-card">{description}</p>
           <button className="room-explore-btn" onClick={onExplore}>
             Explore
           </button>
