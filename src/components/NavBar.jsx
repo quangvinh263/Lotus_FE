@@ -21,9 +21,9 @@ const Navbar = () => {
           {/* Navigation Links */}
           <div className="navbar-links">
             <Link to="/" className="nav-link">Home</Link>
-            <Link to="/booking" className="nav-link">Book</Link>
-            <a href="#facilities" className="nav-link">Facilities</a>
             <Link to="/rooms" className="nav-link">Rooms</Link>
+            <Link to="/facilities" className="nav-link">Facilities</Link>
+            <Link to="/booking" className="nav-link">Book</Link>
             <a href="#about" className="nav-link">About us</a>
           </div>
 
