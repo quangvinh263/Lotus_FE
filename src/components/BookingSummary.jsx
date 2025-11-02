@@ -12,10 +12,12 @@ const BookingSummary = ({
     roomDetails: '2 guests, 1 night\nNon-refundable',
     price: 'VND 5,000,000',
     totalPrice: 'VND 5,000,000 total',
-    deposit: 'Deposit: VND 5,000,000'
+    deposit: 'Deposit: VND 5,000,000',
+    selectedRooms: []
   },
   onBook = () => {},
-  onDelete = () => {}
+  onDelete = () => {},
+  onDeleteRoom = () => {}
 }) => {
 
   const renderDefaultVariant = () => (
@@ -37,28 +39,36 @@ const BookingSummary = ({
       {/* Divider */}
       <div className="divider"></div>
 
-      {/* Room Details */}
-      <div className="room-details">
-        <div className="room-header">
-          <h3 className="room-title">{bookingData.roomType}</h3>
-          <button className="delete-button" onClick={onDelete}>
-            <img src={BinIcon} alt="Delete" className="delete-icon" />
-          </button>
-        </div>
-        <div className="room-info-row">
-          <div className="room-description-summarize">{bookingData.roomDetails}</div>
-          <div className="room-price">{bookingData.price}</div>
-        </div>
-      </div>
+      {/* Room Details - Loop through selected rooms */}
+      {bookingData.selectedRooms && bookingData.selectedRooms.length > 0 ? (
+        bookingData.selectedRooms.map((room, index) => (
+          <React.Fragment key={room.id}>
+            <div className="room-details">
+              <div className="room-header">
+                <h3 className="room-title-summarize">{room.name}</h3>
+                <button className="delete-button" onClick={() => onDeleteRoom(room.id)}>
+                  <img src={BinIcon} alt="Delete" className="delete-icon" />
+                </button>
+              </div>
+              <div className="room-info-row">
+                <div className="room-description-summarize">{room.details}</div>
+                <div className="room-price">{room.price}</div>
+              </div>
+            </div>
+            {/* Divider after each room except the last one */}
+            {index < bookingData.selectedRooms.length - 1 && <div className="divider"></div>}
+          </React.Fragment>
+        ))
+      ) : null}
 
-      {/* Divider */}
+      {/* Divider before Total */}
       <div className="divider"></div>
 
       {/* Total Section */}
       <div className="total-section">
         <div className="total-row">
           <span className="total-label">Total</span>
-          <span className="total-amount">{bookingData.price}</span>
+          <span className="total-amount">{bookingData.totalPrice}</span>
         </div>
         <div className="deposit-info">
           <span className="deposit-text">{bookingData.deposit}</span>
