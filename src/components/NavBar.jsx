@@ -24,7 +24,7 @@ const Navbar = () => {
             <Link to="/rooms" className="nav-link">Rooms</Link>
             <Link to="/facilities" className="nav-link">Facilities</Link>
             <Link to="/booking" className="nav-link">Book</Link>
-            <a href="#about" className="nav-link">About us</a>
+            <Link to="/about" className="nav-link">About us</Link>
           </div>
 
           {/* Sign In Button */}

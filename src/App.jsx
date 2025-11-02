@@ -7,6 +7,7 @@ import ProfilePage from './pages/ProfilePage'
 import RoomsPage from './pages/RoomsPage'
 import RoomDetailsPage from './pages/RoomDetailsPage'
 import FacilitiesPage from './pages/FacilitiesPage'
+import AboutUsPage from './pages/AboutUsPage'
 import BookingPage from './pages/BookingPage'
 import GuestInfoPage from './pages/GuestInfoPage'
 import PaymentPage from './pages/PaymentPage'
@@ -23,6 +24,7 @@ function App() {
         <Route path="/rooms" element={<RoomsPage />} />
         <Route path="/room-details/:roomId" element={<RoomDetailsPage />} />
         <Route path="/facilities" element={<FacilitiesPage />} />
+        <Route path="/about" element={<AboutUsPage />} />
         <Route path="/booking" element={<BookingPage />} />
         <Route path="/guest-info" element={<GuestInfoPage />} />
         <Route path="/payment" element={<PaymentPage />} />
