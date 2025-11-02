@@ -11,7 +11,7 @@ const RoomCard = ({
   return (
     <div className="room-card">
       {/* Content Section */}
-      <div className="room-content">
+      <div className="roomcard-content">
         <div className="room-text">
           <h2 className="room-title-card">{title}</h2>
           <p className="room-description-card">{description}</p>
@@ -23,7 +23,7 @@ const RoomCard = ({
       </div>
 
       {/* Image Section */}
-      <div className="room-image">
+      <div className="roomcard-image">
         {imageUrl ? (
           <img src={imageUrl} alt={title} />
         ) : (

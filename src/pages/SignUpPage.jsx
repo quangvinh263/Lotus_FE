@@ -42,14 +42,14 @@ const SignUp = () => {
             </div>
 
             <form className="signup-form" onSubmit={handleSubmit}>
-              <div className="form-fields">
+              <div className="signup-form-fields">
                 {/* Username Field */}
-                <div className="form-field">
-                  <label className="field-label">Username</label>
+                <div className="signup-form-field">
+                  <label className="signup-field-label">Username</label>
                   <input
                     type="text"
                     name="username"
-                    className="text-input"
+                    className="signup-text-input"
                     value={formData.username}
                     onChange={handleChange}
                     placeholder=""
@@ -57,12 +57,12 @@ const SignUp = () => {
                 </div>
 
                 {/* Email Field */}
-                <div className="form-field">
-                  <label className="field-label">Email address</label>
+                <div className="signup-form-field">
+                  <label className="signup-field-label">Email address</label>
                   <input
                     type="email"
                     name="email"
-                    className="text-input"
+                    className="signup-text-input"
                     value={formData.email}
                     onChange={handleChange}
                     placeholder=""
@@ -72,24 +72,24 @@ const SignUp = () => {
                 {/* Password Fields */}
                 <div className="password-section">
                   <div className="password-fields">
-                    <div className="form-field password-field">
-                      <label className="field-label">Password</label>
+                    <div className="signup-form-field password-field">
+                      <label className="signup-field-label">Password</label>
                       <input
                         type={formData.showPassword ? "text" : "password"}
                         name="password"
-                        className="text-input"
+                        className="signup-text-input"
                         value={formData.password}
                         onChange={handleChange}
                         placeholder=""
                       />
                     </div>
 
-                    <div className="form-field password-field">
-                      <label className="field-label">Confirm your password</label>
+                    <div className="signup-form-field password-field">
+                      <label className="signup-field-label">Confirm your password</label>
                       <input
                         type={formData.showPassword ? "text" : "password"}
                         name="confirmPassword"
-                        className="text-input"
+                        className="signup-text-input"
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         placeholder=""
