@@ -1,0 +1,115 @@
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Montserrat:wght@700&display=swap');
+
+.rooms-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #FFFFFF;
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.rooms-hero {
+  width: 100%;
+  height: 723px;
+  position: relative;
+  overflow: hidden;
+}
+
+.rooms-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.rooms-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 39, 74, 0.5);
+  pointer-events: none;
+}
+
+/* Page Heading */
+.rooms-heading {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 21px;
+  margin-bottom: 21px;
+}
+
+.rooms-heading h1 {
+  font-family: 'EB Garamond', serif;
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 1.125em;
+  text-align: center;
+  color: #133E87;
+  margin: 0;
+}
+
+/* Rooms Grid */
+.rooms-grid {
+  width: 100%;
+  max-width: 1436px;
+  margin: 0 auto;
+  padding: 0 70px;
+  display: grid;
+  grid-template-columns: repeat(2, 618px);
+  gap: 50px 122px;
+  justify-content: center;
+  margin-bottom: 103px;
+}
+
+/* Responsive Design */
+@media (max-width: 1440px) {
+  .rooms-grid {
+    padding: 0 50px;
+    gap: 40px 100px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .rooms-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 100%;
+    padding: 0 40px;
+    gap: 40px;
+  }
+
+  .rooms-hero {
+    height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rooms-grid {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+    gap: 30px;
+  }
+
+  .rooms-hero {
+    height: 400px;
+  }
+
+  .rooms-heading h1 {
+    font-size: 35px;
+  }
+
+  .rooms-heading {
+    height: 70px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .rooms-grid {
+    margin-bottom: 50px;
+  }
+}

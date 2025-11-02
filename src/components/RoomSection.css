@@ -1,0 +1,262 @@
+/* Import Garamond and Cormorant Garamond fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=EB+Garamond:wght@400&display=swap');
+
+.room-section {
+  width: 618px;
+  height: 584px;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Image */
+.room-section-image {
+  width: 618px;
+  height: 262px;
+  overflow: hidden;
+}
+
+.room-section-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.room-section-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #E5E5E5;
+}
+
+/* Room Type and Price Header */
+.room-section-header {
+  width: 618px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 27px;
+}
+
+.room-section-title {
+  font-family: 'Garamond', serif;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 1.2em;
+  text-align: center;
+  color: #133E87;
+  margin: 0;
+}
+
+.room-section-price {
+  font-family: 'Garamond', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.2em;
+  text-align: center;
+  color: #133E87;
+  margin: 0;
+}
+
+
+/* Divider Line */
+.room-section-divider {
+  width: 250px;
+  height: 0.5px;
+  background: #133E87;
+  margin: 8px auto;
+}
+
+/* Details Section */
+.room-section-details {
+  width: 618px;
+  padding: 0;
+  margin-top: 8px;
+}
+
+.room-section-description {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 15px;
+  text-align: center;
+  color: #608BC1;
+  margin: 0;
+  padding: 0 124px;
+  height: 60px;
+}
+
+/* Specifications */
+.room-section-specs {
+  width: 618px;
+  min-height: 95px;
+  height: auto;
+  background: #F3F3E0;
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  padding: 10px 33px 10px 52px;
+  box-sizing: border-box;
+  margin-top: 0;
+}
+
+.room-spec-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  flex: 1;
+  min-height: 75px;
+}
+
+.room-spec-text-left,
+.room-spec-text-right {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.923em;
+  color: #133E87;
+  white-space: pre-line;
+  margin-left: 18px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: calc(100% - 18px);
+}
+
+.room-spec-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  object-fit: contain;
+  position: absolute;
+}
+
+.room-spec-icon-apartment {
+  left: 0;
+  top: 5px;
+}
+
+.room-spec-icon-person {
+  left: 0;
+  top: 54px;
+}
+
+.room-spec-icon-bed {
+  left: 0;
+  top: 30px;
+}
+
+.room-spec-icon-image {
+  left: 0;
+  top: 5px;
+}
+
+.room-spec-icon-smoke {
+  left: 0;
+  top: 28px;
+}
+
+.room-spec-icon-bath {
+  left: 0;
+  top: 53px;
+}
+
+/* Buttons */
+.room-section-buttons {
+  width: 618px;
+  height: 62px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 51px;
+  padding: 10px 149px;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+}
+
+.room-section-btn {
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 5px 12px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  line-height: 1.211em;
+  letter-spacing: 0.05em;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.room-section-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.room-section-btn-primary {
+  width: 139px;
+  background: #133E87;
+  color: #F3F3E0;
+  font-weight: 400;
+}
+
+.room-section-btn-primary:hover {
+  background: #0F2E65;
+}
+
+.room-section-btn-secondary {
+  width: 120px;
+  background: #F3F3E0;
+  color: #133E87;
+  font-weight: 600;
+}
+
+.room-section-btn-secondary:hover {
+  background: #E5E5D0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .room-section {
+    width: 100%;
+    height: auto;
+  }
+
+  .room-section-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 618 / 262;
+  }
+
+  .room-section-header {
+    width: 100%;
+  }
+
+  .room-section-details {
+    width: 100%;
+  }
+
+  .room-section-description {
+    padding: 0 20px;
+  }
+
+  .room-section-specs {
+    width: 100%;
+    flex-direction: column;
+    height: auto;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .room-section-buttons {
+    width: 100%;
+    position: relative;
+    padding: 20px;
+    gap: 20px;
+  }
+}
