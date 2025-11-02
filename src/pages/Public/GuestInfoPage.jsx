@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import NavBar from '../components/NavBar';
+import NavBar from '../../components/NavBar';
 import '../styles/GuestInfoPage.css';
 
 function GuestInfoPage() {

@@ -1,10 +1,10 @@
 import React from 'react';
 import '../styles/ProfilePage.css';
-import Navbar from '../components/NavBar';
-import Footer from '../components/Footer';
-import ProfileHeader from '../components/ProfileHeader';
-import PersonalInfo from '../components/PersonalInfo';
-import BookingCard from '../components/BookingCard';
+import Navbar from '../../components/NavBar';
+import Footer from '../../components/Footer';
+import ProfileHeader from '../../components/ProfileHeader';
+import PersonalInfo from '../../components/PersonalInfo';
+import BookingCard from '../../components/BookingCard';
 import SettingIcon from '../assets/icons/SettingIcon.svg';
 import ImageHome1 from '../assets/images/ImageHome1.png';
 import ImageHome2 from '../assets/images/ImageHome2.png';

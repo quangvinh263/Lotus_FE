@@ -1,8 +1,8 @@
 import React from 'react';
 import '../styles/HomePage.css';
-import Navbar from '../components/NavBar';
-import RoomCard from '../components/RoomCard';
-import Footer from '../components/Footer';
+import Navbar from '../../components/NavBar';
+import RoomCard from '../../components/RoomCard';
+import Footer from '../../components/Footer';
 import ImageHome1 from '../assets/images/ImageHome1.png';
 import ImageHome2 from '../assets/images/ImageHome2.png';
 import ImageHome3 from '../assets/images/ImageHome3.png';

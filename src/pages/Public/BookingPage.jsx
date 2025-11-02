@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/BookingPage.css';
-import Navbar from '../components/NavBar';
-import Footer from '../components/Footer';
-import Filter from '../components/Filter';
-import RoomBooking from '../components/RoomBooking';
-import BookingSummary from '../components/BookingSummary';
+import Navbar from '../../components/NavBar';
+import Footer from '../../components/Footer';
+import Filter from '../../components/Filter';
+import RoomBooking from '../../components/RoomBooking';
+import BookingSummary from '../../components/BookingSummary';
 
 const BookingPage = () => {
   const navigate = useNavigate();
