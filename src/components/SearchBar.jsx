@@ -2,31 +2,32 @@ import React, { useState } from 'react';
 import './SearchBar.css';
 
 const SearchBar = () => {
-  const [destination, setDestination] = useState('');
+  const [guests, setGuests] = useState('');
   const [dates, setDates] = useState('');
 
   const handleSearch = () => {
-    console.log('Searching:', { destination, dates });
+    console.log('Searching:', { guests, dates });
     // Add search logic here
   };
 
   return (
     <div className="search-bar">
       <div className="search-fields">
-        {/* Destination Field */}
+        {/* Guests Field */}
         <div className="search-field">
           <div className="field-content">
             <svg className="field-icon" width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12.5 2C8.63 2 5.5 5.13 5.5 9C5.5 14.25 12.5 22 12.5 22C12.5 22 19.5 14.25 19.5 9C19.5 5.13 16.37 2 12.5 2ZM12.5 11.5C11.12 11.5 10 10.38 10 9C10 7.62 11.12 6.5 12.5 6.5C13.88 6.5 15 7.62 15 9C15 10.38 13.88 11.5 12.5 11.5Z" fill="#608BC1"/>
+              <path d="M16.5 11C18.43 11 19.96 9.47 19.96 7.5C19.96 5.53 18.43 4 16.5 4C14.57 4 13.04 5.53 13.04 7.5C13.04 9.47 14.57 11 16.5 11ZM8.5 11C10.43 11 11.96 9.47 11.96 7.5C11.96 5.53 10.43 4 8.5 4C6.57 4 5.04 5.53 5.04 7.5C5.04 9.47 6.57 11 8.5 11ZM8.5 13C5.83 13 0.5 14.34 0.5 17V19C0.5 19.55 0.95 20 1.5 20H15.5C16.05 20 16.5 19.55 16.5 19V17C16.5 14.34 11.17 13 8.5 13ZM16.5 13C16.23 13 15.93 13.02 15.62 13.05C16.81 13.89 17.5 15.02 17.5 17V19C17.5 19.35 17.42 19.69 17.29 20H23.5C24.05 20 24.5 19.55 24.5 19V17C24.5 14.34 19.17 13 16.5 13Z" fill="#608BC1"/>
             </svg>
             <div className="field-text">
-              <div className="searchbar-field-label">DESTINATION</div>
+              <div className="searchbar-field-label">GUESTS</div>
               <input 
-                type="text" 
+                type="number" 
                 className="field-input" 
-                placeholder="Search Room, Address, ..."
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
+                placeholder="Number of guests"
+                value={guests}
+                onChange={(e) => setGuests(e.target.value)}
+                min="1"
               />
             </div>
           </div>

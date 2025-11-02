@@ -20,11 +20,12 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/rooms" element={<RoomsPage />} />
+        <Route path="/room-details/:roomId" element={<RoomDetailsPage />} />
         <Route path="/booking" element={<BookingPage />} />
         <Route path="/guest-info" element={<GuestInfoPage />} />
         <Route path="/payment" element={<PaymentPage />} />
       </Routes>
-    </Router>
+ </Router>
   )
 }
 export default App

@@ -1,11 +1,15 @@
-import React from 'react';
-import './RoomDetailsPage.css';
+import React, { useEffect } from 'react';
+import '../styles/RoomDetailsPage.css';
 import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
 import RoomDetailSection from '../components/RoomDetailSection';
 import ImageRoomDetailsPage from '../assets/images/ImageRoomDetailsPage.jpg';
 
 const RoomDetailsPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleBookRoom = () => {
     console.log('Book room clicked');
     // Add booking logic here

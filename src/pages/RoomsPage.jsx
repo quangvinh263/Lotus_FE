@@ -1,11 +1,14 @@
 import React from 'react';
-import './RoomsPage.css';
+import { useNavigate } from 'react-router-dom';
+import '../styles/RoomsPage.css';
 import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
 import RoomSection from '../components/RoomSection';
 import ImageRoomsPage from '../assets/images/ImageRoomsPage.jpg';
 
 const RoomsPage = () => {
+  const navigate = useNavigate();
+
   // Sample room data - you can replace with actual data
   const rooms = [
     {
@@ -112,8 +115,7 @@ const RoomsPage = () => {
   };
 
   const handleMoreInfo = (roomId) => {
-    console.log('More info:', roomId);
-    // Add more info logic here
+    navigate(`/room-details/${roomId}`);
   };
 
   return (

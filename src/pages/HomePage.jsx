@@ -1,7 +1,6 @@
 import React from 'react';
 import '../styles/HomePage.css';
 import Navbar from '../components/NavBar';
-import SearchBar from '../components/SearchBar';
 import RoomCard from '../components/RoomCard';
 import Footer from '../components/Footer';
 import ImageHome1 from '../assets/images/ImageHome1.png';
@@ -48,9 +47,6 @@ const HomePage = () => {
 
       {/* Hero Section */}
       <section id="search-sticky" className="hero-section">
-        <section className="search-section">
-        <SearchBar />
-      </section>
         <div className="hero-overlay"></div>
         <div className="hero-content">
           <div className="hero-text">
