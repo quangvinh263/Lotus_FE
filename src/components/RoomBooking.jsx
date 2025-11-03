@@ -6,12 +6,20 @@ import BedIcon from '../assets/icons/BedIcon.png';
 import BathIcon from '../assets/icons/BathIcon.png';
 import CalendarIcon from '../assets/icons/CalendarIcon.png';
 
-const RoomBooking = ({ variant = 'default', isSelected = false, unavailableDates = null, onSelect = () => {}, onOpenDatePicker = () => {} }) => {
-  const roomData = {
+const RoomBooking = ({ 
+  room = null, 
+  variant = 'default', 
+  isSelected = false, 
+  selectedQuantity = 0,
+  unavailableDates = null, 
+  onSelect = () => {}, 
+  onOpenDatePicker = () => {} 
+}) => {
+  const roomData = room || {
     name: 'Superior Room',
     price: 'VND 5,000,000',
     priceDescription: 'Cost for 1 night, 2 guests',
-    capacity: 'Sleeps 2',
+    capacity: 2,
     bedType: '2 Single beds',
     bathroom: '1 Bathroom',
     description: `32m² • City view • Non-smoking • Shower • Internet Access • Smart TV • Alarm Clock • Daily Room Service • Television • Desk • Telephone • Hairdryer • Air conditioned • Mini Bar • Room Safe • Housekeeping • Wireless Internet • Free Toiletries
@@ -57,7 +65,7 @@ const RoomBooking = ({ variant = 'default', isSelected = false, unavailableDates
         <h3 className="room-title">{roomData.name}</h3>
         
         <div className="room-amenities">
-          {renderAmenityItem(PersonIcon, roomData.capacity)}
+          {renderAmenityItem(PersonIcon, `Sleeps ${roomData.capacity}`)}
           {renderAmenityItem(BedIcon, roomData.bedType)}
           {renderAmenityItem(BathIcon, roomData.bathroom)}
         </div>
@@ -73,7 +81,7 @@ const RoomBooking = ({ variant = 'default', isSelected = false, unavailableDates
           </div>
           
           <button className="select-button" onClick={onSelect}>
-            Select
+            {selectedQuantity > 0 ? `Selected (${selectedQuantity})` : 'Select'}
           </button>
         </div>
       </div>
