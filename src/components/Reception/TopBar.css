@@ -1,0 +1,84 @@
+.reception-topbar {
+  width: 100%;
+  background: #FFFFFF;
+  border-bottom: 0.8px solid rgba(19, 62, 135, 0.1);
+  padding: 16px 32px;
+}
+
+.topbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.topbar-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar-title {
+  font-family: Arial, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+.topbar-subtitle {
+  font-family: Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.43em;
+  color: #608BC1;
+  margin: 0;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  background: rgba(19, 62, 135, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-avatar img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.user-name {
+  font-family: Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.43em;
+  color: #133E87;
+}

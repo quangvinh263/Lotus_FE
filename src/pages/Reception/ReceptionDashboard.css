@@ -1,0 +1,301 @@
+.reception-dashboard-page {
+  display: flex;
+  min-height: 100vh;
+  background: #F3F3E0;
+}
+
+.dashboard-main {
+  flex: 1;
+  margin-left: 256px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-content {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-title {
+  font-family: Arial;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.25em;
+  color: #133E87;
+  margin: 0;
+}
+
+.page-subtitle {
+  font-family: Arial;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5em;
+  color: #608BC1;
+  margin: 0;
+}
+
+/* Overview Section */
+.overview-section {
+  width: 100%;
+}
+
+.overview-card {
+  background: #FFFFFF;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.card-title {
+  font-family: Arial;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.5em;
+  color: #364153;
+  margin: 0 0 24px 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 24px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-sublabel {
+  font-family: Arial;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5em;
+  color: #99A1AF;
+}
+
+.stat-label {
+  font-family: Arial;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.43em;
+  color: #364153;
+}
+
+.stat-value {
+  font-family: Arial;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.25em;
+  color: #133E87;
+}
+
+/* Cards Grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.dashboard-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(19, 62, 135, 0.1);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
+  padding: 2px 8px;
+  background: #133E87;
+  border: 0.8px solid rgba(19, 62, 135, 0.1);
+  border-radius: 8px;
+  font-family: Arial;
+  font-weight: 600;
+  font-size: 14px;
+  color: #FFFFFF;
+}
+
+/* Room Status */
+.room-status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.room-status-item {
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.status-green {
+  background: rgba(220, 252, 231, 1);
+}
+
+.status-blue {
+  background: rgba(19, 62, 135, 0.1);
+}
+
+.status-yellow {
+  background: rgba(243, 243, 224, 1);
+}
+
+.status-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.status-label {
+  font-family: Arial;
+  font-weight: 400;
+  font-size: 14px;
+  color: #608BC1;
+  margin: 0;
+}
+
+.status-count {
+  font-family: Arial;
+  font-weight: 600;
+  font-size: 16px;
+  color: #133E87;
+  margin: 0;
+}
+
+.status-percentage {
+  font-family: Arial;
+  font-weight: 600;
+  font-size: 14px;
+  color: #608BC1;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* Guest List */
+.guest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.guest-item {
+  background: rgba(243, 243, 224, 1);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.guest-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.guest-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.guest-name {
+  font-family: Arial;
+  font-weight: 400;
+  font-size: 14px;
+  color: #133E87;
+  margin: 0;
+}
+
+.guest-code {
+  font-family: Arial;
+  font-weight: 400;
+  font-size: 14px;
+  color: #608BC1;
+  margin: 0;
+}
+
+.guest-status {
+  padding: 2px 8px;
+  border: 0.8px solid rgba(19, 62, 135, 0.1);
+  border-radius: 8px;
+  font-family: Arial;
+  font-weight: 600;
+  font-size: 12px;
+  color: #FFFFFF;
+}
+
+.guest-status.waiting {
+  background: #FFA500;
+}
+
+.guest-status.confirmed {
+  background: #00C950;
+}
+
+/* View All Button */
+.view-all-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #133E87;
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-family: Arial;
+  font-weight: 400;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.view-all-btn:hover {
+  background: #0F3270;
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(100%);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}

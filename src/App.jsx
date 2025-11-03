@@ -11,6 +11,7 @@ import AboutUsPage from './pages/Public/AboutUsPage'
 import BookingPage from './pages/Public/BookingPage'
 import GuestInfoPage from './pages/Public/GuestInfoPage'
 import PaymentPage from './pages/Public/PaymentPage'
+import ReceptionDashboard from './pages/Reception/ReceptionDashboard'
 
 
 function App() {
@@ -28,6 +29,9 @@ function App() {
         <Route path="/booking" element={<BookingPage />} />
         <Route path="/guest-info" element={<GuestInfoPage />} />
         <Route path="/payment" element={<PaymentPage />} />
+        
+        {/* Reception Routes */}
+        <Route path="/reception/dashboard" element={<ReceptionDashboard />} />
       </Routes>
  </Router>
   )
