@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import '../styles/AboutUsPage.css';
+import '../../styles/AboutUsPage.css';
 import Navbar from '../../components/NavBar';
 import Footer from '../../components/Footer';
-import ImageAboutUsPage from '../assets/images/ImageAboutUsPage.jpg';
+import ImageAboutUsPage from '../../assets/images/ImageAboutUsPage.jpg';
 
 const AboutUsPage = () => {
   useEffect(() => {

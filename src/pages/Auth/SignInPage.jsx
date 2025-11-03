@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import '../styles/SignIn.css';
-import SignInImage from '../assets/images/SignInImage.png';
+import '../../styles/SignIn.css';
+import SignInImage from '../../assets/images/SignInImage.png';
 
 const SignIn = () => {
   const navigate = useNavigate();
