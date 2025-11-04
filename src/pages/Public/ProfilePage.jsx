@@ -4,6 +4,7 @@ import Navbar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 import ProfileHeader from '../../components/ProfileHeader';
 import PersonalInfo from '../../components/PersonalInfo';
+import ChangePassword from '../../components/ChangePassword';
 import BookingCard from '../../components/BookingCard';
 import SettingIcon from '../../assets/icons/SettingIcon.svg';
 import ImageHome1 from '../../assets/images/ImageHome1.png';
@@ -75,6 +76,7 @@ const ProfilePage = () => {
       <div className="profile-container">
         <div className="profile-content">
           <PersonalInfo />
+          <ChangePassword />
           
           <div className="bookings-section">
             <div className="upcoming-reservations">
