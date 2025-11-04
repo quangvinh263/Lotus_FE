@@ -1,0 +1,215 @@
+/* Service Table Wrapper */
+.st-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.st-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Table Header */
+.st-thead {
+  background: #F3F3E0;
+}
+
+.st-header-row {
+  border-bottom: 0.8px solid rgba(19, 62, 135, 0.1);
+}
+
+.st-th {
+  padding: 8px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.st-th-room {
+  width: 8%;
+}
+
+.st-th-type {
+  width: 10.13%;
+}
+
+.st-th-customer {
+  width: 14.76%;
+}
+
+.st-th-checkin,
+.st-th-checkout {
+  width: 7.78%;
+}
+
+.st-th-services {
+  width: 21.48%;
+}
+
+.st-th-amount {
+  width: 9.6%;
+}
+
+.st-th-actions {
+  width: 9.88%;
+  text-align: right;
+  padding-right: 27.54px;
+}
+
+/* Table Body */
+.st-tbody {
+  background: #FFFFFF;
+}
+
+.st-row {
+  border-bottom: 0.8px solid rgba(19, 62, 135, 0.1);
+}
+
+.st-row:last-child {
+  border-bottom: none;
+}
+
+.st-td {
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+}
+
+/* Room Cell */
+.st-room-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.st-room-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  background: #CBDCEB;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.st-room-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.st-room-number {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #133E87;
+}
+
+/* Room Type */
+.st-room-type {
+  color: #608BC1;
+}
+
+/* Customer Cell */
+.st-customer-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.st-customer-avatar {
+  width: 32px;
+  height: 32px;
+  background: #CBDCEB;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.st-avatar-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.st-customer-name {
+  color: #133E87;
+}
+
+/* Date Cell */
+.st-date-text {
+  color: #608BC1;
+}
+
+/* Services Cell */
+.st-services-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.st-services-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  background: #608BC1;
+  border: 0.8px solid transparent;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+
+.st-services-list {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Amount Cell */
+.st-amount-text {
+  color: #133E87;
+}
+
+/* Actions Cell */
+.st-td-actions {
+  text-align: right;
+}
+
+.st-manage-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: #133E87;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.st-manage-btn:hover {
+  background: #0F2F6B;
+}
+
+.st-btn-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.st-btn-text {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #FFFFFF;
+}

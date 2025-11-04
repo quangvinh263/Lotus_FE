@@ -1,0 +1,56 @@
+/* Service Management Page Container */
+.smp-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.smp-main {
+  flex: 1;
+  margin-left: 256px;
+  display: flex;
+  flex-direction: column;
+}
+
+.smp-content {
+  padding: 32px;
+  background: #F3F3E0;
+  min-height: calc(100vh - 77px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Header */
+.smp-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.smp-title {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+.smp-description {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #608BC1;
+  margin: 0;
+}
+
+/* Card */
+.smp-card {
+  background: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
