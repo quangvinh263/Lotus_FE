@@ -1,0 +1,46 @@
+.bsc-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.bsc-card {
+  width: 179.04px;
+  height: 109.58px;
+  padding: 16px 0 0 16px;
+  background-color: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bsc-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 8px rgba(19, 62, 135, 0.1);
+}
+
+.bsc-card-active {
+  border-color: #133E87;
+  box-shadow: 0px 4px 8px rgba(19, 62, 135, 0.15);
+}
+
+.bsc-label {
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+  width: 145.44px;
+}
+
+.bsc-value {
+  font-family: Arial;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.333em;
+  width: 145.44px;
+}
