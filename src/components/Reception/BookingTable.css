@@ -1,0 +1,297 @@
+.bt-container {
+  width: 100%;
+  min-height: 448px;
+  background-color: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.bt-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bt-thead {
+  background-color: #F3F3E0;
+}
+
+.bt-header-row {
+  height: 38px;
+  border-bottom: 0.8px solid rgba(19, 62, 135, 0.1);
+}
+
+.bt-th {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+  text-align: left;
+  padding: 9px 0;
+}
+
+.bt-th-code {
+  width: 10%;
+  padding-left: 8px;
+}
+
+.bt-th-customer {
+  width: 16%;
+}
+
+.bt-th-contact {
+  width: 18%;
+}
+
+.bt-th-rooms {
+  width: 13%;
+}
+
+.bt-th-dates {
+  width: 14%;
+}
+
+.bt-th-amount {
+  width: 12%;
+}
+
+.bt-th-status {
+  width: 12%;
+}
+
+.bt-th-actions {
+  width: 5%;
+}
+
+.bt-tbody {
+  background-color: #FFFFFF;
+}
+
+.bt-row {
+  border-bottom: 0.8px solid rgba(19, 62, 135, 0.1);
+  transition: background-color 0.2s;
+}
+
+.bt-row:hover {
+  background-color: #F3F3E0;
+}
+
+.bt-td {
+  padding: 24px 0;
+  vertical-align: middle;
+}
+
+.bt-td-code {
+  padding-left: 8px;
+}
+
+/* Code Column */
+.bt-code-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bt-code {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.bt-booking-date {
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+}
+
+/* Customer Column */
+.bt-customer-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bt-avatar {
+  width: 32px;
+  height: 32px;
+  background-color: #CBDCEB;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bt-avatar-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.bt-customer-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bt-customer-name {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.bt-guest-count {
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+}
+
+/* Contact Column */
+.bt-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bt-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bt-contact-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.bt-contact-text {
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+}
+
+/* Rooms Column */
+.bt-rooms-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bt-room-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background-color: #608BC1;
+  border: 0.8px solid rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+  width: fit-content;
+}
+
+.bt-room-total {
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+}
+
+/* Dates Column */
+.bt-dates-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bt-date-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bt-date-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.bt-date-text {
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+}
+
+.bt-nights {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #133E87;
+  margin-top: 4px;
+}
+
+/* Amount Column */
+.bt-amount {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+/* Status Column */
+.bt-status-badge {
+  display: inline-block;
+  padding: 2px 8.8px;
+  border: 0.8px solid rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+}
+
+/* Actions Column */
+.bt-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+}
+
+.bt-action-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.bt-action-btn:hover {
+  background-color: #CBDCEB;
+}
+
+.bt-action-btn img {
+  width: 16px;
+  height: 16px;
+}

@@ -1,0 +1,249 @@
+/* CheckOut Card Container */
+.checkout-card {
+  background: #FFFFFF;
+  border: 1.6px solid #CBDCEB;
+  border-radius: 10px;
+  padding: 17.6px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Card Header */
+.checkout-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.checkout-guest-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.checkout-name-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkout-guest-name {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+}
+
+.checkout-booking-badge {
+  background: #608BC1;
+  border: 0.8px solid rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #FFFFFF;
+}
+
+.checkout-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.checkout-phone,
+.checkout-dates {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #608BC1;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkout-info-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.checkout-btn-all {
+  background: #133E87;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #FFFFFF;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.checkout-btn-all:hover {
+  background: #0f3270;
+}
+
+/* Divider */
+.checkout-divider {
+  height: 1px;
+  background: rgba(19, 62, 135, 0.1);
+}
+
+/* Rooms Section */
+.checkout-rooms-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkout-rooms-label {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #608BC1;
+  margin: 0;
+}
+
+.checkout-rooms-list {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Room Item */
+.checkout-room-item {
+  background: #F3F3E0;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 10px;
+  padding: 12.8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 283px;
+  flex: 1;
+  max-width: calc(33.33% - 8px);
+  transition: all 0.2s;
+}
+
+.checkout-room-item:hover {
+  background: #e8e8d0;
+  border-color: #608BC1;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(19, 62, 135, 0.1);
+}
+
+.checkout-room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkout-room-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkout-room-icon {
+  width: 32px;
+  height: 32px;
+  background: #133E87;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.checkout-room-icon img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+}
+
+.checkout-room-number {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+}
+
+.checkout-room-type-badge {
+  background: #608BC1;
+  border: 0.8px solid rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+
+.checkout-room-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.checkout-room-detail {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #608BC1;
+  margin: 0;
+}
+
+.checkout-room-total {
+  padding-top: 4.8px;
+  border-top: 0.8px solid #CBDCEB;
+  margin-top: 4px;
+}
+
+.checkout-total-text {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .checkout-room-item {
+    max-width: calc(50% - 6px);
+  }
+}
+
+@media (max-width: 768px) {
+  .checkout-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .checkout-btn-all {
+    width: 100%;
+  }
+
+  .checkout-room-item {
+    max-width: 100%;
+  }
+}

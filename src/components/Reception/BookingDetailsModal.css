@@ -1,0 +1,387 @@
+/* Overlay */
+.bdm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family: Arial;
+}
+
+/* Modal Container */
+.bdm-modal {
+  position: relative;
+  width: 512px;
+  max-height: 90vh;
+  background: #F3F3E0;
+  border: 0.8px solid rgba(19, 62, 135, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.12),
+              0px 4px 8px rgba(0, 0, 0, 0.08),
+              0px 2px 4px rgba(0, 0, 0, 0.04);
+  padding: 24.8px;
+  overflow-y: auto;
+}
+
+/* Close Button */
+.bdm-close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 16px;
+  height: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.bdm-close-button:hover svg path {
+  stroke: #608BC1;
+}
+
+/* Header */
+.bdm-header {
+  margin-bottom: 20px;
+}
+
+.bdm-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0 0 4px 0;
+}
+
+.bdm-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #608BC1;
+  margin: 0;
+}
+
+/* Content */
+.bdm-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Info Row (Status and Date) */
+.bdm-info-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.bdm-status-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bdm-date-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.bdm-label {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+}
+
+.bdm-label-right {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+  text-align: right;
+}
+
+.bdm-value {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.bdm-status-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.428em;
+  display: inline-block;
+}
+
+/* Section */
+.bdm-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bdm-section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bdm-section-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.bdm-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+/* Info Grid */
+.bdm-info-grid {
+  background: #F3F3E0;
+  border: 0.8px solid rgba(19, 62, 135, 0.1);
+  border-radius: 10px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 12px;
+}
+
+.bdm-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bdm-info-label {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+}
+
+.bdm-info-value {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+/* Room Details */
+.bdm-room-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bdm-room-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 0.8px solid rgba(19, 62, 135, 0.1);
+}
+
+.bdm-room-item:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bdm-room-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bdm-room-type-badge {
+  background: #608BC1;
+  color: #FFFFFF;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.428em;
+}
+
+.bdm-room-quantity {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.bdm-room-price {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.428em;
+  color: #608BC1;
+}
+
+.bdm-room-calculation {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 0.8px solid rgba(19, 62, 135, 0.1);
+}
+
+.bdm-calc-text {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+}
+
+.bdm-calc-total {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+/* Stay Grid */
+.bdm-stay-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+/* Total Section */
+.bdm-total-section {
+  background: #CBDCEB;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.bdm-total-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bdm-total-label-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bdm-total-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.bdm-total-label {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5em;
+  color: #133E87;
+}
+
+.bdm-total-amount {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5em;
+  color: #133E87;
+}
+
+/* Actions */
+.bdm-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 0.8px solid #CBDCEB;
+}
+
+.bdm-btn {
+  flex: 1;
+  height: 36px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.428em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.bdm-btn-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.bdm-btn-confirm {
+  background: #00A63E;
+  color: #FFFFFF;
+}
+
+.bdm-btn-confirm .bdm-btn-icon {
+  filter: brightness(0) invert(1);
+}
+
+.bdm-btn-confirm:hover {
+  background: #008833;
+}
+
+.bdm-btn-cancel {
+  background: #FFFFFF;
+  color: #E7000B;
+  border: 1px solid #E7000B;
+}
+
+.bdm-btn-cancel:hover {
+  background: #FFF5F5;
+}
+
+.bdm-btn-close {
+  flex: 0 0 auto;
+  background: #FFFFFF;
+  color: #133E87;
+  border: 1px solid #133E87;
+}
+
+.bdm-btn-close:hover {
+  background: #F3F3E0;
+}
+
+/* Scrollbar */
+.bdm-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bdm-modal::-webkit-scrollbar-track {
+  background: rgba(19, 62, 135, 0.05);
+  border-radius: 3px;
+}
+
+.bdm-modal::-webkit-scrollbar-thumb {
+  background: rgba(19, 62, 135, 0.2);
+  border-radius: 3px;
+}
+
+.bdm-modal::-webkit-scrollbar-thumb:hover {
+  background: rgba(19, 62, 135, 0.3);
+}

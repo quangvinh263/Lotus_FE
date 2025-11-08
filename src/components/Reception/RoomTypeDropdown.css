@@ -1,0 +1,122 @@
+.rtd-dropdown {
+  position: relative;
+  width: 362.93px;
+}
+
+.rtd-button {
+  width: 100%;
+  min-height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0.8px transparent;
+  transition: box-shadow 0.2s;
+}
+
+.rtd-button:hover,
+.rtd-button:focus {
+  box-shadow: inset 0 0 0 0.8px #133E87;
+  outline: none;
+}
+
+.rtd-selected {
+  flex: 1;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rtd-selected-name {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.rtd-selected-desc {
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #6A7282;
+}
+
+.rtd-placeholder {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.rtd-arrow {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.rtd-arrow-open {
+  transform: rotate(180deg);
+}
+
+.rtd-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.rtd-option {
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: background-color 0.2s;
+  border-bottom: 0.8px solid #F3F3E0;
+}
+
+.rtd-option:last-child {
+  border-bottom: none;
+}
+
+.rtd-option:hover {
+  background-color: #F3F3E0;
+}
+
+.rtd-option-selected {
+  background-color: #CBDCEB;
+}
+
+.rtd-option-selected:hover {
+  background-color: #CBDCEB;
+}
+
+.rtd-option-name {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.rtd-option-desc {
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #6A7282;
+}
