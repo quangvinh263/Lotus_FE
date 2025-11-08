@@ -3,13 +3,17 @@ import './PersonalInfo.css';
 import MailIcon from '../assets/icons/MailIcon.svg';
 import PhoneIcon from '../assets/icons/PhoneIcon.svg';
 import LocationIcon from '../assets/icons/LocationIcon.svg';
+import CalenderIcon from '../assets/icons/CalenderIcon.svg';
+import GenderIcon from '../assets/icons/GenderIcon.svg';
 
 const PersonalInfo = () => {
   const [showModal, setShowModal] = useState(false);
   const [personalData, setPersonalData] = useState({
     email: 'sarah.anderson@email.com',
     phone: '+1 (555) 123-4567',
-    address: '123 Park Avenue, New York, NY 10017'
+    address: '123 Park Avenue, New York, NY 10017',
+    dateOfBirth: '1990-05-15',
+    gender: 'Female'
   });
   const [editData, setEditData] = useState({ ...personalData });
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -36,7 +40,7 @@ const PersonalInfo = () => {
 
   const handleSaveChanges = () => {
     // Validation
-    if (!editData.email || !editData.phone || !editData.address) {
+    if (!editData.email || !editData.phone || !editData.address || !editData.dateOfBirth || !editData.gender) {
       setMessage({ type: 'error', text: 'Please fill in all fields' });
       return;
     }
@@ -105,6 +109,26 @@ const PersonalInfo = () => {
               <p className="info-value">{personalData.address}</p>
             </div>
           </div>
+          
+          <div className="info-item">
+            <div className="info-icon">
+              <img src={CalenderIcon} alt="Date of Birth" />
+            </div>
+            <div className="info-details">
+              <p className="info-label">Date of Birth</p>
+              <p className="info-value">{new Date(personalData.dateOfBirth).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            </div>
+          </div>
+          
+          <div className="info-item">
+            <div className="info-icon">
+              <img src={GenderIcon} alt="Gender" />
+            </div>
+            <div className="info-details">
+              <p className="info-label">Gender</p>
+              <p className="info-value">{personalData.gender}</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -165,6 +189,36 @@ const PersonalInfo = () => {
                   onChange={handleInputChange}
                   placeholder="Enter address"
                 />
+              </div>
+
+              <div className="pi-form-field">
+                <label>
+                  <img src={CalenderIcon} alt="Date of Birth" className="pi-field-icon" />
+                  <span>Date of Birth</span>
+                </label>
+                <input
+                  type="date"
+                  name="dateOfBirth"
+                  value={editData.dateOfBirth}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="pi-form-field">
+                <label>
+                  <img src={GenderIcon} alt="Gender" className="pi-field-icon" />
+                  <span>Gender</span>
+                </label>
+                <select
+                  name="gender"
+                  value={editData.gender}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
             </div>
 
