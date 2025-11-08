@@ -77,7 +77,6 @@
 
 /* Guest Form */
 .guest-form {
-  display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
@@ -355,6 +354,14 @@
   font-weight: 400;
   line-height: 16px;
   color: #FFFFFF;
+}
+
+/* Room Guest Assignment Section */
+.room-guest-assignment-section {
+  padding: 20px 24px;
+  background: white;
+  border-radius: 8px;
+  margin: 0 24px 20px 24px;
 }
 
 /* Modal Footer */

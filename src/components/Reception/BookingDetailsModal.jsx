@@ -71,7 +71,7 @@ function BookingDetailsModal({ booking, onClose, onConfirm, onCancel }) {
             </div>
             <div className="bdm-info-grid">
               <div className="bdm-info-item">
-                <span className="bdm-info-label">Họ và tên</span>
+                <span className="bdm-info-label">Người đại diện</span>
                 <span className="bdm-info-value">{booking.customerName}</span>
               </div>
               <div className="bdm-info-item">
@@ -83,10 +83,99 @@ function BookingDetailsModal({ booking, onClose, onConfirm, onCancel }) {
                 <span className="bdm-info-value">{booking.email}</span>
               </div>
               <div className="bdm-info-item">
-                <span className="bdm-info-label">Số khách</span>
+                <span className="bdm-info-label">Tổng số khách</span>
                 <span className="bdm-info-value">{booking.guestCount} người</span>
               </div>
             </div>
+            
+            {/* Danh sách tất cả khách theo phòng */}
+            {booking.roomAssignments && Object.keys(booking.roomAssignments).length > 0 ? (
+              <div className="bdm-guests-list">
+                <h4 className="bdm-guests-list-title">Danh sách khách theo phòng:</h4>
+                {Object.entries(booking.roomAssignments).map(([roomNumber, guestList]) => (
+                  <div key={roomNumber} className="bdm-room-guests-card">
+                    <div className="bdm-room-guests-header">
+                      <span className="bdm-room-badge">Phòng {roomNumber}</span>
+                      <span className="bdm-guest-count">{guestList.length} khách</span>
+                    </div>
+                    <div className="bdm-room-guests-list">
+                      {guestList.map((guest, index) => (
+                        <div key={index} className="bdm-guest-card">
+                          <div className="bdm-guest-header">
+                            <span className="bdm-guest-number">Khách {index + 1}</span>
+                            {guest.isPrimary && <span className="bdm-primary-badge">Người đại diện</span>}
+                          </div>
+                          <div className="bdm-guest-details">
+                            <div className="bdm-guest-detail-row">
+                              <span className="bdm-guest-detail-label">Họ tên:</span>
+                              <span className="bdm-guest-detail-value">{guest.fullName}</span>
+                            </div>
+                            {guest.idNumber && (
+                              <div className="bdm-guest-detail-row">
+                                <span className="bdm-guest-detail-label">CMND/CCCD:</span>
+                                <span className="bdm-guest-detail-value">{guest.idNumber}</span>
+                              </div>
+                            )}
+                            {guest.gender && (
+                              <div className="bdm-guest-detail-row">
+                                <span className="bdm-guest-detail-label">Giới tính:</span>
+                                <span className="bdm-guest-detail-value">
+                                  {guest.gender === 'male' ? 'Nam' : guest.gender === 'female' ? 'Nữ' : 'Khác'}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : booking.guests && booking.guests.length > 0 && (
+              <div className="bdm-guests-list">
+                <h4 className="bdm-guests-list-title">Danh sách khách lưu trú:</h4>
+                {booking.guests.map((guest, index) => (
+                  <div key={index} className="bdm-guest-card">
+                    <div className="bdm-guest-header">
+                      <span className="bdm-guest-number">Khách {index + 1}</span>
+                      {guest.isPrimary && <span className="bdm-primary-badge">Người đại diện</span>}
+                    </div>
+                    <div className="bdm-guest-details">
+                      <div className="bdm-guest-detail-row">
+                        <span className="bdm-guest-detail-label">Họ tên:</span>
+                        <span className="bdm-guest-detail-value">{guest.fullName}</span>
+                      </div>
+                      {guest.idNumber && (
+                        <div className="bdm-guest-detail-row">
+                          <span className="bdm-guest-detail-label">CMND/CCCD:</span>
+                          <span className="bdm-guest-detail-value">{guest.idNumber}</span>
+                        </div>
+                      )}
+                      {guest.gender && (
+                        <div className="bdm-guest-detail-row">
+                          <span className="bdm-guest-detail-label">Giới tính:</span>
+                          <span className="bdm-guest-detail-value">
+                            {guest.gender === 'male' ? 'Nam' : guest.gender === 'female' ? 'Nữ' : 'Khác'}
+                          </span>
+                        </div>
+                      )}
+                      {guest.phoneNumber && (
+                        <div className="bdm-guest-detail-row">
+                          <span className="bdm-guest-detail-label">SĐT:</span>
+                          <span className="bdm-guest-detail-value">{guest.phoneNumber}</span>
+                        </div>
+                      )}
+                      {guest.email && (
+                        <div className="bdm-guest-detail-row">
+                          <span className="bdm-guest-detail-label">Email:</span>
+                          <span className="bdm-guest-detail-value">{guest.email}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Room Info */}

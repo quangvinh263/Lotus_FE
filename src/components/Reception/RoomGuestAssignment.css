@@ -1,0 +1,302 @@
+.room-guest-assignment {
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.rga-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #E5E7EB;
+}
+
+.rga-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #133E87;
+  margin: 0;
+}
+
+.rga-subtitle {
+  font-size: 12px;
+  color: #6B7280;
+  margin: 0;
+  font-style: italic;
+}
+
+.rga-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rga-badge {
+  padding: 6px 12px;
+  background: #FEF9C2;
+  color: #A65F00;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.rga-badge.complete {
+  background: #DCFCE7;
+  color: #008236;
+}
+
+.rga-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rga-room-card {
+  background: white;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.rga-room-card:hover {
+  border-color: #133E87;
+  box-shadow: 0 2px 8px rgba(19, 62, 135, 0.1);
+}
+
+.rga-room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #F9FAFB;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.rga-room-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rga-room-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.7;
+}
+
+.rga-room-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rga-room-number {
+  font-size: 15px;
+  font-weight: 600;
+  color: #133E87;
+}
+
+.rga-room-type {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.rga-room-capacity {
+  display: flex;
+  align-items: center;
+}
+
+.rga-capacity-badge {
+  padding: 4px 10px;
+  background: #DBEAFE;
+  color: #1447E6;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.rga-capacity-badge.full {
+  background: #DCFCE7;
+  color: #008236;
+}
+
+.rga-room-body {
+  padding: 16px;
+}
+
+.rga-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+.rga-guest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.rga-guest-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: white;
+  border: 1.5px solid #D1D5DB;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.rga-guest-btn:hover:not(.disabled) {
+  border-color: #133E87;
+  background: #F0F7FF;
+}
+
+.rga-guest-btn.selected {
+  background: #DBEAFE;
+  border-color: #133E87;
+  box-shadow: 0 0 0 2px rgba(19, 62, 135, 0.1);
+}
+
+.rga-guest-btn.selected:hover:not(.disabled) {
+  background: #FEE2E2;
+  border-color: #DC2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
+}
+
+.rga-guest-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #F3F4F6;
+}
+
+.rga-guest-btn:disabled {
+  cursor: not-allowed;
+}
+
+.rga-guest-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.rga-guest-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.rga-guest-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1F2937;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rga-gender-tag {
+  font-size: 11px;
+  color: #6B7280;
+  font-weight: 400;
+}
+
+.rga-primary-tag {
+  font-size: 10px;
+  color: #008236;
+  font-weight: 500;
+}
+
+.rga-assigned-tag {
+  font-size: 10px;
+  color: #6B7280;
+  font-style: italic;
+}
+
+.rga-check-icon {
+  color: #133E87;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.rga-assigned-list {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #F3F4F6;
+}
+
+.rga-assigned-label {
+  font-size: 12px;
+  color: #6B7280;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.rga-assigned-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rga-assigned-guest-tag {
+  padding: 4px 10px;
+  background: #F0F7FF;
+  border: 1px solid #BFDBFE;
+  color: #133E87;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.rga-warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #FEF9C2;
+  border: 1px solid #FDE68A;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.rga-warning-icon {
+  font-size: 18px;
+}
+
+.rga-warning-text {
+  font-size: 13px;
+  color: #A65F00;
+  font-weight: 500;
+}
+
+.rga-empty-state {
+  padding: 40px 20px;
+  text-align: center;
+  color: #6B7280;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .rga-guest-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rga-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

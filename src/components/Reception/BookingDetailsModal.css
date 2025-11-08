@@ -385,3 +385,112 @@
 .bdm-modal::-webkit-scrollbar-thumb:hover {
   background: rgba(19, 62, 135, 0.3);
 }
+
+/* Guests List Styles */
+.bdm-guests-list {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #E5E7EB;
+}
+
+.bdm-guests-list-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #133E87;
+  margin: 0 0 12px 0;
+}
+
+.bdm-guest-card {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.bdm-guest-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.bdm-guest-number {
+  font-size: 13px;
+  font-weight: 600;
+  color: #133E87;
+}
+
+.bdm-primary-badge {
+  padding: 2px 8px;
+  background: #DCFCE7;
+  color: #008236;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.bdm-guest-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bdm-guest-detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.bdm-guest-detail-label {
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.bdm-guest-detail-value {
+  color: #1F2937;
+  font-weight: 400;
+  text-align: right;
+}
+
+/* Room Guests Card */
+.bdm-room-guests-card {
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.bdm-room-guests-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.bdm-room-badge {
+  font-size: 14px;
+  font-weight: 600;
+  color: #133E87;
+  background: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid #BFDBFE;
+}
+
+.bdm-guest-count {
+  font-size: 12px;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.bdm-room-guests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

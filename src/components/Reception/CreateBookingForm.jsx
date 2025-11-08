@@ -1,25 +1,35 @@
 import { useState } from 'react';
-import PersonIcon from '../../assets/icons/PersonIcon.svg';
-import PhoneIcon from '../../assets/icons/PhoneIcon.svg';
-import MailIcon from '../../assets/icons/MailIcon.svg';
 import DeleteIcon from '../../assets/icons/DeleteIcon.svg';
 import PeopleIcon from '../../assets/icons/PeopleIcon.svg';
 import RoomTypeDropdown from './RoomTypeDropdown';
 import DateTimePicker from './DateTimePicker';
+import GuestInfoForm from './GuestInfoForm';
 import './CreateBookingForm.css';
 
 function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate, setCheckInDate, checkOutDate, setCheckOutDate }) {
-  const [formData, setFormData] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-  });
+  // Khởi tạo với 1 khách đại diện
+  const [guests, setGuests] = useState([
+    {
+      fullName: '',
+      idNumber: '',
+      phoneNumber: '',
+      email: '',
+      dateOfBirth: '',
+      nationality: 'Việt Nam',
+      address: '',
+      isPrimary: true
+    }
+  ]);
 
   const [roomData, setRoomData] = useState({
     roomType: '',
     numberOfRooms: 1,
     guestsPerRoom: 1,
   });
+
+  const calculateTotalGuests = () => {
+    return selectedRooms.reduce((total, room) => total + (room.guestsPerRoom * room.numberOfRooms), 0);
+  };
 
   // Sample room types with prices
   const roomTypes = [
@@ -29,11 +39,6 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
     { id: 4, name: 'Grand Suite', price: 3500000, description: 'Suite rộng rãi với khu vực tiếp khách riêng biệt, view tuyệt đẹp' },
     { id: 5, name: 'Lotus Suite', price: 5000000, description: 'Đỉnh cao sang trọng với ban công rộng và khu vực thư giãn riêng' },
   ];
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
   const handleRoomDataChange = (e) => {
     const { name, value } = e.target;
@@ -65,16 +70,14 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
     });
   };
 
-  const calculateTotalGuests = () => {
-    return selectedRooms.reduce((total, room) => total + (room.guestsPerRoom * room.numberOfRooms), 0);
-  };
-
   const calculateTotalRooms = () => {
     return selectedRooms.reduce((total, room) => total + room.numberOfRooms, 0);
   };
 
   const handleSubmit = () => {
-    if (!formData.fullName || !formData.phone) {
+    const primaryGuest = guests[0];
+    
+    if (!primaryGuest.fullName || !primaryGuest.phoneNumber) {
       alert('Vui lòng điền đầy đủ thông tin bắt buộc (Họ và tên, Số điện thoại)');
       return;
     }
@@ -90,7 +93,8 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
     }
 
     const bookingData = {
-      guest: formData,
+      primaryGuest: primaryGuest,
+      guests: guests, // Danh sách người đại diện (có thể thêm nhiều người sau khi check-in)
       checkIn: checkInDate,
       checkOut: checkOutDate,
       rooms: selectedRooms,
@@ -108,52 +112,14 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
       <h2 className="cbf-section-title">Thông tin đặt phòng</h2>
 
       <div className="cbf-content">
-        {/* Thông tin khách hàng */}
+        {/* Thông tin khách hàng - Người đại diện */}
         <div className="cbf-section">
-          <h3 className="cbf-section-heading">Thông tin khách hàng</h3>
-          <div className="cbf-fields">
-            <div className="cbf-field">
-              <label className="cbf-label">Họ và tên *</label>
-              <div className="cbf-input-wrapper">
-                <input
-                  type="text"
-                  name="fullName"
-                  className="cbf-input"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                />
-                <img src={PersonIcon} alt="Person" className="cbf-input-icon" />
-              </div>
-            </div>
-
-            <div className="cbf-field">
-              <label className="cbf-label">Số điện thoại *</label>
-              <div className="cbf-input-wrapper">
-                <input
-                  type="tel"
-                  name="phone"
-                  className="cbf-input"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                />
-                <img src={PhoneIcon} alt="Phone" className="cbf-input-icon" />
-              </div>
-            </div>
-
-            <div className="cbf-field cbf-field-full">
-              <label className="cbf-label">Email</label>
-              <div className="cbf-input-wrapper">
-                <input
-                  type="email"
-                  name="email"
-                  className="cbf-input"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-                <img src={MailIcon} alt="Email" className="cbf-input-icon" />
-              </div>
-            </div>
-          </div>
+          <GuestInfoForm
+            guests={guests}
+            onGuestsChange={setGuests}
+            totalGuests={calculateTotalGuests() || 1}
+            showIdNumber={false}
+          />
         </div>
 
         {/* Chi tiết đặt phòng */}

@@ -23,9 +23,10 @@ const CheckInManagement = () => {
       checkInDate: '2/11/2025',
       checkOutDate: '5/11/2025',
       status: 'confirmed',
-      totalRooms: 3,
+      guestCount: 5, // 5 khách
+      totalRooms: 2,
       roomsByType: {
-        'Deluxe': 2,
+        'Deluxe': 1,
         'Superior': 1
       }
     },
@@ -38,9 +39,41 @@ const CheckInManagement = () => {
       checkInDate: '2/11/2025',
       checkOutDate: '4/11/2025',
       status: 'pending',
+      guestCount: 2, // 2 khách
+      totalRooms: 1,
+      roomsByType: {
+        'Deluxe': 1
+      }
+    },
+    {
+      id: 3,
+      guestName: 'Lê Minh Tuấn',
+      bookingCode: 'BK003',
+      phone: '0923456789',
+      email: 'tuan.le@email.com',
+      checkInDate: '2/11/2025',
+      checkOutDate: '6/11/2025',
+      status: 'confirmed',
+      guestCount: 6, // 6 khách - test UI nhiều người
       totalRooms: 2,
       roomsByType: {
-        'Deluxe': 2
+        'Suite': 1,
+        'Deluxe': 1
+      }
+    },
+    {
+      id: 4,
+      guestName: 'Phạm Thị Hương',
+      bookingCode: 'BK004',
+      phone: '0934567890',
+      email: 'huong.pham@email.com',
+      checkInDate: '2/11/2025',
+      checkOutDate: '4/11/2025',
+      status: 'confirmed',
+      guestCount: 4, // 4 khách
+      totalRooms: 2,
+      roomsByType: {
+        'Executive': 2
       }
     }
   ];

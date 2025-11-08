@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import './CheckInModal.css';
-import PersonIcon from '../../assets/icons/PersonIcon.svg';
-import PhoneIcon from '../../assets/icons/PhoneIcon.svg';
-import MailIcon from '../../assets/icons/MailIcon.svg';
 import SearchIcon from '../../assets/icons/SearchIcon.svg';
 import CheckInIcon from '../../assets/icons/CheckInIcon.svg';
+import GuestInfoForm from './GuestInfoForm';
+import RoomGuestAssignment from './RoomGuestAssignment';
 
 const CheckInModal = ({ booking, rooms, onClose, onConfirm }) => {
-  const [guestInfo, setGuestInfo] = useState({
-    name: booking.guestName || '',
-    phone: booking.phone || '',
-    email: booking.email || ''
-  });
+  // Khởi tạo danh sách khách với người đại diện - Chỉ cần họ tên, CCCD, giới tính
+  const [guests, setGuests] = useState([
+    {
+      fullName: booking.guestName || '',
+      idNumber: '',
+      gender: 'male',
+      isPrimary: true
+    }
+  ]);
 
   const [selectedRooms, setSelectedRooms] = useState({});
+  const [roomAssignments, setRoomAssignments] = useState({}); // { roomId: [guestIndex1, guestIndex2] }
   const [searchTerm, setSearchTerm] = useState('');
 
   // Group rooms by type - chỉ lấy những loại phòng có trong booking
@@ -51,6 +55,10 @@ const CheckInModal = ({ booking, rooms, onClose, onConfirm }) => {
     return Object.values(selectedRooms).reduce((total, rooms) => total + rooms.length, 0);
   };
 
+  const getTotalAssignedGuests = () => {
+    return new Set(Object.values(roomAssignments).flat()).size;
+  };
+
   const getTypeColor = (type) => {
     const colors = {
       'Superior': '#608BC1',
@@ -59,6 +67,48 @@ const CheckInModal = ({ booking, rooms, onClose, onConfirm }) => {
       'Suite': '#608BC1'
     };
     return colors[type] || '#608BC1';
+  };
+
+  // Map room type to max guests per room (based on booking data or default)
+  const getMaxGuestsPerRoom = () => {
+    const maxGuests = {};
+    if (booking.roomsByType) {
+      Object.keys(booking.roomsByType).forEach(type => {
+        // You can customize this based on room type
+        switch (type) {
+          case 'Superior':
+            maxGuests[type] = 2;
+            break;
+          case 'Deluxe':
+            maxGuests[type] = 3;
+            break;
+          case 'Executive':
+            maxGuests[type] = 3;
+            break;
+          case 'Suite':
+            maxGuests[type] = 4;
+            break;
+          default:
+            maxGuests[type] = 2;
+        }
+      });
+    }
+    return maxGuests;
+  };
+
+  // Tính tổng sức chứa của tất cả các phòng trong booking
+  const getTotalRoomCapacity = () => {
+    const maxGuestsPerRoom = getMaxGuestsPerRoom();
+    let totalCapacity = 0;
+    
+    if (booking.roomsByType) {
+      Object.entries(booking.roomsByType).forEach(([roomType, count]) => {
+        const capacityPerRoom = maxGuestsPerRoom[roomType] || 2;
+        totalCapacity += capacityPerRoom * count;
+      });
+    }
+    
+    return totalCapacity;
   };
 
   return (
@@ -71,47 +121,23 @@ const CheckInModal = ({ booking, rooms, onClose, onConfirm }) => {
         <div className="checkin-modal-header">
           <h2>Xác nhận Check-in</h2>
           <br />
-          <p>Vui lòng xác nhận thông tin khách và chọn phòng</p>
+          <p>
+            Vui lòng xác nhận thông tin khách và chọn phòng<br/>
+            <small style={{ color: '#6B7280', fontSize: '12px' }}>
+              Đã đặt: {booking.guestCount || 0} khách • Sức chứa tối đa: {getTotalRoomCapacity()} khách
+            </small>
+          </p>
         </div>
 
         <div className="checkin-modal-content">
-          {/* Guest Information */}
+          {/* Guest Information - Sử dụng GuestInfoForm */}
           <div className="guest-form">
-            <div className="form-group">
-              <label>Họ tên khách *</label>
-              <div className="input-wrapper">
-                <input
-                  type="text"
-                  value={guestInfo.name}
-                  onChange={(e) => setGuestInfo({ ...guestInfo, name: e.target.value })}
-                />
-                <img src={PersonIcon} alt="Person" className="input-icon" />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label>Số điện thoại *</label>
-              <div className="input-wrapper">
-                <input
-                  type="tel"
-                  value={guestInfo.phone}
-                  onChange={(e) => setGuestInfo({ ...guestInfo, phone: e.target.value })}
-                />
-                <img src={PhoneIcon} alt="Phone" className="input-icon" />
-              </div>
-            </div>
-
-            <div className="form-group full-width">
-              <label>Email</label>
-              <div className="input-wrapper">
-                <input
-                  type="email"
-                  value={guestInfo.email}
-                  onChange={(e) => setGuestInfo({ ...guestInfo, email: e.target.value })}
-                />
-                <img src={MailIcon} alt="Email" className="input-icon" />
-              </div>
-            </div>
+            <GuestInfoForm
+              guests={guests}
+              onGuestsChange={setGuests}
+              totalGuests={getTotalRoomCapacity()} // Tổng sức chứa của các phòng đã book
+              showIdNumber={true}
+            />
           </div>
 
           {/* Room Assignment */}
@@ -190,6 +216,18 @@ const CheckInModal = ({ booking, rooms, onClose, onConfirm }) => {
               </div>
             ))}
           </div>
+
+          {/* Room-Guest Assignment - Gán khách vào từng phòng */}
+          {getTotalSelectedRooms() > 0 && guests.length > 0 && (
+            <div className="room-guest-assignment-section">
+              <RoomGuestAssignment
+                selectedRooms={selectedRooms}
+                guests={guests}
+                onAssignmentChange={setRoomAssignments}
+                maxGuestsPerRoom={getMaxGuestsPerRoom()}
+              />
+            </div>
+          )}
         </div>
 
         {/* Modal Footer */}
@@ -199,8 +237,17 @@ const CheckInModal = ({ booking, rooms, onClose, onConfirm }) => {
           </button>
           <button
             className="checkin-btn-confirm"
-            disabled={getTotalSelectedRooms() !== booking.totalRooms}
-            onClick={() => onConfirm(guestInfo, selectedRooms)}
+            disabled={
+              getTotalSelectedRooms() !== booking.totalRooms ||
+              guests.length === 0 ||
+              guests.some(g => !g.fullName || !g.idNumber || !g.gender) || // Validate: tên, CMND, giới tính
+              getTotalAssignedGuests() !== guests.length // Tất cả khách phải được gán phòng
+            }
+            onClick={() => onConfirm({ 
+              guests, 
+              primaryGuest: guests[0],
+              roomAssignments // Thông tin khách nào ở phòng nào
+            }, selectedRooms)}
           >
             <img src={CheckInIcon} alt="Check-in" />
             Xác nhận Check-in ({getTotalSelectedRooms()}/{booking.totalRooms})
