@@ -1,0 +1,390 @@
+.cbf-card {
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 14px;
+  padding: 24px 24px 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.cbf-section-title {
+  font-family: Arial;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+.cbf-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cbf-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cbf-section-heading {
+  font-family: Arial;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+.cbf-section-heading-large {
+  font-family: Arial;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+.cbf-fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.cbf-fields.cbf-date-fields {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cbf-fields.cbf-room-fields {
+  display: flex;
+  gap: 44px;
+  align-items: flex-end;
+}
+
+.cbf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cbf-field-full {
+  grid-column: 1 / -1;
+}
+
+.cbf-field-small {
+  flex: 0 0 133.46px;
+}
+
+.cbf-field-medium {
+  flex: 0 0 191px;
+}
+
+.cbf-label {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1em;
+  color: #133E87;
+}
+
+.cbf-input-wrapper {
+  position: relative;
+  width: 100%;
+  border: 0.8px solid rgba(19, 62, 135, 0.1);
+  border-radius: 8px;
+  transition: border-color 0.2s;
+}
+
+.cbf-input-wrapper:focus-within {
+  border-color: #133E87;
+}
+
+.cbf-input {
+  width: 100%;
+  height: 36px;
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 0 12px 0 40px;
+  font-family: Arial;
+  font-size: 14px;
+  color: #133E87;
+  outline: none;
+}
+
+.cbf-input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.cbf-select {
+  width: 282.93px;
+  min-height: 36px;
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 40px 8px 12px;
+  font-family: Arial;
+  font-size: 14px;
+  color: #133E87;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23133E87' stroke-opacity='0.5' stroke-width='1.33333' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px top 12px;
+  box-shadow: inset 0 0 0 0.8px transparent;
+  transition: box-shadow 0.2s;
+}
+
+.cbf-select:focus {
+  box-shadow: inset 0 0 0 0.8px #133E87;
+}
+
+.cbf-select option {
+  padding: 12px 8px;
+  font-family: Arial;
+  font-size: 14px;
+  color: #133E87;
+  background-color: #FFFFFF;
+  line-height: 1.4;
+}
+
+.cbf-select option:hover,
+.cbf-select option:checked {
+  background-color: #CBDCEB;
+}
+
+.cbf-select option[value=""] {
+  color: #99A1AF;
+}
+
+.cbf-input-number {
+  width: 100%;
+  height: 36px;
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-family: Arial;
+  font-size: 14px;
+  line-height: 1.1499em;
+  color: #133E87;
+  outline: none;
+  text-align: left;
+  box-shadow: inset 0 0 0 0.8px transparent;
+  transition: box-shadow 0.2s;
+}
+
+.cbf-input-number:focus {
+  box-shadow: inset 0 0 0 0.8px #133E87;
+}
+
+.cbf-add-room-button {
+  width: 100%;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background-color: #F3F3E0;
+  border: 0.8px solid #133E87;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Arial;
+  font-size: 14px;
+  color: #133E87;
+  transition: all 0.2s;
+}
+
+.cbf-add-room-button:hover {
+  background-color: #133E87;
+  color: #FFFFFF;
+}
+
+.cbf-add-room-button:hover svg path {
+  stroke: #FFFFFF;
+}
+
+.cbf-selected-rooms-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 16px 16px;
+  background-color: #F3F3E0;
+  border-radius: 10px;
+  max-height: 165.57px;
+  overflow-y: auto;
+}
+
+.cbf-selected-rooms-heading {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+  margin: 0;
+}
+
+.cbf-selected-room-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background-color: #FFFFFF;
+  border: 1.6px solid #CBDCEB;
+  border-radius: 4px;
+  min-height: 56px;
+}
+
+.cbf-selected-room-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cbf-selected-room-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cbf-room-badge {
+  padding: 2px 8px;
+  background-color: #608BC1;
+  border: 0.8px solid transparent;
+  border-radius: 8px;
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #FFFFFF;
+}
+
+.cbf-room-count {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.cbf-room-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cbf-room-detail-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.cbf-room-detail-text {
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+}
+
+.cbf-room-detail-dot {
+  font-family: Arial;
+  font-size: 12px;
+  color: #608BC1;
+}
+
+.cbf-selected-room-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cbf-room-price {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.cbf-remove-room-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cbf-remove-room-button:hover {
+  background-color: #CBDCEB;
+}
+
+.cbf-selected-rooms-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8.8px;
+  border-top: 0.8px solid #CBDCEB;
+}
+
+.cbf-summary-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cbf-summary-label {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #608BC1;
+}
+
+.cbf-summary-value {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.cbf-submit-button {
+  width: 100%;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #133E87;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #FFFFFF;
+  transition: background-color 0.2s;
+  margin-bottom: 24px;
+}
+
+.cbf-submit-button:hover {
+  background-color: #0f2f66;
+}

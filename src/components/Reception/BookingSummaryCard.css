@@ -1,0 +1,126 @@
+.booking-summary-card {
+  width: 480px;
+  background-color: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 14px;
+  padding: 24.8px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.summary-title {
+  font-family: Arial;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+.summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 16px 16px;
+  background-color: #F3F3E0;
+  border-radius: 10px;
+}
+
+.summary-section-label {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #608BC1;
+  margin: 0;
+}
+
+.summary-rooms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summary-room-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-room-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-room-name {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.summary-room-price {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #608BC1;
+}
+
+.summary-room-guests {
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+}
+
+.summary-total {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8.8px;
+  border-top: 0.8px solid #CBDCEB;
+}
+
+.summary-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-total-label {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #608BC1;
+}
+
+.summary-total-value {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+}
+
+.summary-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.summary-empty-text {
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #608BC1;
+  text-align: center;
+  margin: 0;
+}
