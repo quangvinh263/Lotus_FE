@@ -7,6 +7,11 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
+const isPasswordValid = (password) => {
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+  return passwordRegex.test(password);
+};
+
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -33,7 +38,7 @@ const [isLoading, setIsLoading] = useState(false);
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
-      setErrorMessage("Mật khẩu xác nhận không khớp!");
+      toast.error("Mật khẩu xác nhận không khớp!");
       return;
     }
 
@@ -57,8 +62,9 @@ const [isLoading, setIsLoading] = useState(false);
 };
 
   return (
+    <>
     <div className="signup-container">
-      <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+      
       <div className="signup-card">
         <div className="signup-content">
           <div className="signup-form-section">
@@ -104,11 +110,16 @@ const [isLoading, setIsLoading] = useState(false);
                       <label className="signup-field-label">Password</label>
                       <input
                         type={formData.showPassword ? "text" : "password"}
-                        name="password"
-                        className="signup-text-input"
-                        value={formData.password}
-                        onChange={handleChange}
-                        placeholder=""
+                            name="password"
+                            className={`signup-text-input ${formData.password && !isPasswordValid(formData.password) ? "invalid" : ""}`}
+                            value={formData.password}
+                            onChange={handleChange}
+                            onBlur={(e) => {
+                              if (!isPasswordValid(e.target.value)) {
+                                toast.error("Mật khẩu phải có ít nhất 8 ký tự, gồm chữ, số và ký tự đặc biệt!");
+                              }
+                            }}
+                            placeholder=""
                       />
                     </div>
 
@@ -173,6 +184,17 @@ const [isLoading, setIsLoading] = useState(false);
         </div>
       </div>
     </div>
+    <ToastContainer 
+      position="top-center"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover />
+    </>
   );
 };
 

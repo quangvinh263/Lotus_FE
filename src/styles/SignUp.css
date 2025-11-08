@@ -229,6 +229,18 @@
   align-self: center;
 }
 
+.signup-text-input.invalid {
+  border: 2px solid #e63946;
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+
 .signin-instead-btn:hover {
   color: #608BC1;
   text-decoration: underline;
