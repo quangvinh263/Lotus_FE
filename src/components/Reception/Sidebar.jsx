@@ -18,7 +18,7 @@ const Sidebar = ({ variant = 'default' }) => {
     { id: 'checkin', label: 'Quản lý Check-in', path: '/reception/checkin', icon: CheckInIcon },
     { id: 'checkout', label: 'Quản lý Check-out', path: '/reception/checkout', icon: CheckOutIcon },
     { id: 'create-booking', label: 'Tạo đơn đặt phòng', path: '/reception/create-booking', icon: ReservationIcon },
-    { id: 'bookings', label: 'Quản lý đặt phòng', path: '/reception/bookings', icon: CalendarIcon },
+    { id: 'bookings', label: 'Quản lý đặt phòng', path: '/reception/booking-management', icon: CalendarIcon },
     { id: 'services', label: 'Quản lý dịch vụ', path: '/reception/services', icon: ServiceIcon },
   ];
 
