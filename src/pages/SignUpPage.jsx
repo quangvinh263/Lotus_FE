@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/SignUp.css';
 import SignUpImage from '../assets/images/SignUpImage.png';
+import { registerUser } from '../api/authApi';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -13,6 +18,9 @@ const SignUp = () => {
     showPassword: false,
   });
 
+const [errorMessage, setErrorMessage] = useState("");
+const [isLoading, setIsLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -21,16 +29,36 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    // After successful signup, navigate to signin page
-    navigate('/signin');
-  };
+    
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage("Mật khẩu xác nhận không khớp!");
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage("");
+
+    const result = await registerUser({
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+    });
+
+    setIsLoading(false);
+
+    if (result.success) {
+      toast.success(result.message);
+      navigate("/signin");
+    } else {
+      toast.error(result.message);
+    }
+};
 
   return (
     <div className="signup-container">
+      <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       <div className="signup-card">
         <div className="signup-content">
           <div className="signup-form-section">
@@ -116,12 +144,22 @@ const SignUp = () => {
 
               {/* CTA Buttons */}
               <div className="cta-section">
-                <button type="button" className="signin-instead-btn">
-                  Sign in instead
+                <button
+                    type="button"
+                    className="signin-instead-btn"
+                    onClick={() => navigate('/signin')}
+                  >
+                    Sign in instead
+                  </button>
+
+                <button
+                  type="submit"
+                  className="create-account-btn"
+                  disabled={isLoading} // ⛔ Disable khi đang gửi request
+                >
+                  {isLoading ? "Đang tạo tài khoản..." : "Create an account"}
                 </button>
-                <button type="submit" className="create-account-btn">
-                  Create an account
-                </button>
+
               </div>
             </form>
           </div>
