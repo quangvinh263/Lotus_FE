@@ -54,8 +54,10 @@ const [isLoading, setIsLoading] = useState(false);
     setIsLoading(false);
 
     if (result.success) {
-      toast.success(result.message);
-      navigate("/signin");
+      toast.success(result.message, {
+    onClose: () => navigate("/signin"),
+    autoClose: 2000, // thời gian toast hiển thị
+  });
     } else {
       toast.error(result.message);
     }

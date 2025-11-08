@@ -1,11 +1,10 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://localhost:7118/api";
-
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}`;
 export const registerUser = async (data) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/register`, data);
-
+    const response = await axios.post(`${API_URL}/auth/register`, data);
+    
     // Nếu server trả success = true hoặc statusCode = 201
     if (response.status === 201 || response.data.success === true) {
       return {
@@ -55,6 +54,31 @@ export const registerUser = async (data) => {
         success: false,
         message: "Không thể kết nối tới máy chủ.",
       };
+    }
+  }
+};
+
+export const loginUser = async (data) => {
+  try{
+    const response = await axios.post(`${API_URL}/auth/login`, data);
+    console.log("✅ Login API response:", response.data);
+    return {
+      success: true,
+      message: response.data.message,
+      token: response.data.token,
+      refreshToken: response.data.refreshToken,
+      accountId: response.data.accountID,
+    };
+  }
+  catch (error) {
+    switch (error.response?.status) {
+      case 401: return { success: false, message: "Thông tin đăng nhập không đúng." };
+      case 404: return { success: false, message: "Không tìm thấy tài khoản" };
+      case 403: return { success: false, message: "Tài khoản chưa được xác minh." };
+      case 500: return { success: false, message: "Lỗi máy chủ. Vui lòng thử lại sau." };
+      default:
+        const message = error.response?.data?.message || "Đăng nhập thất bại.";
+        return { success: false, message }; 
     }
   }
 };

@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/SignIn.css';
 import SignInImage from '../assets/images/SignInImage.png';
+import { loginUser } from '../api/authApi';
+import { AuthContext } from '../context/AuthContext'; // ✅ nhớ import đúng đường dẫn
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -11,7 +15,8 @@ const SignIn = () => {
     rememberMe: false,
     showPassword: false,
   });
-
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useContext(AuthContext);
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -20,11 +25,26 @@ const SignIn = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log('Sign in form submitted:', formData);
-    // After successful login, navigate to profile page
-    navigate('/profile');
+    setIsLoading(true);
+    const result = await loginUser({
+      username: formData.email,
+      password: formData.password,
+    });
+    setIsLoading(false);
+
+    if (result?.success) {
+      toast.success(result.message);
+      login(result);
+      // Save user data to context or state
+      navigate('/profile');
+    } else {
+      toast.error(result.message);
+      // Handle login error
+      console.error(result.message);
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -144,7 +164,19 @@ const SignIn = () => {
           </div>
         </div>
       </div>
+      <ToastContainer
+      position="top-center"
+      autoClose={4000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+    />
     </div>
+    
   );
 };
 

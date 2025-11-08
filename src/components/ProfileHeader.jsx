@@ -1,15 +1,18 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfileHeader.css';
 import SettingIcon from '../assets/icons/SettingIcon.svg';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 const ProfileHeader = () => {
   const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
 
   const handleSignOut = () => {
     // Add your sign out logic here
     if (window.confirm('Are you sure you want to sign out?')) {
       // Clear user session/token
+      logout();
       navigate('/signin');
     }
   };
