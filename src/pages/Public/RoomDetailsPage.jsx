@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import '../styles/RoomDetailsPage.css';
-import Navbar from '../components/NavBar';
-import Footer from '../components/Footer';
-import RoomDetailSection from '../components/RoomDetailSection';
-import ImageRoomDetailsPage from '../assets/images/ImageRoomDetailsPage.jpg';
+import '../../styles/RoomDetailsPage.css';
+import Navbar from '../../components/NavBar';
+import Footer from '../../components/Footer';
+import RoomDetailSection from '../../components/RoomDetailSection';
+import ImageRoomDetailsPage from '../../assets/images/ImageRoomDetailsPage.jpg';
 
 const RoomDetailsPage = () => {
   useEffect(() => {

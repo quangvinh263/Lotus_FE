@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/RoomsPage.css';
-import Navbar from '../components/NavBar';
-import Footer from '../components/Footer';
-import RoomSection from '../components/RoomSection';
-import ImageRoomsPage from '../assets/images/ImageRoomsPage.jpg';
+import '../../styles/RoomsPage.css';
+import Navbar from '../../components/NavBar';
+import Footer from '../../components/Footer';
+import RoomSection from '../../components/RoomSection';
+import ImageRoomsPage from '../../assets/images/ImageRoomsPage.jpg';
 
 const RoomsPage = () => {
   const navigate = useNavigate();

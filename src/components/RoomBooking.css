@@ -132,15 +132,14 @@
 
 .select-button {
   background-color: #133E87;
+  padding: 0px 0px;
   color: #F3F3E0;
   border: none;
   border-radius: 5px;
-  padding: 5px 22px;
   font-family: 'Cormorant Garamond', serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.211em;
-  letter-spacing: 5%;
   cursor: pointer;
   width: 85px;
   height: 30px;
@@ -150,11 +149,11 @@
 }
 
 .select-button:hover {
-  background-color: #0f2e63;
+  background-color: #133E87;
 }
 
 .select-button:active {
-  background-color: #0a1f45;
+  background-color: #133E87;
 }
 
 /* Variant 2 - with unavailable dates */

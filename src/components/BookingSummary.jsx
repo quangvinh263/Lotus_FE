@@ -46,7 +46,14 @@ const BookingSummary = ({
             <div className="room-details">
               <div className="room-header">
                 <h3 className="room-title-summarize">{room.name}</h3>
-                <button className="delete-button" onClick={() => onDeleteRoom(room.id)}>
+                <button 
+                  className="delete-button" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    onDeleteRoom(room.id);
+                  }}
+                >
                   <img src={BinIcon} alt="Delete" className="delete-icon" />
                 </button>
               </div>

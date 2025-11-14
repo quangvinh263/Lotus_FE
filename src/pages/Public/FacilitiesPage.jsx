@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import '../styles/FacilitiesPage.css';
-import Navbar from '../components/NavBar';
-import Footer from '../components/Footer';
-import ImageFacilitiesPage from '../assets/images/ImageFacilitiesPage.jpg';
-import ImageRestaurant from '../assets/images/ImageRestaurant.jpg';
-import ImageSwimmingPool from '../assets/images/ImageSwimmingPool.jpg';
-import ImageLaundry from '../assets/images/ImageLaundry.jpg';
-import ImageTheGym from '../assets/images/ImageTheGym.jpg';
+import '../../styles/FacilitiesPage.css';
+import Navbar from '../../components/NavBar';
+import Footer from '../../components/Footer';
+import ImageFacilitiesPage from '../../assets/images/ImageFacilitiesPage.jpg';
+import ImageRestaurant from '../../assets/images/ImageRestaurant.jpg';
+import ImageSwimmingPool from '../../assets/images/ImageSwimmingPool.jpg';
+import ImageLaundry from '../../assets/images/ImageLaundry.jpg';
+import ImageTheGym from '../../assets/images/ImageTheGym.jpg';
 
 const FacilitiesPage = () => {
   useEffect(() => {

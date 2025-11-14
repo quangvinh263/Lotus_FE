@@ -1,16 +1,18 @@
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import HomePage from './pages/HomePage'
-import SignInPage from './pages/SignInPage'
-import SignUpPage from './pages/SignUpPage'
-import ProfilePage from './pages/ProfilePage'
-import RoomsPage from './pages/RoomsPage'
-import RoomDetailsPage from './pages/RoomDetailsPage'
-import FacilitiesPage from './pages/FacilitiesPage'
-import AboutUsPage from './pages/AboutUsPage'
-import BookingPage from './pages/BookingPage'
-import GuestInfoPage from './pages/GuestInfoPage'
-import PaymentPage from './pages/PaymentPage'
+import HomePage from './pages/Public/HomePage'
+import SignInPage from './pages/Auth/SignInPage'
+import SignUpPage from './pages/Auth/SignUpPage'
+import FirstTimePersonalInfoPage from './pages/Auth/FirstTimePersonalInfoPage'
+import ProfilePage from './pages/Public/ProfilePage'
+import RoomsPage from './pages/Public/RoomsPage'
+import RoomDetailsPage from './pages/Public/RoomDetailsPage'
+import FacilitiesPage from './pages/Public/FacilitiesPage'
+import AboutUsPage from './pages/Public/AboutUsPage'
+import BookingPage from './pages/Public/BookingPage'
+import GuestInfoPage from './pages/Public/GuestInfoPage'
+import PaymentPage from './pages/Public/PaymentPage'
+import ReceptionDashboard from './pages/Reception/ReceptionDashboard'
 
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/complete-profile" element={<FirstTimePersonalInfoPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/rooms" element={<RoomsPage />} />
         <Route path="/room-details/:roomId" element={<RoomDetailsPage />} />
@@ -28,6 +31,9 @@ function App() {
         <Route path="/booking" element={<BookingPage />} />
         <Route path="/guest-info" element={<GuestInfoPage />} />
         <Route path="/payment" element={<PaymentPage />} />
+        
+        {/* Reception Routes */}
+        <Route path="/reception/dashboard" element={<ReceptionDashboard />} />
       </Routes>
  </Router>
   )

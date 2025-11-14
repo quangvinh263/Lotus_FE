@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import LogoImage from '../assets/images/Logo.png';
+import PersonIcon from '../assets/icons/PersonIcon.svg';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    // Check if user is logged in (you can use localStorage, sessionStorage, or context)
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const name = localStorage.getItem('userName') || 'Guest';
+    setIsLoggedIn(loggedIn);
+    setUserName(name);
+  }, []);
+
+  const handleProfileClick = () => {
+    if (isLoggedIn) {
+      navigate('/profile');
+    } else {
+      navigate('/signin');
+    }
+  };
 
   return (
     <nav className="navbar">
@@ -27,11 +46,18 @@ const Navbar = () => {
             <Link to="/about" className="nav-link">About us</Link>
           </div>
 
-          {/* Sign In Button */}
+          {/* Sign In Button or User Profile */}
           <div className="navbar-button">
-            <button className="navbar-signin-btn" onClick={() => navigate('/signin')}>
-              Sign In or Join
-            </button>
+            {isLoggedIn ? (
+              <div className="navbar-user-info" onClick={handleProfileClick}>
+                <img src={PersonIcon} alt="User" className="navbar-user-icon" />
+                <span className="navbar-user-name">{userName}</span>
+              </div>
+            ) : (
+              <button className="navbar-signin-btn" onClick={() => navigate('/signin')}>
+                Sign In or Join
+              </button>
+            )}
           </div>
         </div>
       </div>

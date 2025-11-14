@@ -60,11 +60,21 @@ const SignIn = () => {
 
   const handleGoogleSignIn = () => {
     console.log('Sign in with Google');
+    
+    // Set login state in localStorage
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userName', 'Google User');
+    
     navigate('/profile');
   };
 
   const handleFacebookSignIn = () => {
     console.log('Sign in with Facebook');
+    
+    // Set login state in localStorage
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userName', 'Facebook User');
+    
     navigate('/profile');
   };
 
@@ -73,6 +83,35 @@ const SignIn = () => {
       ...prev,
       showPassword: !prev.showPassword
     }));
+  };
+
+  const handleForgotPassword = () => {
+    setShowForgotPasswordModal(true);
+    setResetMessage('');
+    setForgotPasswordEmail('');
+  };
+
+  const handleCloseForgotPasswordModal = () => {
+    setShowForgotPasswordModal(false);
+    setResetMessage('');
+    setForgotPasswordEmail('');
+  };
+
+  const handleResetPassword = (e) => {
+    e.preventDefault();
+    if (!forgotPasswordEmail) {
+      setResetMessage('Please enter your email address');
+      return;
+    }
+    
+    // TODO: Call API to send reset password email
+    console.log('Reset password for:', forgotPasswordEmail);
+    setResetMessage('Password reset link has been sent to your email!');
+    
+    // Close modal after 2 seconds
+    setTimeout(() => {
+      handleCloseForgotPasswordModal();
+    }, 2000);
   };
 
   return (
@@ -127,16 +166,27 @@ const SignIn = () => {
                 />
               </div>
 
-              {/* Remember Me Checkbox */}
+              {/* Remember Me Checkbox and Forgot Password */}
               <div className="remember-me-checkbox">
-                <input
-                  type="checkbox"
-                  id="rememberMe"
-                  name="rememberMe"
-                  checked={formData.rememberMe}
-                  onChange={handleChange}
-                />
-                <label htmlFor="rememberMe">Remember me</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <input
+                    type="checkbox"
+                    id="rememberMe"
+                    name="rememberMe"
+                    checked={formData.rememberMe}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="rememberMe">Remember me</label>
+                </div>
+                <div className="forgot-password-link">
+                  <button 
+                    type="button" 
+                    className="forgot-password-btn"
+                    onClick={handleForgotPassword}
+                  >
+                    Forgot password?
+                  </button>
+                </div>
               </div>
             </div>
 

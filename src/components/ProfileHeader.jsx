@@ -13,6 +13,8 @@ const ProfileHeader = () => {
     if (window.confirm('Are you sure you want to sign out?')) {
       // Clear user session/token
       logout();
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userName');
       navigate('/signin');
     }
   };
