@@ -44,33 +44,36 @@ const CheckOutCard = ({
       <div className="checkout-rooms-section">
         <p className="checkout-rooms-label">Phòng đang ở:</p>
         <div className="checkout-rooms-list">
-          {rooms.map((room, index) => (
-            <div 
-              key={index} 
-              className="checkout-room-item" 
-              onClick={() => onRoomClick(index)}
-              style={{ cursor: 'pointer' }}
-            >
-              <div className="checkout-room-header">
-                <div className="checkout-room-info">
-                  <div className="checkout-room-icon">
-                    <img src={HouseIcon} alt="Room" />
+          {rooms.map((room, index) => {
+            const serviceTotal = room.services?.reduce((sum, service) => sum + (service.price * service.quantity), 0) || 0;
+            return (
+              <div 
+                key={room.reservationDetailId || index} 
+                className="checkout-room-item" 
+                onClick={() => onRoomClick(index)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="checkout-room-header">
+                  <div className="checkout-room-info">
+                    <div className="checkout-room-icon">
+                      <img src={HouseIcon} alt="Room" />
+                    </div>
+                    <span className="checkout-room-number">{room.roomNumber || room.number}</span>
                   </div>
-                  <span className="checkout-room-number">{room.number}</span>
+                  <div className="checkout-room-type-badge">{room.roomType || room.type}</div>
                 </div>
-                <div className="checkout-room-type-badge">{room.type}</div>
-              </div>
-              <div className="checkout-room-details">
-                <p className="checkout-room-detail">Phòng: {room.pricePerNight.toLocaleString()} × {room.nights} đêm</p>
-                {room.serviceCharge > 0 && (
-                  <p className="checkout-room-detail">Dịch vụ: {room.serviceCharge.toLocaleString()} VNĐ</p>
-                )}
-                <div className="checkout-room-total">
-                  <p className="checkout-total-text">Tổng: {room.total.toLocaleString()} VNĐ</p>
+                <div className="checkout-room-details">
+                  <p className="checkout-room-detail">Phòng: {room.pricePerNight.toLocaleString()} × {room.nights} đêm</p>
+                  {serviceTotal > 0 && (
+                    <p className="checkout-room-detail">Dịch vụ: {serviceTotal.toLocaleString()} VNĐ</p>
+                  )}
+                  <div className="checkout-room-total">
+                    <p className="checkout-total-text">Tổng: {(room.subtotal || room.total).toLocaleString()} VNĐ</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

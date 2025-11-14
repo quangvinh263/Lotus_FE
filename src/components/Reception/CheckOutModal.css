@@ -390,6 +390,70 @@
   background: rgba(19, 62, 135, 0.1);
 }
 
+/* Payment Notice */
+.checkout-modal-payment-notice {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.checkout-modal-payment-notice.info {
+  background: #E0F2FE;
+  border: 1px solid #0EA5E9;
+}
+
+.checkout-modal-payment-notice.warning {
+  background: #FEF3C7;
+  border: 1px solid #F59E0B;
+}
+
+.payment-notice-icon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.payment-notice-content {
+  flex: 1;
+}
+
+.payment-notice-title {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  margin: 0 0 4px 0;
+}
+
+.checkout-modal-payment-notice.info .payment-notice-title {
+  color: #0369A1;
+}
+
+.checkout-modal-payment-notice.warning .payment-notice-title {
+  color: #92400E;
+}
+
+.payment-notice-text {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  margin: 0;
+}
+
+.checkout-modal-payment-notice.info .payment-notice-text {
+  color: #075985;
+}
+
+.checkout-modal-payment-notice.warning .payment-notice-text {
+  color: #78350F;
+}
+
+.payment-notice-text strong {
+  font-weight: 600;
+}
+
 /* Total Section */
 .checkout-modal-total-section {
   background: #CBDCEB;

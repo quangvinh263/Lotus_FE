@@ -22,12 +22,18 @@ const CheckOutModal = ({
   if (!isOpen) return null;
 
   const { 
-    guestName = '',
-    bookingId = '',
+    customerName = '',
+    reservationCode = '',
     phone = '',
-    nights = 0,
-    rooms = []
+    reservationDetails = [],
+    totalAmount = 0,
+    isPaid = false
   } = bookingData;
+  
+  const guestName = customerName;
+  const bookingId = reservationCode;
+  const rooms = reservationDetails;
+  const nights = rooms[0]?.nights || 0;
 
   const handleSelectAll = () => {
     setSelectedRooms(rooms.map((_, index) => index));
@@ -47,10 +53,29 @@ const CheckOutModal = ({
     });
   };
 
+  // Kiểm tra xem sau khi check-out có còn phòng nào không
+  const isLastCheckout = () => {
+    // Số phòng sẽ check-out = selectedRooms.length
+    // Số phòng còn lại sau khi check-out = rooms.length - selectedRooms.length
+    const remainingRooms = rooms.length - selectedRooms.length;
+    const isLast = remainingRooms === 0;
+    
+    console.log('=== Check Last Checkout ===');
+    console.log('Total rooms:', rooms.length);
+    console.log('Will check out:', selectedRooms.length);
+    console.log('Remaining after checkout:', remainingRooms);
+    console.log('Is last checkout?:', isLast);
+    
+    return isLast;
+  };
+
   const calculateTotal = () => {
-    return selectedRooms.reduce((sum, index) => {
-      return sum + (rooms[index]?.total || 0);
-    }, 0);
+    // Nếu là lần check-out cuối cùng → thanh toán toàn bộ reservation
+    if (isLastCheckout()) {
+      return totalAmount;
+    }
+    // Nếu không phải lần cuối → không thanh toán
+    return 0;
   };
 
   const handleConfirm = () => {
@@ -129,11 +154,11 @@ const CheckOutModal = ({
                     <div className="checkout-modal-room-content">
                       <div className="checkout-modal-room-header-row">
                         <div className="checkout-modal-room-number-badge">
-                          <span>{room.number}</span>
+                          <span>{room.roomNumber}</span>
                         </div>
                         <div className="checkout-modal-room-info-row">
-                          <p className="checkout-modal-room-name">Phòng {room.number}</p>
-                          <div className="checkout-modal-room-type-badge">{room.type}</div>
+                          <p className="checkout-modal-room-name">Phòng {room.roomNumber}</p>
+                          <div className="checkout-modal-room-type-badge">{room.roomType}</div>
                         </div>
                       </div>
 
@@ -154,18 +179,18 @@ const CheckOutModal = ({
                         {/* Services */}
                         {room.services && room.services.map((service, idx) => (
                           <div key={idx} className="checkout-modal-charge-item">
-                            <p className="checkout-modal-service-name">{service.name}</p>
+                            <p className="checkout-modal-service-name">{service.name} {service.quantity > 1 && `× ${service.quantity}`}</p>
                             <p className="checkout-modal-service-amount">
-                              {service.price.toLocaleString()} VNĐ
+                              {(service.price * service.quantity).toLocaleString()} VNĐ
                             </p>
                           </div>
                         ))}
 
                         {/* Room Total */}
                         <div className="checkout-modal-charge-item total">
-                          <p className="checkout-modal-total-label">Tổng phòng {room.number}</p>
+                          <p className="checkout-modal-total-label">Tổng phòng {room.roomNumber}</p>
                           <p className="checkout-modal-total-amount">
-                            {room.total.toLocaleString()} VNĐ
+                            {room.subtotal.toLocaleString()} VNĐ
                           </p>
                         </div>
                       </div>
@@ -178,13 +203,49 @@ const CheckOutModal = ({
 
           <div className="checkout-modal-divider"></div>
 
+          {/* Payment Notice */}
+          {!isLastCheckout() ? (
+            <div className="checkout-modal-payment-notice info">
+              <div className="payment-notice-icon">ℹ️</div>
+              <div className="payment-notice-content">
+                <p className="payment-notice-title">Không cần thanh toán</p>
+                <p className="payment-notice-text">
+                  Còn <strong>{rooms.length - selectedRooms.length} phòng</strong> chưa check-out. 
+                  Thanh toán sẽ được thực hiện khi check-out phòng cuối cùng.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="checkout-modal-payment-notice warning">
+              <div className="payment-notice-icon">💰</div>
+              <div className="payment-notice-content">
+                <p className="payment-notice-title">Phòng cuối cùng - Thanh toán toàn bộ</p>
+                <p className="payment-notice-text">
+                  Đây là phòng cuối cùng của reservation. Khách phải thanh toán <strong>TOÀN BỘ</strong> đơn đặt phòng.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Total Summary */}
           <div className="checkout-modal-total-section">
             <div className="checkout-modal-total-info">
-              <p className="checkout-modal-total-label-main">Tổng cộng</p>
-              <p className="checkout-modal-total-rooms">{selectedRooms.length} phòng check-out</p>
+              <p className="checkout-modal-total-label-main">
+                {isLastCheckout() ? 'Tổng thanh toán' : 'Phòng check-out'}
+              </p>
+              <p className="checkout-modal-total-rooms">
+                {isLastCheckout() 
+                  ? `Toàn bộ đơn đặt phòng (${rooms.length + selectedRooms.length} phòng)`
+                  : `${selectedRooms.length} phòng • Không thanh toán`
+                }
+              </p>
             </div>
-            <p className="checkout-modal-total-price">{calculateTotal().toLocaleString()} VNĐ</p>
+            <p className="checkout-modal-total-price">
+              {isLastCheckout() 
+                ? totalAmount.toLocaleString() + ' VNĐ'
+                : '0 VNĐ'
+              }
+            </p>
           </div>
 
           {/* Actions */}
