@@ -1,5 +1,5 @@
 import axios from "axios";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { refreshAccessToken } from "./tokenApi";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;

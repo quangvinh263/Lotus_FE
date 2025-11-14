@@ -6,6 +6,7 @@ import { loginUser } from '../api/authApi';
 import { AuthContext } from '../context/AuthContext'; // ✅ nhớ import đúng đường dẫn
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { jwtDecode } from "jwt-decode";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -37,9 +38,19 @@ const SignIn = () => {
 
     if (result?.success) {
       toast.success(result.message);
+      const decodedToken = jwtDecode(result.token);
+      const userRole = decodedToken.role;
+      console.log("User role from token:", userRole);
+      result.role = userRole; // Thêm role vào đối tượng result
       login(result);
       // Save user data to context or state
+      if (userRole == 'Receptionist') {
+        navigate('/about');
+        return;
+      }
+      else{
       navigate('/profile');
+      }
     } else {
       toast.error(result.message);
       // Handle login error
