@@ -61,7 +61,7 @@ export const registerUser = async (data) => {
 export const loginUser = async (data) => {
   try{
     const response = await axios.post(`${API_URL}/auth/login`, data);
-    console.log("✅ Login API response:", response.data);
+    console.log(" Login API response:", response.data);
     return {
       success: true,
       message: response.data.message,
@@ -83,3 +83,100 @@ export const loginUser = async (data) => {
   }
 };
 
+export const loginWithGoogle = async (idToken) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/google-login`, { idToken });
+    console.log("Google Login API response:", response.data);
+
+    if(response.status === 200 && response.data.token) {
+      return {
+        success: true,
+        message: response.data.message,
+        token: response.data.token,
+        refreshToken: response.data.refreshToken,
+        accountId: response.data.accountID,
+      };
+    }
+    return {
+      success: false,
+      message: response.data.message || "Đăng nhập bằng Google thất bại.",
+    };
+  } catch (error) {
+    if (error.response) {
+      const { status, data } = error.response;
+      switch (status) {
+        case 401:
+          return {
+            success: false,
+            message: data.message || "Xác thực Google không thành công.",
+          };
+        case 500:
+          return {
+            success: false, 
+            message: "Lỗi máy chủ. Vui lòng thử lại sau.",
+          };
+        default:
+          return {
+            success: false,
+            message: data.message || "Đăng nhập bằng Google thất bại.",
+          };
+      }
+    } else {
+      return {
+        success: false,
+        message: "Không thể kết nối tới máy chủ.",
+      };
+    }
+  }
+};
+
+export const LoginWithFacebook = async (accessToken) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/facebook-login`, { accessToken });
+    console.log("Facebook Login API response:", response.data);
+    if(response.status === 200 && response.data.token) {
+      return {
+        success: true,
+        message: response.data.message,
+        token: response.data.token,
+        refreshToken: response.data.refreshToken,
+        accountId: response.data.accountID,
+      };
+    }
+    return {
+      success: false,
+      message: response.data.message || "Đăng nhập bằng Facebook thất bại.",
+    };
+  } catch (error) {
+    if (error.response) {
+      const { status, data } = error.response;
+      switch (status) {
+        case 400:
+          return {
+            success: false,
+            message: data.message || "Xác thực Facebook không thành công.",
+          };
+        case 401:
+          return {
+            success: false,
+            message: data.message || "Token Facebook không hợp lệ.",
+          };
+        case 500:
+          return {
+            success: false, 
+            message: "Lỗi máy chủ. Vui lòng thử lại sau.",  
+          };
+        default:
+          return {
+            success: false,
+            message: data.message || "Đăng nhập bằng Facebook thất bại.",
+          };
+      }
+    } else {
+      return {
+        success: false,
+        message: "Không thể kết nối tới máy chủ.",
+      };
+    }
+  }
+};

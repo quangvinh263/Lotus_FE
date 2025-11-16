@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import '../styles/SignUp.css';
-import SignUpImage from '../assets/images/SignUpImage.png';
-import { registerUser } from '../api/authApi';
+import '../../styles/SignUp.css'; // ✅ Dùng relative path thay vì alias
+import SignUpImage from '../../assets/images/SignUpImage.png'; // ✅ Sửa cả import này
+import { registerUser } from '../../api/authApi'; // ✅ Và cả import này
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';

@@ -1,9 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import '../styles/SignIn.css';
-import SignInImage from '../assets/images/SignInImage.png';
-import { loginUser } from '../api/authApi';
-import { AuthContext } from '../context/AuthContext'; // ✅ nhớ import đúng đường dẫn
+import '../../styles/SignIn.css';
+import SignInImage from '../../assets/images/SignInImage.png';
+import { loginWithGoogle } from '../../api/authApi';
+import { GoogleLogin } from '@react-oauth/google';
+import { LoginWithFacebook } from '../../api/authApi';
+import { loginUser } from '../../api/authApi';
+import { AuthContext } from '../../context/AuthContext'; // ✅ nhớ import đúng đường dẫn
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { jwtDecode } from "jwt-decode";
@@ -25,6 +28,29 @@ const SignIn = () => {
       [name]: type === 'checkbox' ? checked : value
     }));
   };
+  const googleLoginRef = useRef(null);
+  useEffect(() => {
+    const loadFacebookSDK = () => {
+      if(window.FB) return;
+      window.fbAsyncInit = function() {
+        window.FB.init({
+          appId      : import.meta.env.VITE_FACEBOOK_APP_ID,
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v18.0'
+        });
+      };
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = "https://connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    };
+
+    loadFacebookSDK();
+  }, []);
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -58,24 +84,97 @@ const SignIn = () => {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log('Sign in with Google');
+  const handleGoogleSignIn = async(credentialResponse) => {
+    console.log('🔵 Google credential:', credentialResponse);
     
-    // Set login state in localStorage
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userName', 'Google User');
+    if (!credentialResponse?.credential) {
+      toast.error('Không nhận được thông tin từ Google');
+      return;
+    }
+
+    setIsLoading(true);
     
-    navigate('/profile');
+    try {
+      setIsLoading(true);
+      const result = await loginWithGoogle(credentialResponse.credential);
+      console.log('✅ Google login result:', result);
+      
+      setIsLoading(false);
+
+      if (result?.success) {
+        toast.success(result.message);
+        const decodedToken = jwtDecode(result.token);
+        const userRole = decodedToken.role;
+        console.log("User role from token:", userRole);
+        result.role = userRole;
+        login(result);
+
+        if (userRole === 'Receptionist') {
+          navigate('/about');
+        } else {
+          navigate('/profile');
+        }
+      } else {
+        toast.error(result.message);
+        console.error('❌ Login failed:', result.message);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error('❌ Exception:', error);
+      toast.error('Đã xảy ra lỗi khi đăng nhập');
+    }
   };
 
   const handleFacebookSignIn = () => {
-    console.log('Sign in with Facebook');
+    if (!window.FB) {
+      toast.error('Facebook SDK chưa tải xong. Vui lòng thử lại.');
+      return;
+    }
     
-    // Set login state in localStorage
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userName', 'Facebook User');
+    window.FB.login(response => {
+      if (response.authResponse) {
+        const accessToken = response.authResponse.accessToken;
+        console.log('🔵 Facebook access token:', accessToken);
+        handleFacebookLogin(accessToken);
+      } else {
+        console.error('❌ Facebook login failed or cancelled by user');
+        toast.error('Đăng nhập Facebook thất bại hoặc bị hủy bỏ');
+      }
+    }, {scope: 'email'});
+  };
+
+  const handleFacebookLogin = async (accessToken) => {
+    setIsLoading(true);
     
-    navigate('/profile');
+    try
+    {
+      const result = await LoginWithFacebook(accessToken);
+      console.log('✅ Facebook login result:', result);
+      setIsLoading(false);
+
+      if (result?.success) {
+        toast.success(result.message);
+        const decodedToken = jwtDecode(result.token);
+        const userRole = decodedToken.role;
+        console.log("User role from token:", userRole);
+        result.role = userRole;
+        login(result);
+        if (userRole === 'Receptionist') {
+          navigate('/about');
+        } else {
+          navigate('/profile');
+        }
+      } else {
+        toast.error(result.message);
+        console.error('❌ Login failed:', result.message);
+      }
+
+    } catch (error) {
+      setIsLoading(false);
+      console.error('❌ Exception:', error);
+      toast.error('Đã xảy ra lỗi khi đăng nhập');
+    }
+
   };
 
   const togglePasswordVisibility = () => {
@@ -204,8 +303,22 @@ const SignIn = () => {
           </div>
 
           {/* Social Media Login */}
+          
           <div className="signin-social-login">
-            <button type="button" className="signin-social-btn google-btn" onClick={handleGoogleSignIn}>
+            {/* ✅ Custom Google button giống Facebook */}
+            <button 
+              type="button" 
+              className="signin-social-btn google-btn" 
+              onClick={() => {
+                // Trigger Google login popup
+                if (googleLoginRef.current) {
+                  const googleLoginButton = googleLoginRef.current.querySelector('div[role="button"]');
+                  if (googleLoginButton) {
+                    googleLoginButton.click();
+                  }
+                }
+              }}
+            >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M22.5 12.2331C22.5 11.3698 22.4291 10.7398 22.2782 10.0865H12.2188V13.9832H18.1199C18.0109 14.9515 17.3855 16.4098 15.9646 17.3898L15.9442 17.5203L19.0894 19.935L19.3109 19.9565C21.2855 18.1249 22.5 15.4298 22.5 12.2331Z" fill="#4285F4"/>
                 <path d="M12.2188 22.5C15.1055 22.5 17.5164 21.5666 19.3109 19.9565L15.9646 17.3899C15.0518 18.0082 13.8373 18.4399 12.2188 18.4399C9.39458 18.4399 6.99732 16.6082 6.13368 14.0766L6.00887 14.0872L2.74098 16.5954L2.69727 16.7132C4.48095 20.2449 8.07641 22.5 12.2188 22.5Z" fill="#34A853"/>
@@ -215,6 +328,16 @@ const SignIn = () => {
               Continue with Google
             </button>
 
+            {/* ✅ Hidden GoogleLogin component để xử lý authentication */}
+            <div ref={googleLoginRef} style={{ display: 'none' }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSignIn}
+                onError={() => {
+                  console.error('❌ Google login error');
+                  toast.error("Đăng nhập Google thất bại");
+                }}
+              /> 
+            </div>
             <button type="button" className="signin-social-btn facebook-btn" onClick={handleFacebookSignIn}>
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="16" cy="16" r="14" fill="#0C82EE"/>
