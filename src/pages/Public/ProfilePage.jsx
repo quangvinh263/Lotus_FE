@@ -75,6 +75,7 @@ const ProfilePage = () => {
       <div className="profile-container">
         <div className="profile-content">
           <PersonalInfo />
+          <ChangePassword />
           
           <div className="bookings-section">
             <div className="upcoming-reservations">

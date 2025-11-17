@@ -1,17 +1,18 @@
 /* Sign Up Container */
 .signup-container {
-  min-height: 100vh;
+  height: 100vh;
   background-color: #FBFBFB;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: 99px 50px;
+  padding: 24px 50px;
+  overflow: hidden;
 }
 
 .signup-card {
   width: 100%;
   max-width: 1017px;
-  min-height: 825px;
+  max-height: calc(100vh - 48px);
   background-color: #FFFFFF;
   border: 1px solid rgba(102, 102, 102, 0.5);
   border-radius: 24px;
@@ -23,9 +24,8 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 110px 66px;
-  gap: 40px;
-  min-height: 825px;
+  padding: 40px 66px;
+  gap: 32px;
 }
 
 /* Form Section */
@@ -47,7 +47,7 @@
 .signup-title {
   font-family: 'EB Garamond', serif;
   font-weight: 500;
-  font-size: 35px;
+  font-size: 28px;
   line-height: 1.305;
   color: #14274A;
   margin: 0;
@@ -107,7 +107,7 @@
 
 .signup-text-input {
   width: 100%;
-  height: 56px;
+  height: 48px;
   background-color: transparent;
   border: 1px solid rgba(102, 102, 102, 0.35);
   border-radius: 12px;
@@ -210,7 +210,7 @@
   justify-content: space-between;
   width: 100%;
   max-width: 534px;
-  height: 64px;
+  height: 52px;
   margin-top: 0;
 }
 
@@ -236,13 +236,13 @@
 
 .create-account-btn {
   width: 259px;
-  height: 64px;
+  height: 52px;
   background-color: #608BC1;
   border: none;
   border-radius: 32px;
   font-family: 'EB Garamond', serif;
   font-weight: 600;
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1.305;
   color: #F3F3E0;
   cursor: pointer;

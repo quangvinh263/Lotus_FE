@@ -11,6 +11,9 @@ const SignIn = () => {
     rememberMe: false,
     showPassword: false,
   });
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+  const [resetMessage, setResetMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -57,6 +60,35 @@ const SignIn = () => {
       ...prev,
       showPassword: !prev.showPassword
     }));
+  };
+
+  const handleForgotPassword = () => {
+    setShowForgotPasswordModal(true);
+    setResetMessage('');
+    setForgotPasswordEmail('');
+  };
+
+  const handleCloseForgotPasswordModal = () => {
+    setShowForgotPasswordModal(false);
+    setResetMessage('');
+    setForgotPasswordEmail('');
+  };
+
+  const handleResetPassword = (e) => {
+    e.preventDefault();
+    if (!forgotPasswordEmail) {
+      setResetMessage('Please enter your email address');
+      return;
+    }
+    
+    // TODO: Call API to send reset password email
+    console.log('Reset password for:', forgotPasswordEmail);
+    setResetMessage('Password reset link has been sent to your email!');
+    
+    // Close modal after 2 seconds
+    setTimeout(() => {
+      handleCloseForgotPasswordModal();
+    }, 2000);
   };
 
   return (
@@ -111,16 +143,27 @@ const SignIn = () => {
                 />
               </div>
 
-              {/* Remember Me Checkbox */}
+              {/* Remember Me Checkbox and Forgot Password */}
               <div className="remember-me-checkbox">
-                <input
-                  type="checkbox"
-                  id="rememberMe"
-                  name="rememberMe"
-                  checked={formData.rememberMe}
-                  onChange={handleChange}
-                />
-                <label htmlFor="rememberMe">Remember me</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <input
+                    type="checkbox"
+                    id="rememberMe"
+                    name="rememberMe"
+                    checked={formData.rememberMe}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="rememberMe">Remember me</label>
+                </div>
+                <div className="forgot-password-link">
+                  <button 
+                    type="button" 
+                    className="forgot-password-btn"
+                    onClick={handleForgotPassword}
+                  >
+                    Forgot password?
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -159,6 +202,57 @@ const SignIn = () => {
           </div>
         </div>
       </div>
+
+      {/* Forgot Password Modal */}
+      {showForgotPasswordModal && (
+        <div className="forgot-password-overlay" onClick={handleCloseForgotPasswordModal}>
+          <div className="forgot-password-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={handleCloseForgotPasswordModal}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 4L12 12M12 4L4 12" stroke="#133E87" strokeWidth="1.33" strokeLinecap="round"/>
+              </svg>
+            </button>
+
+            <h2 className="modal-title">Forgot Password</h2>
+            <p className="modal-description">
+              Enter your email address and we'll send you a link to reset your password
+            </p>
+
+            <form className="modal-form" onSubmit={handleResetPassword}>
+              <div className="modal-form-field">
+                <label className="modal-field-label">Email</label>
+                <input
+                  type="email"
+                  className="modal-text-input"
+                  value={forgotPasswordEmail}
+                  onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                  placeholder="Enter your email address"
+                  required
+                />
+              </div>
+
+              {resetMessage && (
+                <p className={`reset-message ${resetMessage.includes('sent') ? 'success' : 'error'}`}>
+                  {resetMessage}
+                </p>
+              )}
+
+              <div className="modal-actions">
+                <button 
+                  type="button" 
+                  className="modal-btn modal-btn-cancel"
+                  onClick={handleCloseForgotPasswordModal}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="modal-btn modal-btn-submit">
+                  Send Reset Link
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
