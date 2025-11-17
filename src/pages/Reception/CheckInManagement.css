@@ -46,7 +46,7 @@
 }
 
 /* Bookings Section */
-.bookings-section {
+.checkin-bookings-section {
   background: #FFFFFF;
   border: 0.8px solid #CBDCEB;
   border-radius: 14px;
@@ -169,7 +169,7 @@
     grid-template-columns: 1fr;
   }
   
-  .bookings-section,
+  .checkin-bookings-section,
   .checkin-rooms-section {
     width: 100%;
     height: auto;
@@ -201,7 +201,7 @@
     line-height: 20px;
   }
   
-  .bookings-section,
+  .checkin-bookings-section,
   .checkin-rooms-section {
     padding: 16px;
   }

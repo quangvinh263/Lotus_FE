@@ -132,7 +132,7 @@ const CheckInManagement = () => {
 
           <div className="checkin-container">
             {/* Bookings List */}
-            <div className="bookings-section">
+            <div className="checkin-bookings-section">
               <div className="section-header">
                 <h3>Tìm kiếm đơn đặt phòng</h3>
               </div>

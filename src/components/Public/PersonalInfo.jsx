@@ -3,6 +3,8 @@ import './PersonalInfo.css';
 import MailIcon from '../../assets/icons/MailIcon.svg';
 import PhoneIcon from '../../assets/icons/PhoneIcon.svg';
 import LocationIcon from '../../assets/icons/LocationIcon.svg';
+import CalenderIcon from '../../assets/icons/CalenderIcon.svg';
+import GenderIcon from '../../assets/icons/GenderIcon.svg';
 
 const PersonalInfo = () => {
   const [showModal, setShowModal] = useState(false);
