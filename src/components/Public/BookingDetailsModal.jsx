@@ -1,7 +1,7 @@
 import React from 'react';
 import './BookingDetailsModal.css';
-import CalenderIcon from '../assets/icons/CalenderIcon.svg';
-import PeopleIcon from '../assets/icons/PeopleIcon.svg';
+import CalenderIcon from '../../assets/icons/CalenderIcon.svg';
+import PeopleIcon from '../../assets/icons/PeopleIcon.svg';
 
 const BookingDetailsModal = ({ booking, isOpen, onClose, onCancelBooking, showCancelButton }) => {
   if (!isOpen || !booking) return null;

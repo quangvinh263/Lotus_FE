@@ -1,10 +1,10 @@
 import React from 'react';
 import './RoomBooking.css';
-import ImageRoom from '../assets/images/ImageRoom.jpg';
-import PersonIcon from '../assets/icons/PersonIcon.png';
-import BedIcon from '../assets/icons/BedIcon.png';
-import BathIcon from '../assets/icons/BathIcon.png';
-import CalendarIcon from '../assets/icons/CalendarIcon.png';
+import ImageRoom from '../../assets/images/ImageRoom.jpg';
+import PersonIcon from '../../assets/icons/PersonIcon.png';
+import BedIcon from '../../assets/icons/BedIcon.png';
+import BathIcon from '../../assets/icons/BathIcon.png';
+import CalendarIcon from '../../assets/icons/CalendarIcon.png';
 
 const RoomBooking = ({ 
   room = null, 

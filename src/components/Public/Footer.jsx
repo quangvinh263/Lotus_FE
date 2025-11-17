@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './Footer.css';
-import FacebookIcon from '../assets/icons/FacebookIcon.svg';
-import TwitterIcon from '../assets/icons/TwitterIcon.svg';
-import InstagramIcon from '../assets/icons/InstagramIcon.svg';
+import FacebookIcon from '../../assets/icons/FacebookIcon.svg';
+import TwitterIcon from '../../assets/icons/TwitterIcon.svg';
+import InstagramIcon from '../../assets/icons/InstagramIcon.svg';
 
 const Footer = () => {
   const [email, setEmail] = useState('');

@@ -1,6 +1,6 @@
 import React from 'react';
 import './RoomCard.css';
-import ImageRoom from '../assets/images/ImageRoom.jpg';
+import ImageRoom from '../../assets/images/ImageRoom.jpg';
 
 const RoomCard = ({ 
   title = "Superior Room", 

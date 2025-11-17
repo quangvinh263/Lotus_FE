@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfileHeader.css';
-import SettingIcon from '../assets/icons/SettingIcon.svg';
+import SettingIcon from '../../assets/icons/SettingIcon.svg';
 
 const ProfileHeader = () => {
   const navigate = useNavigate();

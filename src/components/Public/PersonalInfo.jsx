@@ -1,8 +1,8 @@
 import React from 'react';
 import './PersonalInfo.css';
-import MailIcon from '../assets/icons/MailIcon.svg';
-import PhoneIcon from '../assets/icons/PhoneIcon.svg';
-import LocationIcon from '../assets/icons/LocationIcon.svg';
+import MailIcon from '../../assets/icons/MailIcon.svg';
+import PhoneIcon from '../../assets/icons/PhoneIcon.svg';
+import LocationIcon from '../../assets/icons/LocationIcon.svg';
 
 const PersonalInfo = () => {
   return (

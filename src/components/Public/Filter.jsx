@@ -1,7 +1,7 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import './Filter.css';
-import CalendarIcon from '../assets/icons/CalendarIcon.png';
-import PersonIcon from '../assets/icons/PersonIcon.png';
+import CalendarIcon from '../../assets/icons/CalendarIcon.png';
+import PersonIcon from '../../assets/icons/PersonIcon.png';
 import DatePicker from './DatePicker';
 import PickerPanel from './PickerPanel';
 

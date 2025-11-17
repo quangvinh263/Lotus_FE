@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import '../../styles/RoomDetailsPage.css';
-import Navbar from '../../components/NavBar';
-import Footer from '../../components/Footer';
-import RoomDetailSection from '../../components/RoomDetailSection';
+import Navbar from '../../components/Public/NavBar';
+import Footer from '../../components/Public/Footer';
+import RoomDetailSection from '../../components/Public/RoomDetailSection';
 import ImageRoomDetailsPage from '../../assets/images/ImageRoomDetailsPage.jpg';
 
 const RoomDetailsPage = () => {

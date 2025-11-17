@@ -1,6 +1,6 @@
 import React from 'react';
 import './BookingSummary.css';
-import BinIcon from '../assets/icons/BinIcon.png';
+import BinIcon from '../../assets/icons/BinIcon.png';
 
 const BookingSummary = ({ 
   variant = 'default',

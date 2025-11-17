@@ -1,13 +1,13 @@
 import React from 'react';
 import './RoomDetailSection.css';
 import RoomSection from './RoomSection';
-import ImageRoom from '../assets/images/ImageRoom.jpg';
-import ApartmentIcon from '../assets/icons/ApartmentIcon.png';
-import PersonIcon from '../assets/icons/PersonIcon.svg';
-import BedIcon from '../assets/icons/BedIcon.png';
-import ImageIcon from '../assets/icons/ImageIcon.svg';
-import SmokeIcon from '../assets/icons/SmokeIcon.png';
-import BathIcon from '../assets/icons/BathIcon.svg';
+import ImageRoom from '../../assets/images/ImageRoom.jpg';
+import ApartmentIcon from '../../assets/icons/ApartmentIcon.png';
+import PersonIcon from '../../assets/icons/PersonIcon.svg';
+import BedIcon from '../../assets/icons/BedIcon.png';
+import ImageIcon from '../../assets/icons/ImageIcon.svg';
+import SmokeIcon from '../../assets/icons/SmokeIcon.png';
+import BathIcon from '../../assets/icons/BathIcon.svg';
 
 const RoomDetailSection = ({
   roomType = "Superior Rooms",

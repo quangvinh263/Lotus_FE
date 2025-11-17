@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './BookingCard.css';
-import CalenderIcon from '../assets/icons/CalenderIcon.svg';
-import PeopleIcon from '../assets/icons/PeopleIcon.svg';
+import CalenderIcon from '../../assets/icons/CalenderIcon.svg';
+import PeopleIcon from '../../assets/icons/PeopleIcon.svg';
 import BookingDetailsModal from './BookingDetailsModal';
 
 const BookingCard = ({ booking, onCancelBooking }) => {
