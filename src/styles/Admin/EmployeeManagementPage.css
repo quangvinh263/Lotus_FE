@@ -32,8 +32,8 @@
 }
 
 .admin-employee-title {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 400;
   color: #133E87;
   margin: 0;
 }
@@ -96,8 +96,8 @@
 }
 
 .admin-employee-stat-value {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 400;
   margin: 0;
 }
 
@@ -168,7 +168,7 @@
 
 .admin-employee-name {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 400;
   color: #133E87;
   margin: 0;
 }
