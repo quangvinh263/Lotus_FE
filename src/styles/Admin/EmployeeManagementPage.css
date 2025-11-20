@@ -73,7 +73,7 @@
 /* Stats Cards */
 .admin-employee-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 32px;
 }
@@ -233,7 +233,6 @@
   display: flex;
   gap: 12px;
   padding-top: 12px;
-  border-top: 1px solid #E5E5E5;
 }
 
 .admin-employee-action-btn {

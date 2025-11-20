@@ -124,11 +124,6 @@ const EmployeeManagementPage = () => {
       color: '#00A63E'
     },
     {
-      label: 'Tạm nghỉ',
-      value: '3',
-      color: '#F0B100'
-    },
-    {
       label: 'Tuyển mới tháng này',
       value: '5',
       color: '#133E87'
@@ -187,9 +182,6 @@ const EmployeeManagementPage = () => {
                   <div className="admin-employee-card-info">
                     <h3 className="admin-employee-name">{employee.name}</h3>
                     <p className="admin-employee-position">{employee.position}</p>
-                  </div>
-                  <div className={`admin-employee-status ${employee.status}`}>
-                    {employee.status === 'active' ? 'Đang làm việc' : 'Tạm nghỉ'}
                   </div>
                 </div>
 

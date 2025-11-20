@@ -1,0 +1,290 @@
+/* Booking Order Detail Modal Styles */
+
+.booking-order-detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.booking-order-detail-modal {
+  width: 700px;
+  max-height: 90vh;
+  background: #FFFFFF;
+  border: 0.8px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  position: relative;
+}
+
+.booking-order-detail-close {
+  position: absolute;
+  top: 16.8px;
+  right: 16.8px;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  line-height: 1;
+  color: #0A0A0A;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  z-index: 1;
+}
+
+.booking-order-detail-close:hover {
+  opacity: 1;
+}
+
+/* Header */
+.booking-order-detail-header {
+  padding: 24.8px 24.8px 20px;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.booking-order-detail-title {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 18px;
+  color: #133E87;
+  margin: 0 40px 8px 0;
+}
+
+.booking-order-detail-subtitle {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #717182;
+  margin: 0;
+}
+
+/* Content */
+.booking-order-detail-content {
+  padding: 24.8px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ID and Status Section */
+.booking-order-detail-id-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.booking-order-detail-id-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.booking-order-detail-label {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #608BC1;
+  margin: 0;
+}
+
+.booking-order-detail-id {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  color: #133E87;
+  margin: 0;
+}
+
+.booking-order-detail-status-badge {
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #FFFFFF;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+/* Section */
+.booking-order-detail-section {
+  background: #F3F3E0;
+  border-radius: 10px;
+  padding: 16px 16px 24px;
+}
+
+.booking-order-detail-section-title {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0 0 12px 0;
+}
+
+.booking-order-detail-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 12px;
+}
+
+.booking-order-detail-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.booking-order-detail-info-item:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.booking-order-detail-value {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+}
+
+/* Two Column Layout */
+.booking-order-detail-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.booking-order-detail-box {
+  background: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 10px;
+  padding: 16.8px 16.8px 16.8px;
+}
+
+.booking-order-detail-box .booking-order-detail-section-title {
+  margin: 0 0 12px 0;
+}
+
+.booking-order-detail-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Payment Section */
+.booking-order-detail-payment {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.booking-order-detail-payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 24px;
+}
+
+.booking-order-detail-payment-row.border-top {
+  border-top: 0.8px solid #CBDCEB;
+  padding-top: 8px;
+}
+
+.booking-order-detail-payment-label {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #608BC1;
+}
+
+.booking-order-detail-payment-label-bold {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+}
+
+.booking-order-detail-payment-value {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+}
+
+.booking-order-detail-payment-status {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+/* Actions */
+.booking-order-detail-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.booking-order-detail-btn {
+  width: 100%;
+  padding: 8px 16px;
+  background: #133E87;
+  border: 0.8px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.booking-order-detail-btn:hover {
+  opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .booking-order-detail-modal {
+    width: 90%;
+    max-width: 700px;
+  }
+
+  .booking-order-detail-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-order-detail-info-item:nth-child(3) {
+    grid-column: 1;
+  }
+
+  .booking-order-detail-two-column {
+    grid-template-columns: 1fr;
+  }
+}

@@ -21,6 +21,7 @@ import CheckInManagement from './pages/Reception/CheckInManagement';
 import DashboardPage from './pages/Admin/DashboardPage';
 import EmployeeManagementPage from './pages/Admin/EmployeeManagementPage';
 import RoomManagementPage from './pages/Admin/RoomManagementPage';
+import BookingOrderManagementPage from './pages/Admin/BookingOrderManagementPage';
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
         <Route path="/admin/dashboard" element={<DashboardPage />} />
         <Route path="/admin/employees" element={<EmployeeManagementPage />} />
         <Route path="/admin/rooms" element={<RoomManagementPage />} />
+        <Route path="/admin/bookings" element={<BookingOrderManagementPage />} />
       </Routes>
  </Router>
   )
