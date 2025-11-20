@@ -19,6 +19,7 @@ import CreateBookingPage from './pages/Reception/CreateBookingPage'
 import CheckOutManagement from './pages/Reception/CheckOutManagement'
 import CheckInManagement from './pages/Reception/CheckInManagement';
 import DashboardPage from './pages/Admin/DashboardPage';
+import EmployeeManagementPage from './pages/Admin/EmployeeManagementPage';
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
         
         {/* Admin Routes */}
         <Route path="/admin/dashboard" element={<DashboardPage />} />
+        <Route path="/admin/employees" element={<EmployeeManagementPage />} />
       </Routes>
  </Router>
   )
