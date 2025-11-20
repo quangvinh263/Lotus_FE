@@ -1,0 +1,397 @@
+/* Modal Overlay */
+.admin-room-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+}
+
+/* Modal Content */
+.admin-room-modal-content {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  position: relative;
+  border: 0.8px solid rgba(0, 0, 0, 0.1);
+}
+
+.admin-room-modal-content.edit-modal {
+  height: auto;
+}
+
+.admin-room-modal-content.delete-room-modal {
+  width: 512px;
+  max-height: auto;
+  overflow-y: visible;
+}
+
+.admin-room-modal-content.admin-room-type-modal {
+  width: 600px;
+  height: auto;
+}
+
+.admin-room-modal-content.delete-room-type-modal {
+  width: 512px;
+  height: auto;
+}
+
+/* Close Button */
+.admin-room-modal-close {
+  position: absolute;
+  top: 16.8px;
+  right: 16.8px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-color: transparent;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: #0A0A0A;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-room-modal-close:hover {
+  opacity: 1;
+}
+
+/* Modal Header */
+.admin-room-modal-header {
+  padding: 24.8px 24.8px 0 24.8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-room-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #133E87;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1;
+}
+
+.admin-room-modal-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: #717182;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1.43;
+}
+
+/* Modal Body */
+.admin-room-modal-body {
+  padding: 0 24.8px;
+}
+
+.admin-room-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.admin-room-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-room-form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.admin-room-form-row .admin-room-form-group {
+  flex: 1;
+}
+
+.admin-room-form-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: #0A0A0A;
+  font-family: Arial, sans-serif;
+  line-height: 1;
+}
+
+.admin-room-form-input,
+.admin-room-form-select {
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  background-color: #F3F3F5;
+  color: #0A0A0A;
+  transition: border-color 0.2s;
+  line-height: 1.15;
+}
+
+.admin-room-form-input::placeholder {
+  color: #717182;
+}
+
+.admin-room-form-input:focus,
+.admin-room-form-select:focus {
+  outline: none;
+  border-color: #133E87;
+}
+
+.admin-room-form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23133E87' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+/* Textarea */
+.admin-room-form-group textarea {
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  background-color: #F3F3F5;
+  color: #0A0A0A;
+  transition: border-color 0.2s;
+  line-height: 1.43;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.admin-room-form-group textarea:focus {
+  outline: none;
+  border-color: #133E87;
+}
+
+.admin-room-form-group textarea::placeholder {
+  color: #717182;
+}
+
+/* New Form Styles for Simplified Modals */
+.admin-room-form {
+  padding: 24.8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-room-form label {
+  font-size: 14px;
+  font-weight: 400;
+  color: #0A0A0A;
+  font-family: Arial, sans-serif;
+  line-height: 1;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.admin-room-form input,
+.admin-room-form select,
+.admin-room-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  background-color: #F3F3F5;
+  color: #0A0A0A;
+  transition: border-color 0.2s;
+  line-height: 1.15;
+  box-sizing: border-box;
+}
+
+.admin-room-form input:focus,
+.admin-room-form select:focus,
+.admin-room-form textarea:focus {
+  outline: none;
+  border-color: #133E87;
+}
+
+.admin-room-form select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23133E87' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.admin-room-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.admin-room-btn-cancel,
+.admin-room-btn-submit,
+.admin-room-btn-delete {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  line-height: 1.43;
+}
+
+.admin-room-btn-cancel {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.admin-room-btn-submit {
+  background-color: #133E87;
+  color: #FFFFFF;
+  border: none;
+}
+
+.admin-room-btn-delete {
+  background-color: #FB2C36;
+  color: #FFFFFF;
+  border: none;
+}
+
+.admin-room-btn-cancel:hover,
+.admin-room-btn-submit:hover,
+.admin-room-btn-delete:hover {
+  opacity: 0.8;
+}
+
+.admin-room-modal-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: #717182;
+  font-family: Arial, sans-serif;
+  line-height: 1.43;
+  margin: 0;
+}
+
+.admin-room-modal-text strong {
+  color: #0A0A0A;
+}
+
+.admin-room-modal-warning {
+  font-size: 12px;
+  font-weight: 400;
+  color: #E7000B;
+  font-family: Arial, sans-serif;
+  line-height: 1.33;
+  margin: 0 24.8px 16px;
+}
+
+.delete-modal {
+  width: 512px;
+}
+
+.delete-modal .admin-room-modal-title {
+  padding: 24.8px 24.8px 16px;
+}
+
+.delete-room-type-modal .admin-room-modal-header {
+  padding: 24.8px 24.8px 0;
+}
+
+.delete-room-type-modal .admin-room-modal-title {
+  line-height: 1.56;
+  margin-bottom: 8px;
+}
+
+.delete-room-type-modal .admin-room-modal-actions {
+  padding: 0 24.8px 24.8px;
+  margin-top: 24.8px;
+}
+
+/* Modal Footer */
+.admin-room-modal-footer {
+  padding: 16px 24.8px 24.8px 24.8px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.admin-room-modal-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  line-height: 1.43;
+}
+
+.admin-room-modal-btn:hover {
+  opacity: 0.8;
+}
+
+.admin-room-modal-btn.cancel,
+.admin-room-modal-btn-cancel {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.admin-room-modal-btn.submit,
+.admin-room-modal-btn-submit {
+  background-color: #133E87;
+  color: #FFFFFF;
+  border: none;
+}
+
+.admin-room-modal-btn.delete,
+.admin-room-modal-btn-delete {
+  background-color: #FB2C36;
+  color: #FFFFFF;
+  border: none;
+}
+
+/* Delete Modal Specific Styles */
+.delete-room-modal .admin-room-modal-header {
+  padding-bottom: 24.8px;
+}
+
+.delete-room-modal .admin-room-modal-footer {
+  padding-top: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-room-modal-content {
+    width: 90%;
+    margin: 20px;
+  }
+
+  .admin-room-modal-content.delete-room-modal {
+    width: 90%;
+  }
+
+  .admin-room-form-row {
+    flex-direction: column;
+  }
+}

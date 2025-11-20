@@ -20,6 +20,7 @@ import CheckOutManagement from './pages/Reception/CheckOutManagement'
 import CheckInManagement from './pages/Reception/CheckInManagement';
 import DashboardPage from './pages/Admin/DashboardPage';
 import EmployeeManagementPage from './pages/Admin/EmployeeManagementPage';
+import RoomManagementPage from './pages/Admin/RoomManagementPage';
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         {/* Admin Routes */}
         <Route path="/admin/dashboard" element={<DashboardPage />} />
         <Route path="/admin/employees" element={<EmployeeManagementPage />} />
+        <Route path="/admin/rooms" element={<RoomManagementPage />} />
       </Routes>
  </Router>
   )
