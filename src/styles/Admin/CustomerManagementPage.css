@@ -1,0 +1,324 @@
+.admin-customer-management-page {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F3F3E0;
+}
+
+.admin-customer-management-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-customer-management-container {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Header Section */
+.admin-customer-management-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-customer-management-header h1 {
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  color: #133E87;
+  margin: 0;
+}
+
+.admin-customer-management-header p {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #608BC1;
+  margin: 0;
+}
+
+/* Search Container */
+.admin-customer-management-search-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+}
+
+.admin-customer-management-search-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 871px;
+}
+
+.admin-customer-management-search-input {
+  width: 100%;
+  height: 41.6px;
+  padding: 8px 16px 8px 40px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.15em;
+  color: rgba(10, 10, 10, 0.5);
+  background-color: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 10px;
+  outline: none;
+}
+
+.admin-customer-management-search-input:focus {
+  border-color: #133E87;
+}
+
+.admin-customer-management-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+
+.admin-customer-management-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  height: 40px;
+  background-color: #CBDCEB;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.admin-customer-management-filter-btn:hover {
+  background-color: #b8cfe0;
+}
+
+.admin-customer-management-filter-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.admin-customer-management-filter-btn span {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+}
+
+/* Table Container */
+.admin-customer-management-table-container {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.admin-customer-management-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-customer-management-table thead {
+  background-color: #F3F3E0;
+}
+
+.admin-customer-management-table th {
+  padding: 12px 24px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #133E87;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.admin-customer-management-table th:first-child {
+  width: 20%;
+}
+
+.admin-customer-management-table th:nth-child(2) {
+  width: 20%;
+}
+
+.admin-customer-management-table th:nth-child(3) {
+  width: 20%;
+}
+
+.admin-customer-management-table th:nth-child(4) {
+  width: 20%;
+}
+
+.admin-customer-management-table th:nth-child(5) {
+  width: 20%;
+  text-align: center;
+}
+
+.admin-customer-management-table tbody tr {
+  border-bottom: 0.8px solid #CBDCEB;
+  transition: background-color 0.3s;
+}
+
+.admin-customer-management-table tbody tr:hover {
+  background-color: #F7F9FC;
+}
+
+.admin-customer-management-table tbody tr.last-row {
+  background-color: #FFFFFF;
+}
+
+.admin-customer-management-table td {
+  padding: 28px 24px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  vertical-align: middle;
+}
+
+.admin-customer-management-table td:nth-child(5) {
+  text-align: center;
+}
+
+/* Customer Name */
+.admin-customer-name {
+  color: #133E87;
+}
+
+/* Info with Icon */
+.admin-customer-info-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-customer-info-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.admin-customer-info-text {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #608BC1;
+}
+
+/* Room Info */
+.admin-customer-room-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.admin-customer-room-number {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-customer-room-number img {
+  filter: brightness(0) saturate(100%) invert(17%) sepia(58%) saturate(2055%) hue-rotate(197deg) brightness(95%) contrast(94%);
+}
+
+.admin-customer-room-number span {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+}
+
+.admin-customer-room-type {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #608BC1;
+  margin-top: 0;
+}
+
+.admin-customer-no-room {
+  height: 24px;
+}
+
+/* Detail Button */
+.admin-customer-detail-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  margin: 0;
+}
+
+.admin-customer-detail-btn:hover {
+  opacity: 0.7;
+}
+
+.admin-customer-action-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.admin-customer-detail-btn span {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .admin-customer-management-container {
+    padding: 24px;
+  }
+
+  .admin-customer-management-search-wrapper {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-customer-management-page {
+    flex-direction: column;
+  }
+
+  .admin-customer-management-container {
+    padding: 16px;
+  }
+
+  .admin-customer-management-search-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-customer-management-filter-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .admin-customer-management-table-container {
+    overflow-x: auto;
+  }
+
+  .admin-customer-management-table {
+    min-width: 800px;
+  }
+}
