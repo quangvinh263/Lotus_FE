@@ -1,0 +1,401 @@
+/* Revenue Report Page Container */
+.admin-revenue-report-page {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F3F3E0;
+}
+
+.admin-revenue-report-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-revenue-report-container {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Header Section */
+.admin-revenue-report-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-revenue-report-header h1 {
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.33em;
+  color: #133E87;
+  margin: 0;
+}
+
+.admin-revenue-report-header p {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #608BC1;
+  margin: 0;
+}
+
+/* Stats Cards Section */
+.admin-revenue-stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 75px;
+  flex-wrap: wrap;
+}
+
+.admin-revenue-stat-card {
+  background: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 10px;
+  padding: 24.8px 24.8px 24.8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.admin-revenue-stat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.admin-revenue-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-revenue-stat-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.revenue-total-icon {
+  background-color: #F0FDF4;
+}
+
+.revenue-room-icon {
+  background-color: #FEF2F2;
+}
+
+.revenue-service-icon {
+  background-color: #EFF6FF;
+}
+
+.revenue-average-icon {
+  background-color: #FAF5FF;
+}
+
+/* Icon color filters based on Figma design */
+.revenue-icon-green {
+  filter: brightness(0) saturate(100%) invert(37%) sepia(99%) saturate(1548%) hue-rotate(120deg) brightness(98%) contrast(101%);
+}
+
+.revenue-icon-red {
+  filter: brightness(0) saturate(100%) invert(10%) sepia(97%) saturate(6943%) hue-rotate(357deg) brightness(102%) contrast(114%);
+}
+
+.revenue-icon-blue {
+  filter: brightness(0) saturate(100%) invert(30%) sepia(98%) saturate(3116%) hue-rotate(213deg) brightness(101%) contrast(104%);
+}
+
+.revenue-icon-purple {
+  filter: brightness(0) saturate(100%) invert(16%) sepia(87%) saturate(5920%) hue-rotate(277deg) brightness(99%) contrast(101%);
+}
+
+.admin-revenue-stat-change {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-revenue-stat-change.positive {
+  color: #00A63E;
+}
+
+.admin-revenue-stat-change.positive img {
+  width: 16px;
+  height: 16px;
+  transform: rotate(180deg);
+}
+
+.admin-revenue-stat-change span {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.43em;
+}
+
+.admin-revenue-stat-label {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.43em;
+  color: #608BC1;
+  margin: 0;
+}
+
+.admin-revenue-stat-value {
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.33em;
+  color: #133E87;
+  margin: 0;
+}
+
+/* Charts Section */
+.admin-revenue-charts {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.admin-revenue-chart-card {
+  background: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 10px;
+  padding: 24.8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-revenue-chart-card h3 {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+.admin-chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: -8px;
+}
+
+.admin-chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-legend-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+}
+
+.admin-chart-legend-item span {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #133E87;
+}
+
+/* Top Room Types Section */
+.admin-revenue-top-rooms {
+  background: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 10px;
+  padding: 24.8px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-revenue-top-rooms h3 {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+.admin-revenue-room-cards {
+  display: flex;
+  justify-content: space-between;
+  overflow-x: auto;
+}
+
+.admin-revenue-room-card {
+  background: #F3F3E0;
+  border-radius: 10px;
+  padding: 16px 16px 16px;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-revenue-room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-revenue-room-card h4 {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+.admin-revenue-room-rank {
+  width: 29.58px;
+  height: 23.99px;
+  background: #133E87;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+
+.admin-revenue-room-bookings {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.43em;
+  color: #608BC1;
+  margin: 0;
+}
+
+.admin-revenue-room-revenue {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4em;
+  color: #133E87;
+  margin: 0;
+}
+
+/* Table Section */
+.admin-revenue-table-container {
+  background: #FFFFFF;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.admin-revenue-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-revenue-table thead {
+  background: #F3F3E0;
+}
+
+.admin-revenue-table th {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5em;
+  color: #133E87;
+  text-align: left;
+  padding: 16px 24px;
+}
+
+.admin-revenue-table tbody tr {
+  border-bottom: 0.8px solid #CBDCEB;
+}
+
+.admin-revenue-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.admin-revenue-table td {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5em;
+  padding: 16px 24px;
+  vertical-align: middle;
+}
+
+.month-cell,
+.total-cell {
+  color: #133E87;
+}
+
+.orders-cell,
+.service-cell,
+.average-cell {
+  color: #608BC1;
+}
+
+.room-cell {
+  color: #00A63E;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .admin-revenue-stats {
+    gap: 24px;
+  }
+
+  .admin-revenue-stat-card {
+    min-width: calc(50% - 12px);
+  }
+}
+
+@media (max-width: 1024px) {
+  .admin-revenue-charts {
+    flex-direction: column;
+  }
+
+  .admin-revenue-room-cards {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-revenue-report-container {
+    padding: 16px;
+  }
+
+  .admin-revenue-stats {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .admin-revenue-stat-card {
+    min-width: 100%;
+  }
+
+  .admin-revenue-table-container {
+    overflow-x: auto;
+  }
+
+  .admin-revenue-table {
+    min-width: 800px;
+  }
+}

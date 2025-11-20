@@ -23,6 +23,8 @@ import EmployeeManagementPage from './pages/Admin/EmployeeManagementPage';
 import RoomManagementPage from './pages/Admin/RoomManagementPage';
 import BookingOrderManagementPage from './pages/Admin/BookingOrderManagementPage';
 import CustomerManagementPage from './pages/Admin/CustomerManagementPage';
+import AdminServiceManagementPage from './pages/Admin/ServiceManagementPage';
+import RevenueReportPage from './pages/Admin/RevenueReportPage';
 
 
 function App() {
@@ -56,6 +58,8 @@ function App() {
         <Route path="/admin/rooms" element={<RoomManagementPage />} />
         <Route path="/admin/bookings" element={<BookingOrderManagementPage />} />
         <Route path="/admin/customers" element={<CustomerManagementPage />} />
+        <Route path="/admin/services" element={<AdminServiceManagementPage />} />
+        <Route path="/admin/revenue" element={<RevenueReportPage />} />
       </Routes>
  </Router>
   )

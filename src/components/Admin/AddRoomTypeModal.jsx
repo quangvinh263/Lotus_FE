@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../styles/Admin/RoomModal.css';
+import './RoomModal.css';
 
 const AddRoomTypeModal = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({

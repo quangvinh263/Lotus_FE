@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/Admin/EmployeeModal.css';
+import './EmployeeModal.css';
 
 const EditEmployeeModal = ({ isOpen, onClose, onUpdate, employee }) => {
   const [formData, setFormData] = useState({

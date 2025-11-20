@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/Admin/RoomModal.css';
+import './RoomModal.css';
 
 const EditRoomTypeModal = ({ isOpen, onClose, onEdit, roomType }) => {
   const [formData, setFormData] = useState({

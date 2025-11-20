@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/Admin/EmployeeModal.css';
+import './EmployeeModal.css';
 
 const DeleteEmployeeModal = ({ isOpen, onClose, onDelete, employee }) => {
   if (!isOpen) return null;

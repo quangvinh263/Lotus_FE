@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/Admin/RoomModal.css';
+import './RoomModal.css';
 
 const DeleteRoomTypeModal = ({ isOpen, onClose, onDelete, roomType }) => {
   if (!isOpen || !roomType) return null;
