@@ -1,0 +1,270 @@
+.guest-info-form {
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.guest-form-header {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.guest-form-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #133E87;
+  margin-bottom: 4px;
+}
+
+.guest-form-subtitle {
+  font-size: 13px;
+  color: #6B7280;
+  margin-bottom: 8px;
+}
+
+.guest-count-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #DBEAFE;
+  color: #1447E6;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.guests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.guest-card {
+  background: white;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.guest-card.expanded {
+  border-color: #133E87;
+  box-shadow: 0 2px 8px rgba(19, 62, 135, 0.1);
+}
+
+.guest-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  cursor: pointer;
+  background: #F9FAFB;
+  transition: background 0.2s ease;
+}
+
+.guest-card.expanded .guest-card-header {
+  background: #F0F7FF;
+}
+
+.guest-card-header:hover {
+  background: #F0F7FF;
+}
+
+.guest-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.guest-number {
+  font-weight: 600;
+  color: #133E87;
+  font-size: 14px;
+}
+
+.primary-badge {
+  padding: 2px 8px;
+  background: #DCFCE7;
+  color: #008236;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.guest-name-preview {
+  color: #6B7280;
+  font-size: 13px;
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.guest-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remove-guest-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.remove-guest-btn:hover {
+  opacity: 1;
+}
+
+.remove-guest-btn img {
+  width: 16px;
+  height: 16px;
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+
+.expand-icon {
+  color: #6B7280;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.guest-card-body {
+  padding: 20px 16px;
+  border-top: 1px solid #E5E7EB;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
+
+.guest-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.guest-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.guest-field-full {
+  grid-column: span 2;
+}
+
+.guest-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.guest-label .required {
+  color: #C10007;
+  margin-left: 2px;
+}
+
+.guest-input-wrapper {
+  position: relative;
+}
+
+.guest-input {
+  width: 100%;
+  padding: 10px 40px 10px 12px;
+  border: 1.5px solid #D1D5DB;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1F2937;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.guest-select {
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.guest-input:focus,
+.guest-select:focus {
+  outline: none;
+  border-color: #133E87;
+  box-shadow: 0 0 0 3px rgba(19, 62, 135, 0.1);
+}
+
+.guest-input::placeholder {
+  color: #9CA3AF;
+}
+
+.guest-input-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  opacity: 0.5;
+}
+
+.add-guest-btn {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  border: 1.5px dashed #133E87;
+  border-radius: 8px;
+  color: #133E87;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.add-guest-btn:hover {
+  background: #F0F7FF;
+  border-style: solid;
+}
+
+.add-guest-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.guest-complete-badge {
+  width: 100%;
+  padding: 12px;
+  background: #DCFCE7;
+  border: 1.5px solid #86EFAC;
+  border-radius: 8px;
+  color: #008236;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .guest-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .guest-field-full {
+    grid-column: span 1;
+  }
+}
