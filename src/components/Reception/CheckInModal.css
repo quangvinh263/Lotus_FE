@@ -265,7 +265,7 @@
   pointer-events: none;
 }
 
-.rooms-grid {
+.checkin-modal-rooms-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
@@ -274,7 +274,7 @@
   padding: 4px;
 }
 
-.room-select-btn {
+.checkin-room-select-btn {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -287,22 +287,22 @@
   height: 71px;
 }
 
-.room-select-btn:hover {
+.checkin-room-select-btn:hover {
   border-color: #608BC1;
   box-shadow: 0px 2px 8px rgba(96, 139, 193, 0.2);
 }
 
-.room-select-btn.selected {
+.checkin-room-select-btn.selected {
   background: #133E87;
   border-color: #133E87;
 }
 
-.room-select-btn.selected .room-number-text,
-.room-select-btn.selected .room-price-text {
+.checkin-room-select-btn.selected .checkin-room-number-text,
+.checkin-room-select-btn.selected .checkin-room-price-text {
   color: #FFFFFF;
 }
 
-.room-number-text {
+.checkin-room-number-text {
   font-family: Arial;
   font-size: 16px;
   font-weight: 400;
@@ -310,7 +310,7 @@
   color: #133E87;
 }
 
-.room-price-text {
+.checkin-room-price-text {
   font-family: Arial;
   font-size: 12px;
   font-weight: 400;
@@ -421,22 +421,22 @@
 
 /* Scrollbar Styling */
 .checkin-modal::-webkit-scrollbar,
-.rooms-grid::-webkit-scrollbar {
+.checkin-modal-rooms-grid::-webkit-scrollbar {
   width: 6px;
 }
 
 .checkin-modal::-webkit-scrollbar-track,
-.rooms-grid::-webkit-scrollbar-track {
+.checkin-modal-rooms-grid::-webkit-scrollbar-track {
   background: #F3F3E0;
 }
 
 .checkin-modal::-webkit-scrollbar-thumb,
-.rooms-grid::-webkit-scrollbar-thumb {
+.checkin-modal-rooms-grid::-webkit-scrollbar-thumb {
   background: #CBDCEB;
   border-radius: 3px;
 }
 
 .checkin-modal::-webkit-scrollbar-thumb:hover,
-.rooms-grid::-webkit-scrollbar-thumb:hover {
+.checkin-modal-rooms-grid::-webkit-scrollbar-thumb:hover {
   background: #608BC1;
 }

@@ -179,7 +179,7 @@ const CheckInModal = ({ booking, rooms, onClose, onConfirm }) => {
                     <img src={SearchIcon} alt="Search" className="search-icon" />
                   </div>
 
-                  <div className="rooms-grid">
+                  <div className="checkin-modal-rooms-grid">
                     {typeRooms
                       .filter(room => room.number.includes(searchTerm))
                       .map(room => {
@@ -187,11 +187,11 @@ const CheckInModal = ({ booking, rooms, onClose, onConfirm }) => {
                         return (
                           <button
                             key={room.id}
-                            className={`room-select-btn ${isSelected ? 'selected' : ''}`}
+                            className={`checkin-room-select-btn ${isSelected ? 'selected' : ''}`}
                             onClick={() => handleRoomSelect(roomType, room)}
                           >
-                            <span className="room-number-text">{room.number}</span>
-                            <span className="room-price-text">
+                            <span className="checkin-room-number-text">{room.number}</span>
+                            <span className="checkin-room-price-text">
                               {room.price.toLocaleString('vi-VN')} VNĐ
                             </span>
                           </button>

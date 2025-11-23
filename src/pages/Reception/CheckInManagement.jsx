@@ -137,15 +137,15 @@ const CheckInManagement = () => {
                 <h3>Tìm kiếm đơn đặt phòng</h3>
               </div>
 
-              <div className="search-container">
+              <div className="checkin-search-container">
                 <input
                   type="text"
                   placeholder="Tìm theo mã đặt phòng, tên khách, số điện thoại..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="search-input"
+                  className="checkin-search-input"
                 />
-                <img src={SearchIcon} alt="Search" className="search-icon" />
+                <img src={SearchIcon} alt="Search" className="checkin-search-icon" />
               </div>
 
               <div className="bookings-list">
