@@ -1,0 +1,587 @@
+/* Modal Overlay */
+.checkout-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* Modal Container */
+.checkout-modal {
+  width: 512px;
+  max-width: 100%;
+  max-height: 90vh;
+  background: #F3F3E0;
+  border: 0.8px solid rgba(19, 62, 135, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Close Button */
+.checkout-modal-close {
+  position: absolute;
+  top: 16.8px;
+  right: 16.8px;
+  width: 16px;
+  height: 16px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 16px;
+  color: #133E87;
+  cursor: pointer;
+  opacity: 0.7;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.checkout-modal-close:hover {
+  opacity: 1;
+}
+
+/* Modal Header */
+.checkout-modal-header {
+  padding: 24.8px 24.8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkout-modal-title {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 18px;
+  color: #133E87;
+  margin: 0;
+}
+
+.checkout-modal-subtitle {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #133E87;
+  margin: 0;
+}
+
+/* Modal Content */
+.checkout-modal-content {
+  padding: 24.8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Info Card */
+.checkout-modal-info-card {
+  background: #F3F3E0;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.checkout-modal-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 16px;
+}
+
+.checkout-modal-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.checkout-modal-info-label {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #608BC1;
+  margin: 0;
+}
+
+.checkout-modal-info-value {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+}
+
+/* Rooms Section */
+.checkout-modal-rooms-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkout-modal-rooms-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.checkout-modal-rooms-title {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+}
+
+.checkout-modal-room-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.checkout-modal-action-btn {
+  background: #F3F3E0;
+  border: 0.8px solid #133E87;
+  border-radius: 8px;
+  padding: 7px 15px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #133E87;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.checkout-modal-action-btn.outline {
+  border-color: rgba(19, 62, 135, 0.1);
+}
+
+.checkout-modal-action-btn:hover {
+  background: #e8e8d0;
+}
+
+.checkout-modal-action-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Rooms List */
+.checkout-modal-rooms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Room Card */
+.checkout-modal-room-card {
+  background: #FFFFFF;
+  border: 1.6px solid #CBDCEB;
+  border-radius: 10px;
+  padding: 17.6px;
+  display: flex;
+  gap: 12px;
+  transition: all 0.2s;
+}
+
+.checkout-modal-room-card.selected {
+  background: #CBDCEB;
+  border-color: #133E87;
+}
+
+/* Checkbox */
+.checkout-modal-room-checkbox {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  background: #133E87;
+  border: 0.8px solid #133E87;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 7.4px;
+  padding: 0;
+  transition: all 0.2s;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+}
+
+.checkout-modal-room-card:not(.selected) .checkout-modal-room-checkbox {
+  background: #FFFFFF;
+  border-color: #CBDCEB;
+}
+
+/* Room Content */
+.checkout-modal-room-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkout-modal-room-header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkout-modal-room-number-badge {
+  width: 40px;
+  height: 40px;
+  background: #133E87;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.checkout-modal-room-number-badge span {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #FFFFFF;
+}
+
+.checkout-modal-room-info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2.8px;
+  flex: 1;
+}
+
+.checkout-modal-room-name {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+}
+
+.checkout-modal-room-type-badge {
+  background: #608BC1;
+  border: 0.8px solid rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #FFFFFF;
+  width: fit-content;
+}
+
+/* Room Charges */
+.checkout-modal-room-charges {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkout-modal-charge-item {
+  background: #FFFFFF;
+  border-radius: 4px;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkout-modal-charge-item.main {
+  align-items: flex-start;
+}
+
+.checkout-modal-charge-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.checkout-modal-charge-label {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #133E87;
+  margin: 0;
+}
+
+.checkout-modal-charge-detail {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #608BC1;
+  margin: 0;
+}
+
+.checkout-modal-charge-amount {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #133E87;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.checkout-modal-service-name {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+}
+
+.checkout-modal-service-amount {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.checkout-modal-charge-item.total {
+  background: #F3F3E0;
+}
+
+.checkout-modal-total-label {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+}
+
+.checkout-modal-total-amount {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Divider */
+.checkout-modal-divider {
+  height: 1px;
+  background: rgba(19, 62, 135, 0.1);
+}
+
+/* Payment Notice */
+.checkout-modal-payment-notice {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.checkout-modal-payment-notice.info {
+  background: #E0F2FE;
+  border: 1px solid #0EA5E9;
+}
+
+.checkout-modal-payment-notice.warning {
+  background: #FEF3C7;
+  border: 1px solid #F59E0B;
+}
+
+.payment-notice-icon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.payment-notice-content {
+  flex: 1;
+}
+
+.payment-notice-title {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  margin: 0 0 4px 0;
+}
+
+.checkout-modal-payment-notice.info .payment-notice-title {
+  color: #0369A1;
+}
+
+.checkout-modal-payment-notice.warning .payment-notice-title {
+  color: #92400E;
+}
+
+.payment-notice-text {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  margin: 0;
+}
+
+.checkout-modal-payment-notice.info .payment-notice-text {
+  color: #075985;
+}
+
+.checkout-modal-payment-notice.warning .payment-notice-text {
+  color: #78350F;
+}
+
+.payment-notice-text strong {
+  font-weight: 600;
+}
+
+/* Total Section */
+.checkout-modal-total-section {
+  background: #CBDCEB;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkout-modal-total-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.checkout-modal-total-label-main {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #608BC1;
+  margin: 0;
+}
+
+.checkout-modal-total-rooms {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+}
+
+.checkout-modal-total-price {
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  color: #133E87;
+  margin: 0;
+  text-align: right;
+}
+
+/* Actions */
+.checkout-modal-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 0.8px solid #CBDCEB;
+}
+
+.checkout-modal-btn {
+  flex: 1;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 0.8px solid rgba(19, 62, 135, 0.1);
+}
+
+.checkout-modal-btn.cancel {
+  background: #F3F3E0;
+  color: #133E87;
+}
+
+.checkout-modal-btn.cancel:hover {
+  background: #e8e8d0;
+}
+
+.checkout-modal-btn.confirm {
+  background: #133E87;
+  color: #FFFFFF;
+  border-color: #133E87;
+}
+
+.checkout-modal-btn.confirm:hover:not(:disabled) {
+  background: #0f3270;
+}
+
+.checkout-modal-btn.confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Scrollbar */
+.checkout-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.checkout-modal::-webkit-scrollbar-track {
+  background: #F3F3E0;
+}
+
+.checkout-modal::-webkit-scrollbar-thumb {
+  background: #CBDCEB;
+  border-radius: 4px;
+}
+
+.checkout-modal::-webkit-scrollbar-thumb:hover {
+  background: #608BC1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .checkout-modal {
+    width: 100%;
+    max-height: 95vh;
+  }
+
+  .checkout-modal-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-modal-rooms-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .checkout-modal-room-actions {
+    width: 100%;
+  }
+
+  .checkout-modal-action-btn {
+    flex: 1;
+  }
+}

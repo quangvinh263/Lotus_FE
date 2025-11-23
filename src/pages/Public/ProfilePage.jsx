@@ -1,11 +1,11 @@
 import React from 'react';
 import '../../styles/ProfilePage.css';
-import Navbar from '../../components/NavBar';
-import Footer from '../../components/Footer';
-import ProfileHeader from '../../components/ProfileHeader';
-import PersonalInfo from '../../components/PersonalInfo';
+import Navbar from '../../components/Public/NavBar';
+import Footer from '../../components/Public/Footer';
+import ProfileHeader from '../../components/Public/ProfileHeader';
+import PersonalInfo from '../../components/Public/PersonalInfo';
+import BookingCard from '../../components/Public/BookingCard';
 import ChangePassword from '../../components/ChangePassword';
-import BookingCard from '../../components/BookingCard';
 import SettingIcon from '../../assets/icons/SettingIcon.svg';
 import ImageHome1 from '../../assets/images/ImageHome1.png';
 import ImageHome2 from '../../assets/images/ImageHome2.png';

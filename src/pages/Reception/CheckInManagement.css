@@ -1,0 +1,208 @@
+.checkin-management-page {
+  display: flex;
+  min-height: 100vh;
+  background: #F3F3E0;
+}
+
+.checkin-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 256px; /* Width của sidebar */
+}
+
+.checkin-content {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+.checkin-header {
+  margin-bottom: 24px;
+}
+
+.header-text h1 {
+  font-family: Arial;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 36px;
+  color: #133E87;
+  margin: 0 0 8px 0;
+}
+
+.header-text p {
+  font-family: Arial;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #608BC1;
+  margin: 0;
+}
+
+.checkin-container {
+  display: grid;
+  grid-template-columns: 713px 381px;
+  gap: 27px;
+}
+
+/* Bookings Section */
+.checkin-bookings-section {
+  background: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 659px;
+  max-height: 659px;
+  width: 713px;
+}
+
+.section-header h3 {
+  font-family: Arial;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  margin: 0;
+}
+
+.checkin-search-container {
+  position: relative;
+}
+
+.checkin-search-input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  background: #FFFFFF;
+  border: 0.8px solid rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #133E87;
+  outline: none;
+  height: 36px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.checkin-search-input:focus {
+  border-color: #608BC1;
+  box-shadow: 0px 2px 4px rgba(96, 139, 193, 0.2);
+}
+
+.checkin-search-input::placeholder {
+  color: #99A1AF;
+}
+
+.checkin-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Rooms Section */
+.checkin-rooms-section {
+  background: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 14px;
+  padding: 24.8px 31px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  min-height: 659px;
+  max-height: 659px;
+  width: 381px;
+  overflow: hidden;
+}
+
+.checkin-rooms-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Scrollbar Styling */
+.bookings-list::-webkit-scrollbar,
+.checkin-rooms-grid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bookings-list::-webkit-scrollbar-track,
+.checkin-rooms-grid::-webkit-scrollbar-track {
+  background: #F3F3E0;
+  border-radius: 3px;
+}
+
+.bookings-list::-webkit-scrollbar-thumb,
+.checkin-rooms-grid::-webkit-scrollbar-thumb {
+  background: #CBDCEB;
+  border-radius: 3px;
+}
+
+.bookings-list::-webkit-scrollbar-thumb:hover,
+.checkin-rooms-grid::-webkit-scrollbar-thumb:hover {
+  background: #608BC1;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .checkin-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .checkin-bookings-section,
+  .checkin-rooms-section {
+    width: 100%;
+    height: auto;
+  }
+  
+  .checkin-rooms-section {
+    order: 2;
+  }
+  
+  .checkin-rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(319px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .checkin-content {
+    padding: 16px;
+  }
+  
+  .header-text h1 {
+    font-size: 20px;
+    line-height: 28px;
+  }
+  
+  .header-text p {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  .checkin-bookings-section,
+  .checkin-rooms-section {
+    padding: 16px;
+  }
+}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import NavBar from '../../components/NavBar';
-import BookingConfirmationPopup from '../../components/BookingConfirmationPopup';
+import NavBar from '../../components//Public/NavBar';
+import BookingConfirmationPopup from '../../components/Public/BookingConfirmationPopup';
 import '../../styles/PaymentPage.css';
 
 function PaymentPage() {

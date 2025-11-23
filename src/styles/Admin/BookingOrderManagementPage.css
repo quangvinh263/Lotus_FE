@@ -1,0 +1,330 @@
+/* Booking Order Management Page Styles */
+
+.admin-booking-order-page {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F3F3E0;
+  font-family: Arial, sans-serif;
+}
+
+.admin-booking-order-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-booking-order-main {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Header Section */
+.admin-booking-order-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-booking-order-title {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  color: #133E87;
+  margin: 0;
+}
+
+.admin-booking-order-subtitle {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #608BC1;
+  margin: 0;
+}
+
+/* Stats Cards */
+.admin-booking-order-stats {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.admin-booking-order-stat-card {
+  background: #FFFFFF;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 10px;
+  padding: 16.8px 16.8px 16.8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-booking-order-stat-label {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #608BC1;
+  margin: 0;
+}
+
+.admin-booking-order-stat-value {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  margin: 0;
+}
+
+/* Filter Buttons */
+.admin-booking-order-filter-container {
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.admin-booking-order-filter-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-booking-order-filter-btn {
+  padding: 8px 16px;
+  background: #F3F3E0;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-booking-order-filter-btn.active {
+  background: #133E87;
+  color: #FFFFFF;
+}
+
+.admin-booking-order-filter-btn:hover {
+  opacity: 0.8;
+}
+
+/* Search Section */
+.admin-booking-order-search-container {
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.admin-booking-order-search-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.admin-booking-order-search-input {
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  border: 0.8px solid #CBDCEB;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #0A0A0A;
+  background: #FFFFFF;
+}
+
+.admin-booking-order-search-input::placeholder {
+  color: rgba(10, 10, 10, 0.5);
+}
+
+.admin-booking-order-search-input:focus {
+  outline: none;
+  border-color: #133E87;
+}
+
+.admin-booking-order-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+
+.admin-booking-order-filter-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #CBDCEB;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-booking-order-filter-action-btn:hover {
+  opacity: 0.8;
+}
+
+.admin-booking-order-filter-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Table Container */
+.admin-booking-order-table-container {
+  background: #FFFFFF;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.admin-booking-order-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-booking-order-table thead {
+  background: #F3F3E0;
+}
+
+.admin-booking-order-table th {
+  padding: 12px 24px;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #133E87;
+}
+
+.admin-booking-order-table tbody tr {
+  border-bottom: 0.8px solid #CBDCEB;
+  transition: background-color 0.2s;
+}
+
+.admin-booking-order-table tbody tr:hover {
+  background-color: #F7F9FC;
+}
+
+.admin-booking-order-table td {
+  padding: 16px 24px;
+  vertical-align: middle;
+}
+
+/* Table Cell Styles */
+.admin-booking-order-cell-primary {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+}
+
+.admin-booking-order-cell-secondary {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #608BC1;
+}
+
+.admin-booking-order-cell-tertiary {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #608BC1;
+}
+
+.admin-booking-order-cell-center {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+  text-align: center;
+}
+
+.admin-booking-order-cell-amount {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #133E87;
+}
+
+.admin-booking-order-cell-payment {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+/* Status Badge */
+.admin-booking-order-status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+/* Action Button */
+.admin-booking-order-action-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin: 0 auto;
+}
+
+.admin-booking-order-action-btn:hover {
+  opacity: 0.7;
+}
+
+.admin-booking-order-action-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+  .admin-booking-order-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-booking-order-main {
+    padding: 16px;
+  }
+
+  .admin-booking-order-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-booking-order-filter-buttons {
+    flex-wrap: wrap;
+  }
+
+  .admin-booking-order-search-container {
+    flex-direction: column;
+  }
+
+  .admin-booking-order-table-container {
+    overflow-x: auto;
+  }
+
+  .admin-booking-order-table {
+    min-width: 1000px;
+  }
+}

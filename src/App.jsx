@@ -13,6 +13,18 @@ import BookingPage from './pages/Public/BookingPage'
 import GuestInfoPage from './pages/Public/GuestInfoPage'
 import PaymentPage from './pages/Public/PaymentPage'
 import ReceptionDashboard from './pages/Reception/ReceptionDashboard'
+import ServiceManagementPage from './pages/Reception/ServiceManagementPage'
+import BookingManagementPage from './pages/Reception/BookingManagementPage'
+import CreateBookingPage from './pages/Reception/CreateBookingPage'
+import CheckOutManagement from './pages/Reception/CheckOutManagement'
+import CheckInManagement from './pages/Reception/CheckInManagement';
+import DashboardPage from './pages/Admin/DashboardPage';
+import EmployeeManagementPage from './pages/Admin/EmployeeManagementPage';
+import RoomManagementPage from './pages/Admin/RoomManagementPage';
+import BookingOrderManagementPage from './pages/Admin/BookingOrderManagementPage';
+import CustomerManagementPage from './pages/Admin/CustomerManagementPage';
+import AdminServiceManagementPage from './pages/Admin/ServiceManagementPage';
+import RevenueReportPage from './pages/Admin/RevenueReportPage';
 
 
 function App() {
@@ -34,6 +46,20 @@ function App() {
         
         {/* Reception Routes */}
         <Route path="/reception/dashboard" element={<ReceptionDashboard />} />
+        <Route path="/reception/services" element={<ServiceManagementPage />} />
+        <Route path="/reception/booking-management" element={<BookingManagementPage />} />
+        <Route path="/reception/create-booking" element={<CreateBookingPage />} />
+        <Route path="/reception/checkout" element={<CheckOutManagement />} />
+        <Route path="/reception/checkin" element={<CheckInManagement />} />
+        
+        {/* Admin Routes */}
+        <Route path="/admin/dashboard" element={<DashboardPage />} />
+        <Route path="/admin/employees" element={<EmployeeManagementPage />} />
+        <Route path="/admin/rooms" element={<RoomManagementPage />} />
+        <Route path="/admin/bookings" element={<BookingOrderManagementPage />} />
+        <Route path="/admin/customers" element={<CustomerManagementPage />} />
+        <Route path="/admin/services" element={<AdminServiceManagementPage />} />
+        <Route path="/admin/revenue" element={<RevenueReportPage />} />
       </Routes>
  </Router>
   )

@@ -1,0 +1,422 @@
+/* Service Modal Overlay */
+.sm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+}
+
+/* Modal Container */
+.sm-modal {
+  position: relative;
+  width: 512px;
+  max-height: 90vh;
+  background: #F3F3E0;
+  border: 0.8px solid rgba(19, 62, 135, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1), 
+              0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+/* Close Button */
+.sm-close-btn {
+  position: absolute;
+  top: 16.8px;
+  right: 16.8px;
+  width: 16px;
+  height: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  opacity: 0.7;
+}
+
+.sm-close-btn:hover {
+  opacity: 1;
+}
+
+/* Header */
+.sm-header {
+  padding: 24.8px 24.8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sm-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1em;
+  color: #133E87;
+  margin: 0;
+}
+
+.sm-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+  margin: 0;
+}
+
+/* Content */
+.sm-content {
+  padding: 0 24.8px 24.8px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Add Service Section */
+.sm-add-section {
+  background: #F3F3E0;
+  border-radius: 10px;
+  padding: 16px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sm-section-title {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #133E87;
+  margin: 0;
+}
+
+/* Form */
+.sm-form {
+  display: flex;
+  gap: 16px;
+}
+
+.sm-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sm-form-group:first-child {
+  flex: 1;
+  max-width: 281.6px;
+}
+
+.sm-form-group:last-child {
+  width: 132.8px;
+}
+
+.sm-label {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1em;
+  color: #133E87;
+}
+
+.sm-select-wrapper {
+  position: relative;
+}
+
+.sm-select {
+  width: 100%;
+  height: 36px;
+  padding: 4px 36px 4px 12px;
+  background: #FFFFFF;
+  border: 0.8px solid transparent;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.sm-select:focus {
+  border-color: #608BC1;
+}
+
+.sm-select option {
+  color: #133E87;
+}
+
+.sm-select-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.sm-input {
+  width: 100%;
+  height: 36px;
+  padding: 4px 12px;
+  background: #FFFFFF;
+  border: 0.8px solid transparent;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #133E87;
+  outline: none;
+}
+
+.sm-input:focus {
+  border-color: #608BC1;
+}
+
+.sm-add-btn {
+  width: 100%;
+  height: 36px;
+  background: #133E87;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 16px;
+}
+
+.sm-add-btn:hover {
+  background: #0F2F6B;
+}
+
+/* Services Section */
+.sm-services-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sm-table-wrapper {
+  border: 0.8px solid #CBDCEB;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.sm-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sm-thead {
+  background: #F3F3E0;
+}
+
+.sm-tbody {
+  background: #FFFFFF;
+}
+
+.sm-tr {
+  border-bottom: 0.8px solid rgba(19, 62, 135, 0.1);
+}
+
+.sm-tr:last-child {
+  border-bottom: none;
+}
+
+.sm-th,
+.sm-td {
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+}
+
+.sm-th {
+  height: 40px;
+  color: #133E87;
+}
+
+.sm-th-name {
+  width: 94.97px;
+  text-align: left;
+}
+
+.sm-th-price {
+  width: 105.13px;
+  text-align: center;
+}
+
+.sm-th-qty {
+  width: 79.43px;
+  text-align: center;
+}
+
+.sm-th-total {
+  width: 105.13px;
+  text-align: right;
+}
+
+.sm-th-action {
+  width: 76.15px;
+  text-align: right;
+}
+
+.sm-td {
+  color: #133E87;
+}
+
+.sm-td-name {
+  text-align: left;
+}
+
+.sm-td-price {
+  text-align: right;
+  color: #608BC1;
+}
+
+.sm-td-qty {
+  text-align: center;
+}
+
+.sm-qty-badge {
+  display: inline-block;
+  padding: 2px 8.8px;
+  border: 0.8px solid #608BC1;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.333em;
+  color: #608BC1;
+  text-align: center;
+}
+
+.sm-td-total {
+  text-align: right;
+}
+
+.sm-td-action {
+  text-align: center;
+}
+
+.sm-delete-btn {
+  width: 36px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.sm-delete-btn:hover {
+  opacity: 0.7;
+}
+
+.sm-delete-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.sm-td-empty {
+  text-align: center;
+  padding: 24px 8px;
+  color: #608BC1;
+}
+
+/* Total Row */
+.sm-tr-total {
+  background: #CBDCEB !important;
+  border-bottom: none !important;
+}
+
+.sm-td-total-label {
+  text-align: left;
+  font-weight: 400;
+  color: #133E87;
+}
+
+.sm-td-total-amount {
+  text-align: right;
+  font-weight: 400;
+  color: #133E87;
+}
+
+/* Actions */
+.sm-actions {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24.8px 24.8px;
+  border-top: 0.8px solid #CBDCEB;
+}
+
+.sm-btn {
+  flex: 1;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.428em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.sm-btn-cancel {
+  background: #FFFFFF;
+  color: #133E87;
+  border: 1px solid #133E87;
+}
+
+.sm-btn-cancel:hover {
+  background: #F3F3E0;
+}
+
+.sm-btn-save {
+  background: #133E87;
+  color: #FFFFFF;
+}
+
+.sm-btn-save:hover {
+  background: #0F2F6B;
+}
+
+/* Scrollbar */
+.sm-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sm-modal::-webkit-scrollbar-track {
+  background: rgba(19, 62, 135, 0.05);
+  border-radius: 3px;
+}
+
+.sm-modal::-webkit-scrollbar-thumb {
+  background: rgba(19, 62, 135, 0.2);
+  border-radius: 3px;
+}
+
+.sm-modal::-webkit-scrollbar-thumb:hover {
+  background: rgba(19, 62, 135, 0.3);
+}
