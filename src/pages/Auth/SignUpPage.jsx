@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import '../../styles/SignUp.css';
-import SignUpImage from '../../assets/images/SignUpImage.png';
+import '../../styles/SignUp.css'; // ✅ Dùng relative path thay vì alias
+import SignUpImage from '../../assets/images/SignUpImage.png'; // ✅ Sửa cả import này
+import { registerUser } from '../../api/authApi'; // ✅ Và cả import này
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+
+const isPasswordValid = (password) => {
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+  return passwordRegex.test(password);
+};
+
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -13,6 +23,9 @@ const SignUp = () => {
     showPassword: false,
   });
 
+const [errorMessage, setErrorMessage] = useState("");
+const [isLoading, setIsLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -21,21 +34,39 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
     
-    // Set login state in localStorage after successful signup
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userName', formData.username || formData.email.split('@')[0]);
-    
-    // After successful signup, navigate to profile page
-    navigate('/profile');
-  };
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Mật khẩu xác nhận không khớp!");
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage("");
+
+    const result = await registerUser({
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+    });
+
+    setIsLoading(false);
+
+    if (result.success) {
+      toast.success(result.message, {
+    onClose: () => navigate("/signin"),
+    autoClose: 2000, // thời gian toast hiển thị
+  });
+    } else {
+      toast.error(result.message);
+    }
+};
 
   return (
+    <>
     <div className="signup-container">
+      
       <div className="signup-card">
         <div className="signup-content">
           <div className="signup-form-section">
@@ -81,11 +112,16 @@ const SignUp = () => {
                       <label className="signup-field-label">Password</label>
                       <input
                         type={formData.showPassword ? "text" : "password"}
-                        name="password"
-                        className="signup-text-input"
-                        value={formData.password}
-                        onChange={handleChange}
-                        placeholder=""
+                            name="password"
+                            className={`signup-text-input ${formData.password && !isPasswordValid(formData.password) ? "invalid" : ""}`}
+                            value={formData.password}
+                            onChange={handleChange}
+                            onBlur={(e) => {
+                              if (!isPasswordValid(e.target.value)) {
+                                toast.error("Mật khẩu phải có ít nhất 8 ký tự, gồm chữ, số và ký tự đặc biệt!");
+                              }
+                            }}
+                            placeholder=""
                       />
                     </div>
 
@@ -121,12 +157,22 @@ const SignUp = () => {
 
               {/* CTA Buttons */}
               <div className="cta-section">
-                <button type="button" className="signin-instead-btn">
-                  Sign in instead
+                <button
+                    type="button"
+                    className="signin-instead-btn"
+                    onClick={() => navigate('/signin')}
+                  >
+                    Sign in instead
+                  </button>
+
+                <button
+                  type="submit"
+                  className="create-account-btn"
+                  disabled={isLoading} // ⛔ Disable khi đang gửi request
+                >
+                  {isLoading ? "Đang tạo tài khoản..." : "Create an account"}
                 </button>
-                <button type="submit" className="create-account-btn">
-                  Create an account
-                </button>
+
               </div>
             </form>
           </div>
@@ -140,6 +186,17 @@ const SignUp = () => {
         </div>
       </div>
     </div>
+    <ToastContainer 
+      position="top-center"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover />
+    </>
   );
 };
 
