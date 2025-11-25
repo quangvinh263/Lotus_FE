@@ -68,6 +68,7 @@ export const loginUser = async (data) => {
       token: response.data.token,
       refreshToken: response.data.refreshToken,
       accountId: response.data.accountID,
+      isNewUser: response.data.message?.includes("complete customer profile"),
     };
   }
   catch (error) {

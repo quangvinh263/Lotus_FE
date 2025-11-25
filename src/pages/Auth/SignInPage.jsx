@@ -61,18 +61,22 @@ const SignIn = () => {
       password: formData.password,
     });
     setIsLoading(false);
-    // vu  dep trai
     if (result?.success) {
       toast.success(result.message);
       const decodedToken = jwtDecode(result.token);
       const userRole = decodedToken.role;
-      console.log("User role from token:", userRole);
+      
+      result.accountId = result.accountID || result.accountId;
+      console.log("User id from token:", result.accountId);
       result.role = userRole; // Thêm role vào đối tượng result
       login(result);
       // Save user data to context or state
       if (userRole == 'Receptionist') {
         navigate('/about');
         return;
+      }
+      else if (result.isNewUser) {
+        navigate('/complete-profile');
       }
       else{
       navigate('/profile');
@@ -106,6 +110,7 @@ const SignIn = () => {
         const decodedToken = jwtDecode(result.token);
         const userRole = decodedToken.role;
         console.log("User role from token:", userRole);
+        result.accountId = result.accountID || result.accountId;
         result.role = userRole;
         login(result);
 
@@ -157,6 +162,7 @@ const SignIn = () => {
         const decodedToken = jwtDecode(result.token);
         const userRole = decodedToken.role;
         console.log("User role from token:", userRole);
+        result.accountId = result.accountID || result.accountId;
         result.role = userRole;
         login(result);
         if (userRole === 'Receptionist') {
