@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../styles/Admin/DashboardPage.css';
 import AdminSidebar from '../../components/Admin/AdminSidebar';
 import AdminHeader from '../../components/Admin/AdminHeader';
@@ -8,6 +8,7 @@ import MoneyIcon from '../../assets/icons/MoneyIcon.svg';
 import ReservationIcon from '../../assets/icons/ReservationIcon.svg';
 import CalendarIcon from '../../assets/icons/CalenderIcon.svg';
 import CustomerIcon from '../../assets/icons/CustomerIcon.svg';
+import signalRService from '../../services/signalRService';
 import {
   BarChart,
   Bar,
@@ -21,48 +22,159 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
+const now = new Date();
+const currentMonthNumber = now.getMonth() + 1; // 1-12
+const currentYear = now.getFullYear();
+const currentMonth = now.toLocaleString('vi-VN', { month: 'long', year: 'numeric' });
+
+
 const DashboardPage = () => {
-  // Dữ liệu cho biểu đồ doanh thu 6 tháng
-  const revenueData = [
-    { month: 'T1', value: 350 },
-    { month: 'T2', value: 380 },
-    { month: 'T3', value: 420 },
-    { month: 'T4', value: 500 },
-    { month: 'T5', value: 480 },
-    { month: 'T6', value: 550 }
-  ];
+  const getMonthLabel = (offset) => {
+    const monthIndex = ((currentMonthNumber - 1 + offset) % 12 + 12) % 12;
+    return `T${monthIndex + 1}`;
+  };
 
-  // Dữ liệu cho biểu đồ tỷ lệ lấp đầy theo tuần
-  const occupancyData = [
-    { day: 'T2', value: 75 },
-    { day: 'T3', value: 82 },
-    { day: 'T4', value: 88 },
-    { day: 'T5', value: 91 },
-    { day: 'T6', value: 85 },
-    { day: 'T7', value: 78 },
-    { day: 'CN', value: 80 }
-  ];
+  // ✅ State cho Stats Cards
+  const [statsData, setStatsData] = useState({
+    totalEmployees: 0,
+    totalRooms: 0,
+    monthlyRevenue: 0,
+    occupancyRate: 0,
+    newBookings: 0,
+    totalCustomers: 0,
+    totalCustomers: 0,
+    revenueGrowthPercent: 0, 
+    occupancyGrowthPercent: 0, 
+    bookingGrowthPercent: 0
+  });
+  
+  // ✅ State cho dữ liệu real-time
+  const [revenueData, setRevenueData] = useState([
+    { month: getMonthLabel(-5), value: 0 },
+    { month: getMonthLabel(-4), value: 0 },
+    { month: getMonthLabel(-3), value: 0 },
+    { month: getMonthLabel(-2), value: 0 },
+    { month: getMonthLabel(-1), value: 0 },
+    { month: getMonthLabel(0), value: 0 }
+  ]);
 
-  // Dữ liệu cho biểu đồ thống kê đặt phòng
-  const bookingData = [
-    { month: 'May', value: 85 },
-    { month: 'Jun', value: 70 },
-    { month: 'Jul', value: 90 },
-    { month: 'Aug', value: 60 },
-    { month: 'Sep', value: 95 },
-    { month: 'Oct', value: 88 },
-    { month: 'Nov', value: 92 },
-    { month: 'Dec', value: 85 },
-    { month: 'Jan', value: 78 },
-    { month: 'Feb', value: 82 }
-  ];
+  const [occupancyData, setOccupancyData] = useState([
+    { day: 'T2', value: 0 },
+    { day: 'T3', value: 0 },
+    { day: 'T4', value: 0 },
+    { day: 'T5', value: 0 },
+    { day: 'T6', value: 0 },
+    { day: 'T7', value: 0 },
+    { day: 'CN', value: 0 }
+  ]);
 
+  const [bookingData, setBookingData] = useState([
+    { month: 'Jan', value: 0 },
+    { month: 'Feb', value: 0 },
+    { month: 'Mar', value: 0 },
+    { month: 'Apr', value: 0 },
+    { month: 'May', value: 0 },
+    { month: 'Jun', value: 0 },
+    { month: 'Jul', value: 0 },
+    { month: 'Aug', value: 0 },
+    { month: 'Sep', value: 0 },
+    { month: 'Oct', value: 0 },
+    { month: 'Nov', value: 0 },
+    { month: 'Dec', value: 0 }
+  ]);
+
+  const [lastUpdate, setLastUpdate] = useState(null);
+
+  // ✅ Kết nối SignalR khi component mount
+  useEffect(() => {
+    const connectSignalR = async () => {
+      await signalRService.startConnection();
+
+      // Lắng nghe cập nhật từ server
+      signalRService.onAnalyticsUpdate((response) => {
+        
+        const data = response.data;
+        setLastUpdate(response.timestamp);
+        console.log('🔍 Backend fields:', {
+    totalEmployees: data.totalEmployees,
+    totalRooms: data.totalRooms,
+    monthlyRevenue: data.monthlyRevenue,
+    monthlyRevenueGrowthPercent: data.revenueGrowthPercent,
+    currentOccupancyRate: data.currentOccupancyRate,
+    occupancyGrowthPercent: data.occupancyGrowthPercent,
+    newBookingsThisMonth: data.newBookingsThisMonth, 
+    bookingGrowthPercent: data.bookingGrowthPercent,
+    totalCustomers: data.totalCustomers
+  });
+        // ✅ Cập nhật Stats Cards
+        setStatsData({
+          totalEmployees: data.totalEmployees || 0,
+          totalRooms: data.totalRooms || 0,
+          monthlyRevenue: data.monthlyRevenue || 0,
+          occupancyRate: data.currentOccupancyRate || 0,
+          newBookings: data.newBookingsThisMonth || 0,
+          totalCustomers: data.totalCustomers || 0,
+          revenueGrowthPercent: data.revenueGrowthPercent ?? 0, // ✅ Đúng field
+          occupancyGrowthPercent: data.occupancyGrowthPercent ?? 0,
+          bookingGrowthPercent: data.bookingGrowthPercent ?? 0
+        });
+
+        // ✅ Cập nhật revenue data
+        setRevenueData([
+          { month: getMonthLabel(-5), value: data.revenueMonth1 || 0 },
+          { month: getMonthLabel(-4), value: data.revenueMonth2 || 0 },
+          { month: getMonthLabel(-3), value: data.revenueMonth3 || 0 },
+          { month: getMonthLabel(-2), value: data.revenueMonth4 || 0 },
+          { month: getMonthLabel(-1), value: data.revenueMonth5 || 0 },
+          { month: getMonthLabel(0), value: data.revenueMonth6 || 0 }
+        ]);
+
+        // ✅ Cập nhật occupancy data
+        setOccupancyData([
+          { day: 'T2', value: data.occupancyWeek2 || 0 },
+          { day: 'T3', value: data.occupancyWeek3 || 0 },
+          { day: 'T4', value: data.occupancyWeek4 || 0 },
+          { day: 'T5', value: data.occupancyWeek5 || 0 },
+          { day: 'T6', value: data.occupancyWeek6 || 0 },
+          { day: 'T7', value: data.occupancyWeek7 || 0 },
+          { day: 'CN', value: data.occupancyWeekCN || 0 }
+        ]);
+
+        // ✅ Cập nhật booking data
+        setBookingData([
+          { month: 'Jan', value: data.bookingJan || 0 },
+          { month: 'Feb', value: data.bookingFeb || 0 },
+          { month: 'Mar', value: data.bookingMar || 0 },
+          { month: 'Apr', value: data.bookingApr || 0 },
+          { month: 'May', value: data.bookingMay || 0 },
+          { month: 'Jun', value: data.bookingJun || 0 },
+          { month: 'Jul', value: data.bookingJul || 0 },
+          { month: 'Aug', value: data.bookingAug || 0 },
+          { month: 'Sep', value: data.bookingSep || 0 },
+          { month: 'Oct', value: data.bookingOct || 0 },
+          { month: 'Nov', value: data.bookingNov || 0 },
+          { month: 'Dec', value: data.bookingDec || 0 }
+        ]);
+
+        if (response.message) {
+          console.log('📢 Notification:', response.message);
+        }
+      });
+    };
+
+    connectSignalR();
+
+    return () => {
+      signalRService.stopConnection();
+    };
+  }, []);
+
+  // ✅ Stats Cards dùng state
   const statsCards = [
     {
       id: 1,
       title: 'Tổng nhân viên',
-      value: '45',
-      change: '+5%',
+      value: statsData.totalEmployees,
       changeType: 'positive',
       icon: PeopleIcon,
       iconClass: 'icon-people'
@@ -70,17 +182,16 @@ const DashboardPage = () => {
     {
       id: 2,
       title: 'Tổng phòng',
-      value: '100',
-      change: '0%',
+      value: statsData.totalRooms,
       changeType: 'neutral',
       icon: HotelIcon,
       iconClass: 'icon-room'
     },
     {
       id: 3,
-      title: 'Doanh thu tháng',
-      value: '450M VNĐ',
-      change: '+12%',
+      title: `Doanh thu ${currentMonth}`,
+      value: `${statsData.monthlyRevenue}M VNĐ`,
+      change: `${statsData.revenueGrowthPercent.toFixed(1)}%`,
       changeType: 'positive',
       icon: MoneyIcon,
       iconClass: 'icon-money'
@@ -88,8 +199,8 @@ const DashboardPage = () => {
     {
       id: 4,
       title: 'Tỷ lệ lấp đầy',
-      value: '86%',
-      change: '+8%',
+      value: `${statsData.occupancyRate}%`,
+      change: `${statsData.occupancyGrowthPercent.toFixed(1)}%`,
       changeType: 'positive',
       icon: ReservationIcon,
       iconClass: 'icon-reservation'
@@ -97,8 +208,8 @@ const DashboardPage = () => {
     {
       id: 5,
       title: 'Đặt phòng mới',
-      value: '156',
-      change: '+18%',
+      value: statsData.newBookings,
+      change: `${statsData.bookingGrowthPercent.toFixed(1)}%`,
       changeType: 'positive',
       icon: CalendarIcon,
       iconClass: 'icon-calendar'
@@ -106,8 +217,7 @@ const DashboardPage = () => {
     {
       id: 6,
       title: 'Khách hàng',
-      value: '1,234',
-      change: '+15%',
+      value: statsData.totalCustomers.toLocaleString(),
       changeType: 'positive',
       icon: CustomerIcon,
       iconClass: 'icon-customer'
@@ -122,7 +232,12 @@ const DashboardPage = () => {
         <div className="admin-dashboard-main">
           <div className="admin-dashboard-header">
             <h1 className="admin-dashboard-title">Tổng quan</h1>
-            <p className="admin-dashboard-subtitle">Thống kê và quản lý tổng thể khách sạn</p>
+            <p className="admin-dashboard-subtitle">
+              Thống kê và quản lý tổng thể khách sạn
+              {lastUpdate && <span style={{ marginLeft: '10px', fontSize: '12px', color: '#666' }}>
+                (Cập nhật lúc: {new Date(lastUpdate).toLocaleTimeString()})
+              </span>}
+            </p>
           </div>
 
           {/* Stats Cards */}
