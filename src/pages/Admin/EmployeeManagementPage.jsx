@@ -34,6 +34,7 @@ const EmployeeManagementPage = () => {
             position: emp.position || 'Nhân viên',
             email: emp.email,
             phone: emp.phoneNumber,
+            isActive: emp.isActive,
             // Format ngày tháng từ ISO string sang dd/mm/yyyy
             joinDate: emp.createdAt ? new Date(emp.createdAt).toLocaleDateString('vi-VN') : 'N/A',
           }));
@@ -46,7 +47,7 @@ const EmployeeManagementPage = () => {
             },
             {
               label: 'Đang làm việc',
-              value: '42',
+              value: result.employees.filter(emp => emp.isActive).length.toString(),
               color: '#00A63E'
             },
             {
