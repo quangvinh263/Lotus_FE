@@ -16,7 +16,7 @@ import { getAllEmployees } from '../../api/employeeApi';
 
 const EmployeeManagementPage = () => {
   const [employeeList, setEmployeeList] = useState([]);
-  const [stats, setStats] = useState([]);
+  const [stats, setStats] = useState([]);``
   const [isLoading, setIsLoading] = useState(false); // Thêm dòng này
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -182,6 +182,9 @@ const EmployeeManagementPage = () => {
                     <h3 className="admin-employee-name">{employee.name}</h3>
                     <p className="admin-employee-position">{employee.position}</p>
                   </div>
+                  <span className={`admin-employee-status ${employee.isActive ? 'active' : 'inactive'}`}>
+                    {employee.isActive ? 'Đang làm việc' : 'Đã nghỉ'}
+                  </span>
                 </div>
 
                 <div className="admin-employee-card-details">
