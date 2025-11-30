@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import '../../styles/FirstTimePersonalInfo.css';
 import { useNavigate } from 'react-router-dom';
 import MailIcon from '../../assets/icons/MailIcon.svg';
@@ -7,18 +7,22 @@ import LocationIcon from '../../assets/icons/LocationIcon.svg';
 import PersonIcon from '../../assets/icons/PersonIcon.svg';
 import CalenderIcon from '../../assets/icons/CalenderIcon.svg';
 import GenderIcon from '../../assets/icons/GenderIcon.svg';
+import { AuthContext } from '../../context/AuthContext';
+import { createPersonalInfo } from '../../api/customerApi';
+
 
 const FirstTimePersonalInfoPage = () => {
   const navigate = useNavigate();
+  const { auth } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    address: '',
-    dateOfBirth: '',
-    gender: ''
+    FullName: '',
+    Phone: '',
+    Address: '',
+    DateOfBirth: '',
+    Gender: ''
   });
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,48 +42,68 @@ const FirstTimePersonalInfoPage = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required';
+    if (!formData.FullName.trim()) {
+      newErrors.FullName = 'Full name is required';
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.email)) {
-        newErrors.email = 'Please enter a valid email address';
-      }
+    if (!formData.Phone.trim()) {
+      newErrors.Phone = 'Phone number is required';
     }
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
+    if (!formData.Address.trim()) {
+      newErrors.Address = 'Address is required';
     }
 
-    if (!formData.address.trim()) {
-      newErrors.address = 'Address is required';
+    if (!formData.DateOfBirth) {
+      newErrors.DateOfBirth = 'Date of birth is required';
     }
 
-    if (!formData.dateOfBirth) {
-      newErrors.dateOfBirth = 'Date of birth is required';
-    }
-
-    if (!formData.gender) {
-      newErrors.gender = 'Gender is required';
+    if (!formData.Gender) {
+      newErrors.Gender = 'Gender is required';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     
-    if (validateForm()) {
-      // TODO: Add API call to save personal information
-      console.log('Saving personal information:', formData);
-      
-      // Navigate to home page or dashboard
-      navigate('/');
+    // ✅ Debug: Xem user có gì
+    console.log('👤 Full user object:', auth);
+    console.log('🆔 Account ID:', auth?.accountId);
+    console.log('🔑 All user keys:', auth ? Object.keys(auth) : 'auth is null');
+    const accountId = auth?.accountId;
+    if (!validateForm()) {
+      return;
+    }
+    setIsLoading(true);
+    
+    
+    if (!accountId) {
+      console.error('❌ Cannot find account ID in user object');
+      alert('Account ID not found. Please login again.');
+      setIsLoading(false);
+      navigate('/signin');
+      return;
+    }
+
+    console.log('✅ Using account ID:', accountId);
+
+    try {
+      const result = await createPersonalInfo(accountId, formData);
+      setIsLoading(false);
+
+      if (result?.success) {
+        alert('Profile completed successfully!');
+        navigate('/');
+      } else {
+        alert(result?.message || 'An error occurred while saving your information.');
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error('Error:', error);
+      alert('Failed to save profile. Please try again.');
     }
   };
 
@@ -107,32 +131,16 @@ const FirstTimePersonalInfoPage = () => {
               </label>
               <input
                 type="text"
-                name="fullName"
-                value={formData.fullName}
+                name="FullName"
+                value={formData.FullName}
                 onChange={handleInputChange}
                 placeholder="Enter your full name"
-                className={errors.fullName ? 'ftpi-input-error' : ''}
+                className={errors.FullName ? 'ftpi-input-error' : ''}
               />
-              {errors.fullName && <span className="ftpi-error-text">{errors.fullName}</span>}
+              {errors.FullName && <span className="ftpi-error-text">{errors.FullName}</span>}
             </div>
 
-            {/* Email */}
-            <div className="ftpi-form-field ftpi-full-width">
-              <label>
-                <img src={MailIcon} alt="Email" className="ftpi-field-icon" />
-                <span>Email Address</span>
-                <span className="ftpi-required">*</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="Enter your email address"
-                className={errors.email ? 'ftpi-input-error' : ''}
-              />
-              {errors.email && <span className="ftpi-error-text">{errors.email}</span>}
-            </div>
+
 
             {/* Phone */}
             <div className="ftpi-form-field ftpi-full-width">
@@ -143,13 +151,13 @@ const FirstTimePersonalInfoPage = () => {
               </label>
               <input
                 type="tel"
-                name="phone"
-                value={formData.phone}
+                name="Phone"
+                value={formData.Phone}
                 onChange={handleInputChange}
-                placeholder="Enter your phone number"
-                className={errors.phone ? 'ftpi-input-error' : ''}
+                placeholder="Enter your Phone number"
+                className={errors.Phone ? 'ftpi-input-error' : ''}
               />
-              {errors.phone && <span className="ftpi-error-text">{errors.phone}</span>}
+              {errors.Phone && <span className="ftpi-error-text">{errors.Phone}</span>}
             </div>
 
             {/* Address */}
@@ -161,13 +169,13 @@ const FirstTimePersonalInfoPage = () => {
               </label>
               <input
                 type="text"
-                name="address"
-                value={formData.address}
+                name="Address"
+                value={formData.Address}
                 onChange={handleInputChange}
-                placeholder="Enter your street address"
-                className={errors.address ? 'ftpi-input-error' : ''}
+                placeholder="Enter your street Address"
+                className={errors.Address ? 'ftpi-input-error' : ''}
               />
-              {errors.address && <span className="ftpi-error-text">{errors.address}</span>}
+              {errors.Address && <span className="ftpi-error-text">{errors.Address}</span>}
             </div>
 
             {/* Date of Birth and Gender */}
@@ -179,12 +187,12 @@ const FirstTimePersonalInfoPage = () => {
               </label>
               <input
                 type="date"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
+                name="DateOfBirth"
+                value={formData.DateOfBirth}
                 onChange={handleInputChange}
-                className={errors.dateOfBirth ? 'ftpi-input-error' : ''}
+                className={errors.DateOfBirth ? 'ftpi-input-error' : ''}
               />
-              {errors.dateOfBirth && <span className="ftpi-error-text">{errors.dateOfBirth}</span>}
+              {errors.DateOfBirth && <span className="ftpi-error-text">{errors.DateOfBirth}</span>}
             </div>
 
             <div className="ftpi-form-field">
@@ -194,17 +202,17 @@ const FirstTimePersonalInfoPage = () => {
                 <span className="ftpi-required">*</span>
               </label>
               <select
-                name="gender"
-                value={formData.gender}
+                name="Gender"
+                value={formData.Gender}
                 onChange={handleInputChange}
-                className={errors.gender ? 'ftpi-input-error' : ''}
+                className={errors.Gender ? 'ftpi-input-error' : ''}
               >
-                <option value="">Select gender</option>
+                <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
               </select>
-              {errors.gender && <span className="ftpi-error-text">{errors.gender}</span>}
+              {errors.Gender && <span className="ftpi-error-text">{errors.Gender}</span>}
             </div>
           </div>
 
