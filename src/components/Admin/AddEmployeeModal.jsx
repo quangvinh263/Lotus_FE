@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './EmployeeModal.css';
+import { createEmployee } from '../../api/employeeApi';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddEmployeeModal = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
@@ -21,21 +24,50 @@ const AddEmployeeModal = ({ isOpen, onClose, onAdd }) => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+     if (
+    !formData.username.trim() ||
+    !formData.password.trim() ||
+    !formData.confirmPassword.trim() ||
+    !formData.fullName.trim() ||
+    !formData.position.trim() ||
+    !formData.email.trim() ||
+    !formData.phone.trim()
+  ) {
+    toast.error('Vui lòng nhập đầy đủ tất cả các trường!');
+    return;
+  }
     if (formData.password !== formData.confirmPassword) {
-      alert('Mật khẩu không khớp!');
+      toast.error('Mật khẩu không khớp!');
       return;
     }
-    onAdd(formData);
-    setFormData({
-      username: '',
-      password: '',
-      confirmPassword: '',
-      fullName: '',
-      position: '',
-      email: '',
-      phone: ''
-    });
+    // Tạo object đúng với DTO
+    const payload = {
+      username: formData.username,
+      password: formData.password,
+      fullName: formData.fullName,
+      email: formData.email,
+      phoneNumber: formData.phone,
+      position: formData.position
+    };
+    const result = await createEmployee(payload);
+    if (result.success) {
+      toast.success('Thêm nhân viên thành công!');
+      onAdd(payload);
+      setFormData({
+        username: '',
+        password: '',
+        confirmPassword: '',
+        fullName: '',
+        position: '',
+        email: '',
+        phone: ''
+      });
+      onClose();
+      window.location.reload();
+    } else {
+      toast.error(result.message || 'Thêm nhân viên thất bại!');
+    }
   };
 
   return (
