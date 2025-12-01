@@ -12,7 +12,7 @@ const EditServiceModal = ({ isOpen, onClose, onEdit, service }) => {
     if (service) {
       setFormData({
         name: service.name || '',
-        price: service.price?.replace(/[^\d]/g, '') || '',
+        price: service.price ? service.price.toString().replace(/\D/g, '') : '',
         description: service.description || '',
       });
     }
