@@ -216,7 +216,7 @@ const DashboardPage = () => {
     },
     {
       id: 6,
-      title: 'Khách hàng',
+      title: 'Khách hàng thành viên',
       value: statsData.totalCustomers.toLocaleString(),
       changeType: 'positive',
       icon: CustomerIcon,
