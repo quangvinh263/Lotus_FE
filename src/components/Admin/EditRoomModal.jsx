@@ -6,18 +6,23 @@ const EditRoomModal = ({ isOpen, onClose, onUpdate, room }) => {
     roomNumber: '',
     roomType: '',
     floor: '',
-    capacity: '',
-    status: 'available'
+    status: 'Available'
   });
 
   useEffect(() => {
     if (room) {
+      // Map từ backend format sang UI format
+      let roomTypeName = room.roomTypeName || room.roomType || '';
+      // Bỏ chữ " Room" nếu có
+      if (roomTypeName.endsWith(' Room')) {
+        roomTypeName = roomTypeName.replace(' Room', '');
+      }
+
       setFormData({
         roomNumber: room.roomNumber || '',
-        roomType: room.roomType || '',
+        roomType: roomTypeName,
         floor: room.floor || '',
-        capacity: room.capacity || '',
-        status: room.status || 'available'
+        status: room.status || 'Available'
       });
     }
   }, [room]);
@@ -32,7 +37,34 @@ const EditRoomModal = ({ isOpen, onClose, onUpdate, room }) => {
   };
 
   const handleSubmit = () => {
-    onUpdate(room.id, formData);
+    // Validate: Không được để trống
+    if (!formData.roomNumber || !formData.roomNumber.trim()) {
+      alert('Vui lòng nhập số phòng!');
+      return;
+    }
+    
+    if (!formData.roomType) {
+      alert('Vui lòng chọn loại phòng!');
+      return;
+    }
+    
+    if (!formData.floor) {
+      alert('Vui lòng nhập tầng!');
+      return;
+    }
+    
+    // Validate: Số phòng phải bắt đầu bằng số tầng
+    const floor = parseInt(formData.floor);
+    const roomNumber = formData.roomNumber.trim();
+    const firstDigit = roomNumber.charAt(0);
+    
+    if (firstDigit !== floor.toString()) {
+      alert(`Số phòng phải bắt đầu bằng số tầng ${floor}. Ví dụ: ${floor}01, ${floor}02`);
+      return;
+    }
+
+    // Gọi hàm update từ parent
+    onUpdate(room.roomId || room.id, formData);
   };
 
   return (
@@ -78,30 +110,16 @@ const EditRoomModal = ({ isOpen, onClose, onUpdate, room }) => {
               </select>
             </div>
 
-            <div className="admin-room-form-row">
-              <div className="admin-room-form-group">
-                <label className="admin-room-form-label">Tầng *</label>
-                <input
-                  type="number"
-                  name="floor"
-                  value={formData.floor}
-                  onChange={handleChange}
-                  placeholder="1"
-                  className="admin-room-form-input"
-                />
-              </div>
-
-              <div className="admin-room-form-group">
-                <label className="admin-room-form-label">Sức chứa *</label>
-                <input
-                  type="number"
-                  name="capacity"
-                  value={formData.capacity}
-                  onChange={handleChange}
-                  placeholder="2"
-                  className="admin-room-form-input"
-                />
-              </div>
+            <div className="admin-room-form-group">
+              <label className="admin-room-form-label">Tầng *</label>
+              <input
+                type="number"
+                name="floor"
+                value={formData.floor}
+                onChange={handleChange}
+                placeholder="1"
+                className="admin-room-form-input"
+              />
             </div>
 
             <div className="admin-room-form-group">
@@ -112,10 +130,10 @@ const EditRoomModal = ({ isOpen, onClose, onUpdate, room }) => {
                 onChange={handleChange}
                 className="admin-room-form-select"
               >
-                <option value="available">Trống</option>
-                <option value="occupied">Đang ở</option>
-                <option value="reserved">Đã đặt</option>
-                <option value="maintenance">Bảo trì</option>
+                <option value="Available">Trống</option>
+                <option value="Occupied">Đang ở</option>
+                <option value="Booked">Đã đặt</option>
+                <option value="Maintenance">Bảo trì</option>
               </select>
             </div>
           </div>
