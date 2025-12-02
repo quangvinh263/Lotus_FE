@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/Admin/RevenueReportPage.css';
 import AdminSidebar from '../../components/Admin/AdminSidebar';
 import AdminHeader from '../../components/Admin/AdminHeader';
@@ -7,6 +7,7 @@ import MoneyIcon from '../../assets/icons/MoneyIcon.svg';
 import HotelIcon from '../../assets/icons/HotelIcon.svg';
 import ServiceIcon from '../../assets/icons/ServiceIcon.svg';
 import RevenueIcon from '../../assets/icons/RevenueIcon.svg';
+import signalRService from '../../services/statiticsService';
 import {
   BarChart,
   Bar,
@@ -21,43 +22,43 @@ import {
 } from 'recharts';
 
 const RevenueReportPage = () => {
-  // Data for monthly revenue chart (Line chart)
-  const monthlyRevenueChart = [
-    { month: 'T1', value: 320 },
-    { month: 'T2', value: 280 },
-    { month: 'T3', value: 350 },
-    { month: 'T4', value: 400 },
-    { month: 'T5', value: 380 },
-    { month: 'T6', value: 450 }
-  ];
+  const [revenueData, setRevenueData] = useState({
+    overview: {
+      monthlyRevenue: 0,
+      revenueGrowthPercent: 0,
+      roomRevenue: 0,
+      roomGrowthPercent: 0,
+      serviceRevenue: 0,
+      serviceGrowthPercent: 0,
+      averageRevenuePerDay: 0,
+      averageGrowthPercent: 0
+    },
+    monthlyRevenueChart: [],
+    serviceRevenueChart: [],
+    monthlyDetails: [],
+    topRoomTypes: []
+  });
 
-  // Data for service revenue chart (Bar chart)
-  const serviceRevenueChart = [
-    { name: 'Phòng', value: 2200 },
-    { name: 'Ăn uống', value: 800 },
-    { name: 'Spa', value: 500 },
-    { name: 'Giặt ủi', value: 200 },
-    { name: 'Khác', value: 300 }
-  ];
+  useEffect(() => {
+    // Kết nối SignalR
+    signalRService.startConnection();
 
-  // Sample data for revenue by month (table data)
-  const monthlyData = [
-    { month: 'T1', total: '320 triệu đồng', orders: '26 đơn', room: '140 triệu đồng', service: '180 triệu đồng', average: '12,3 triệu đồng' },
-    { month: 'T2', total: '280 triệu đồng', orders: '25 đơn', room: '120 triệu đồng', service: '160 triệu đồng', average: '11,2 triệu đồng' },
-    { month: 'T3', total: '350 triệu đồng', orders: '30 đơn', room: '160 triệu đồng', service: '190 triệu đồng', average: '11,6 triệu đồng' },
-    { month: 'T4', total: '400 triệu đồng', orders: '20 đơn', room: '190 triệu đồng', service: '210 triệu đồng', average: '20 triệu đồng' },
-    { month: 'T5', total: '380 triệu đồng', orders: '15 đơn', room: '180 triệu đồng', service: '200 triệu đồng', average: '25,3 triệu đồng' },
-    { month: 'T6', total: '450 triệu đồng', orders: '32 đơn', room: '200 triệu đồng', service: '250 triệu đồng', average: '14 triệu đồng' },
-  ];
+    // Lắng nghe dữ liệu từ SignalR
+    signalRService.onAnalyticsUpdate((receivedData) => {
+      console.log('📊 Received revenue data:', receivedData);
+      // ✅ Sửa: Backend trả về { timestamp, data } thay vì { success, data }
+      if (receivedData && receivedData.data) {
+        setRevenueData(receivedData.data);
+      }
+    });
 
-  // Sample data for top room types
-  const topRoomTypes = [
-    { rank: '#1', name: 'Superior', bookings: '45 lượt đặt', revenue: '67.5 triệu đồng' },
-    { rank: '#2', name: 'Deluxe', bookings: '38 lượt đặt', revenue: '30.4 triệu đồng' },
-    { rank: '#3', name: 'Executive', bookings: '15 lượt đặt', revenue: '37.5 triệu đồng' },
-    { rank: '#4', name: 'Grand Suite', bookings: '58 lượt đặt', revenue: '29 triệu đồng' },
-    { rank: '#5', name: 'Lotus Suite', bookings: '58 lượt đặt', revenue: '29 triệu đồng' },
-  ];
+    // Cleanup khi unmount
+    return () => {
+      signalRService.stopConnection();
+    };
+  }, []);
+
+  const { overview, monthlyRevenueChart, serviceRevenueChart, monthlyDetails, topRoomTypes } = revenueData;
 
   return (
     <div className="admin-revenue-report-page">
@@ -78,13 +79,13 @@ const RevenueReportPage = () => {
                 <div className="admin-revenue-stat-icon revenue-total-icon">
                   <img src={MoneyIcon} alt="Money" className="revenue-icon-green" />
                 </div>
-                <div className="admin-revenue-stat-change positive">
-                  <img src={DownFallIcon} alt="Up" />
-                  <span>+12%</span>
+                <div className={`admin-revenue-stat-change ${overview.revenueGrowthPercent >= 0 ? 'positive' : 'negative'}`}>
+                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.revenueGrowthPercent < 0 ? 'rotate(180deg)' : 'none' }} />
+                  <span>{overview.revenueGrowthPercent >= 0 ? '+' : ''}{overview.revenueGrowthPercent.toFixed(1)}%</span>
                 </div>
               </div>
               <p className="admin-revenue-stat-label">Doanh thu tháng này</p>
-              <p className="admin-revenue-stat-value">450M đ</p>
+              <p className="admin-revenue-stat-value">{overview.monthlyRevenue.toFixed(1)}M đ</p>
             </div>
 
             <div className="admin-revenue-stat-card revenue-room">
@@ -92,13 +93,13 @@ const RevenueReportPage = () => {
                 <div className="admin-revenue-stat-icon revenue-room-icon">
                   <img src={HotelIcon} alt="Hotel" className="revenue-icon-red" />
                 </div>
-                <div className="admin-revenue-stat-change positive">
-                  <img src={DownFallIcon} alt="Up" />
-                  <span>+5%</span>
+                <div className={`admin-revenue-stat-change ${overview.roomGrowthPercent >= 0 ? 'positive' : 'negative'}`}>
+                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.roomGrowthPercent < 0 ? 'rotate(180deg)' : 'none' }} />
+                  <span>{overview.roomGrowthPercent >= 0 ? '+' : ''}{overview.roomGrowthPercent.toFixed(1)}%</span>
                 </div>
               </div>
               <p className="admin-revenue-stat-label">Doanh thu phòng</p>
-              <p className="admin-revenue-stat-value">220M đ</p>
+              <p className="admin-revenue-stat-value">{overview.roomRevenue.toFixed(1)}M đ</p>
             </div>
 
             <div className="admin-revenue-stat-card revenue-service">
@@ -106,13 +107,13 @@ const RevenueReportPage = () => {
                 <div className="admin-revenue-stat-icon revenue-service-icon">
                   <img src={ServiceIcon} alt="Service" className="revenue-icon-blue" />
                 </div>
-                <div className="admin-revenue-stat-change positive">
-                  <img src={DownFallIcon} alt="Up" />
-                  <span>+28%</span>
+                <div className={`admin-revenue-stat-change ${overview.serviceGrowthPercent >= 0 ? 'positive' : 'negative'}`}>
+                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.serviceGrowthPercent < 0 ? 'rotate(180deg)' : 'none' }} />
+                  <span>{overview.serviceGrowthPercent >= 0 ? '+' : ''}{overview.serviceGrowthPercent.toFixed(1)}%</span>
                 </div>
               </div>
               <p className="admin-revenue-stat-label">Doanh thu dịch vụ</p>
-              <p className="admin-revenue-stat-value">230M đ</p>
+              <p className="admin-revenue-stat-value">{overview.serviceRevenue.toFixed(1)}M đ</p>
             </div>
 
             <div className="admin-revenue-stat-card revenue-average">
@@ -120,13 +121,13 @@ const RevenueReportPage = () => {
                 <div className="admin-revenue-stat-icon revenue-average-icon">
                   <img src={RevenueIcon} alt="Revenue" className="revenue-icon-purple" />
                 </div>
-                <div className="admin-revenue-stat-change positive">
-                  <img src={DownFallIcon} alt="Up" />
-                  <span>+8%</span>
+                <div className={`admin-revenue-stat-change ${overview.averageGrowthPercent >= 0 ? 'positive' : 'negative'}`}>
+                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.averageGrowthPercent < 0 ? 'rotate(180deg)' : 'none' }} />
+                  <span>{overview.averageGrowthPercent >= 0 ? '+' : ''}{overview.averageGrowthPercent.toFixed(1)}%</span>
                 </div>
               </div>
               <p className="admin-revenue-stat-label">Trung bình/ngày</p>
-              <p className="admin-revenue-stat-value">15M đ</p>
+              <p className="admin-revenue-stat-value">{overview.averageRevenuePerDay.toFixed(2)}M đ</p>
             </div>
           </div>
 
@@ -145,8 +146,6 @@ const RevenueReportPage = () => {
                   <YAxis 
                     stroke="#608BC1" 
                     style={{ fontSize: '12px', fontFamily: 'Arial' }}
-                    domain={[0, 600]}
-                    ticks={[0, 150, 300, 450, 600]}
                   />
                   <Tooltip 
                     contentStyle={{ fontFamily: 'Arial' }}
@@ -172,7 +171,10 @@ const RevenueReportPage = () => {
               <h3>Doanh thu theo dịch vụ (Triệu VNĐ)</h3>
               <ResponsiveContainer width="100%" height={340}>
                 <BarChart 
-                  data={serviceRevenueChart}
+                  data={serviceRevenueChart.map(item => ({
+                    name: item.serviceName,
+                    value: item.totalRevenue / 1000000 // Chuyển đổi sang triệu
+                  }))}
                   margin={{ top: 5, right: 20, left: 20, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" stroke="#CBDCEB" />
@@ -184,8 +186,6 @@ const RevenueReportPage = () => {
                   <YAxis 
                     stroke="#608BC1" 
                     style={{ fontSize: '12px', fontFamily: 'Arial' }}
-                    domain={[0, 2800]}
-                    ticks={[0, 700, 1400, 2100, 2800]}
                   />
                   <Tooltip 
                     contentStyle={{ fontFamily: 'Arial' }}
@@ -198,7 +198,7 @@ const RevenueReportPage = () => {
 
           {/* Top Room Types Section */}
           <div className="admin-revenue-top-rooms">
-            <h3>Loại phòng có doanh thu cao nhất</h3>
+            <h3>Loại phòng có doanh thu cao nhất tháng</h3>
             <div className="admin-revenue-room-cards">
               {topRoomTypes.map((room, index) => (
                 <div key={index} className="admin-revenue-room-card">
@@ -206,8 +206,8 @@ const RevenueReportPage = () => {
                     <h4>{room.name}</h4>
                     <div className="admin-revenue-room-rank">{room.rank}</div>
                   </div>
-                  <p className="admin-revenue-room-bookings">{room.bookings}</p>
-                  <p className="admin-revenue-room-revenue">{room.revenue}</p>
+                  <p className="admin-revenue-room-bookings">{room.bookings} lượt đặt</p>
+                  <p className="admin-revenue-room-revenue">{(room.revenue / 1000000).toFixed(1)} triệu đồng</p>
                 </div>
               ))}
             </div>
@@ -227,14 +227,14 @@ const RevenueReportPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {monthlyData.map((data, index) => (
+                {monthlyDetails.map((data, index) => (
                   <tr key={index}>
                     <td className="month-cell">{data.month}</td>
-                    <td className="total-cell">{data.total}</td>
-                    <td className="orders-cell">{data.orders}</td>
-                    <td className="room-cell">{data.room}</td>
-                    <td className="service-cell">{data.service}</td>
-                    <td className="average-cell">{data.average}</td>
+                    <td className="total-cell">{(data.totalRevenue / 1000000).toFixed(2)} triệu đồng</td>
+                    <td className="orders-cell">{data.orderCount} đơn</td>
+                    <td className="room-cell">{(data.roomRevenue / 1000000).toFixed(2)} triệu đồng</td>
+                    <td className="service-cell">{(data.serviceRevenue / 1000000).toFixed(2)} triệu đồng</td>
+                    <td className="average-cell">{(data.averagePerOrder / 1000000).toFixed(2)} triệu đồng</td>
                   </tr>
                 ))}
               </tbody>

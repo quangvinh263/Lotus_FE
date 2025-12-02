@@ -12,6 +12,7 @@ import PhoneIcon from '../../assets/icons/PhoneIcon.svg';
 import ModifyIcon from '../../assets/icons/ModifyIcon.svg';
 import DeleteIcon from '../../assets/icons/DeleteIcon.svg';
 import { getAllEmployees } from '../../api/employeeApi';
+import { deleteEmployee } from '../../api/employeeApi';
 
 
 const EmployeeManagementPage = () => {
@@ -30,6 +31,7 @@ const EmployeeManagementPage = () => {
           const mappedEmployees = result.employees.map((emp) => ({
             // Sử dụng toán tử || để dự phòng nếu tên field bên API khác
             id: emp.employeeId,
+            username: emp.username,
             name: emp.fullName || emp.name || 'Không có tên', 
             position: emp.position || 'Nhân viên',
             email: emp.email,
@@ -83,7 +85,6 @@ const EmployeeManagementPage = () => {
 
   const handleAddEmployee = (formData) => {
     const newEmployee = {
-      id: employeeList.length + 1,
       name: formData.fullName,
       position: formData.position,
       email: formData.email,
@@ -111,8 +112,13 @@ const EmployeeManagementPage = () => {
     setSelectedEmployee(null);
   };
 
-  const handleDeleteEmployee = (id) => {
-    setEmployeeList(employeeList.filter(emp => emp.id !== id));
+  const handleDeleteEmployee = async(id) => {
+    const result = await deleteEmployee(id);
+    if (result.success) {
+      setEmployeeList(employeeList.filter(emp => emp.id !== id));
+    } else {
+      console.error("Lỗi xóa nhân viên:", result.message);
+    }
     setShowDeleteModal(false);
     setSelectedEmployee(null);
   };
@@ -126,6 +132,15 @@ const EmployeeManagementPage = () => {
     setSelectedEmployee(employee);
     setShowDeleteModal(true);
   };
+
+  const filteredEmployees = employeeList.filter((employee) => {
+    const term = searchTerm.toLowerCase();
+    return (
+      employee.name.toLowerCase().includes(term) ||
+      employee.email.toLowerCase().includes(term) ||
+      employee.phone.toLowerCase().includes(term)
+    );
+  });
 
 
 
@@ -175,7 +190,7 @@ const EmployeeManagementPage = () => {
 
           {/* Employee Cards */}
           <div className="admin-employee-list">
-            {employeeList.map((employee) => (
+            {filteredEmployees.map((employee) => (
               <div key={employee.id} className="admin-employee-card">
                 <div className="admin-employee-card-header">
                   <div className="admin-employee-card-info">
