@@ -7,6 +7,9 @@ const AddRoomTypeModal = ({ isOpen, onClose, onAdd }) => {
     price: '',
     capacity: '',
     size: '',
+    feature: '',
+    viewing: '',
+    smoking: false,
     description: ''
   });
 
@@ -26,11 +29,11 @@ const AddRoomTypeModal = ({ isOpen, onClose, onAdd }) => {
       name: formData.name,
       price: parseInt(formData.price),
       capacity: parseInt(formData.capacity),
-      size: formData.size + 'm²',
-      bedType: '1 giường đôi', // Default value
-      description: formData.description,
-      totalRooms: 0,
-      availableRooms: 0
+      size: parseFloat(formData.size),
+      feature: formData.feature,
+      viewing: formData.viewing,
+      smoking: formData.smoking,
+      description: formData.description
     });
     // Reset form
     setFormData({
@@ -38,6 +41,9 @@ const AddRoomTypeModal = ({ isOpen, onClose, onAdd }) => {
       price: '',
       capacity: '',
       size: '',
+      feature: '',
+      viewing: '',
+      smoking: false,
       description: ''
     });
   };
@@ -110,6 +116,43 @@ const AddRoomTypeModal = ({ isOpen, onClose, onAdd }) => {
             </div>
 
             <div className="admin-room-form-group">
+              <label className="admin-room-form-label">Đặc điểm</label>
+              <input
+                type="text"
+                name="feature"
+                placeholder="1 giường đôi, wifi miễn phí..."
+                value={formData.feature}
+                onChange={handleChange}
+                className="admin-room-form-input"
+              />
+            </div>
+
+            <div className="admin-room-form-group">
+              <label className="admin-room-form-label">View</label>
+              <input
+                type="text"
+                name="viewing"
+                placeholder="View biển, view thành phố..."
+                value={formData.viewing}
+                onChange={handleChange}
+                className="admin-room-form-input"
+              />
+            </div>
+
+            <div className="admin-room-form-group">
+              <label className="admin-room-form-label">
+                <input
+                  type="checkbox"
+                  name="smoking"
+                  checked={formData.smoking}
+                  onChange={(e) => setFormData(prev => ({ ...prev, smoking: e.target.checked }))}
+                  style={{ marginRight: '8px' }}
+                />
+                Cho phép hút thuốc
+              </label>
+            </div>
+
+            <div className="admin-room-form-group">
               <label className="admin-room-form-label">Mô tả</label>
               <textarea
                 name="description"
@@ -120,16 +163,17 @@ const AddRoomTypeModal = ({ isOpen, onClose, onAdd }) => {
                 rows="3"
               />
             </div>
-          </form>
-        </div>
-        <div className="admin-room-modal-footer">
+
+            <div className="admin-room-modal-footer" style={{ padding: 0 }}>
               <button type="button" onClick={onClose} className="admin-room-modal-btn admin-room-modal-btn-cancel">
                 Hủy
               </button>
               <button type="submit" className="admin-room-modal-btn admin-room-modal-btn-submit">
-                Cập nhật
+                Thêm loại phòng
               </button>
             </div>
+          </form>
+        </div>
       </div>
     </div>
   );

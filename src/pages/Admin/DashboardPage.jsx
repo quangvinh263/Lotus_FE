@@ -42,7 +42,6 @@ const DashboardPage = () => {
     occupancyRate: 0,
     newBookings: 0,
     totalCustomers: 0,
-    totalCustomers: 0,
     revenueGrowthPercent: 0, 
     occupancyGrowthPercent: 0, 
     bookingGrowthPercent: 0

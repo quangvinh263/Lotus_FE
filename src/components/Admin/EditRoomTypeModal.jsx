@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './RoomModal.css';
 
-const EditRoomTypeModal = ({ isOpen, onClose, onEdit, roomType }) => {
+const EditRoomTypeModal = ({ isOpen, onClose, onUpdate, roomType }) => {
   const [formData, setFormData] = useState({
     name: '',
     price: '',
     capacity: '',
     size: '',
+    feature: '',
+    viewing: '',
+    smoking: false,
     description: ''
   });
 
@@ -17,6 +20,9 @@ const EditRoomTypeModal = ({ isOpen, onClose, onEdit, roomType }) => {
         price: roomType.price || '',
         capacity: roomType.capacity || '',
         size: roomType.size ? roomType.size.replace('m²', '') : '',
+        feature: roomType.feature || '',
+        viewing: roomType.viewing || '',
+        smoking: roomType.smoking || false,
         description: roomType.description || ''
       });
     }
@@ -25,23 +31,26 @@ const EditRoomTypeModal = ({ isOpen, onClose, onEdit, roomType }) => {
   if (!isOpen) return null;
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onEdit({
-      ...roomType,
+    const updatedData = {
       name: formData.name,
-      price: parseInt(formData.price),
       capacity: parseInt(formData.capacity),
-      size: formData.size + 'm²',
-      description: formData.description
-    });
+      size: parseFloat(formData.size),
+      feature: formData.feature,
+      viewing: formData.viewing,
+      smoking: formData.smoking,
+      description: formData.description,
+      price: parseInt(formData.price)
+    };
+    onUpdate(roomType.id, updatedData);
   };
 
   return (
@@ -111,6 +120,44 @@ const EditRoomTypeModal = ({ isOpen, onClose, onEdit, roomType }) => {
               />
             </div>
 
+            <div className="admin-room-form-row">
+              <div className="admin-room-form-group">
+                <label className="admin-room-form-label">Đặc điểm</label>
+                <input
+                  type="text"
+                  name="feature"
+                  placeholder="VD: Giường đôi, TV..."
+                  value={formData.feature}
+                  onChange={handleChange}
+                  className="admin-room-form-input"
+                />
+              </div>
+              <div className="admin-room-form-group">
+                <label className="admin-room-form-label">Tầm nhìn</label>
+                <input
+                  type="text"
+                  name="viewing"
+                  placeholder="VD: Hướng biển, thành phố..."
+                  value={formData.viewing}
+                  onChange={handleChange}
+                  className="admin-room-form-input"
+                />
+              </div>
+            </div>
+
+            <div className="admin-room-form-group">
+              <label className="admin-room-form-label" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input
+                  type="checkbox"
+                  name="smoking"
+                  checked={formData.smoking}
+                  onChange={handleChange}
+                  style={{ width: 'auto', margin: 0 }}
+                />
+                Cho phép hút thuốc
+              </label>
+            </div>
+
             <div className="admin-room-form-group">
               <label className="admin-room-form-label">Mô tả</label>
               <textarea
@@ -122,15 +169,16 @@ const EditRoomTypeModal = ({ isOpen, onClose, onEdit, roomType }) => {
                 rows="3"
               />
             </div>
-          </form>
-        </div>
-        <div className="admin-room-modal-footer">
-            <button type="button" onClick={onClose} className="admin-room-modal-btn admin-room-modal-btn-cancel">
+
+            <div className="admin-room-modal-footer" style={{ padding: 0 }}>
+              <button type="button" onClick={onClose} className="admin-room-modal-btn admin-room-modal-btn-cancel">
                 Hủy
-            </button>
-            <button type="submit" className="admin-room-modal-btn admin-room-modal-btn-submit">
+              </button>
+              <button type="submit" className="admin-room-modal-btn admin-room-modal-btn-submit">
                 Cập nhật
-            </button>
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

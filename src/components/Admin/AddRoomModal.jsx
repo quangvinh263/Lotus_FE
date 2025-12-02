@@ -6,8 +6,6 @@ const AddRoomModal = ({ isOpen, onClose, onAdd }) => {
     roomNumber: '',
     roomType: '',
     floor: '',
-    capacity: '',
-    price: '',
     status: 'available'
   });
 
@@ -26,8 +24,6 @@ const AddRoomModal = ({ isOpen, onClose, onAdd }) => {
       roomNumber: '',
       roomType: '',
       floor: '',
-      capacity: '',
-      price: '',
       status: 'available'
     });
   };
@@ -75,40 +71,14 @@ const AddRoomModal = ({ isOpen, onClose, onAdd }) => {
               </select>
             </div>
 
-            <div className="admin-room-form-row">
-              <div className="admin-room-form-group">
-                <label className="admin-room-form-label">Tầng *</label>
-                <input
-                  type="number"
-                  name="floor"
-                  value={formData.floor}
-                  onChange={handleChange}
-                  placeholder="1"
-                  className="admin-room-form-input"
-                />
-              </div>
-
-              <div className="admin-room-form-group">
-                <label className="admin-room-form-label">Sức chứa *</label>
-                <input
-                  type="number"
-                  name="capacity"
-                  value={formData.capacity}
-                  onChange={handleChange}
-                  placeholder="2"
-                  className="admin-room-form-input"
-                />
-              </div>
-            </div>
-
             <div className="admin-room-form-group">
-              <label className="admin-room-form-label">Giá phòng (VNĐ) *</label>
+              <label className="admin-room-form-label">Tầng *</label>
               <input
                 type="number"
-                name="price"
-                value={formData.price}
+                name="floor"
+                value={formData.floor}
                 onChange={handleChange}
-                placeholder="500000"
+                placeholder="1"
                 className="admin-room-form-input"
               />
             </div>
