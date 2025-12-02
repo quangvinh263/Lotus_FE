@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/Admin/ServiceManagementPage.css';
 import AdminSidebar from '../../components/Admin/AdminSidebar';
 import AdminHeader from '../../components/Admin/AdminHeader';
@@ -9,6 +9,11 @@ import SearchIcon from '../../assets/icons/SearchIcon.svg';
 import PlusIcon from '../../assets/icons/PlusIcon.svg';
 import ModifyIcon from '../../assets/icons/ModifyIcon.svg';
 import DeleteIcon from '../../assets/icons/DeleteIcon.svg';
+import { getAllServices } from '../../api/serviceApi';
+import { getRevenueByMonth } from '../../api/serviceApi';
+import { deleteService } from '../../api/serviceApi';
+import { toast } from 'react-toastify';
+
 
 const ServiceManagementPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,50 +23,48 @@ const ServiceManagementPage = () => {
   const [selectedService, setSelectedService] = useState(null);
 
   // Sample service data
-  const services = [
-    {
-      id: 1,
-      name: 'Giặt ủi',
-      description: 'Dịch vụ giặt ủi quần áo',
-      price: '200,000đ',
-    },
-    {
-      id: 2,
-      name: 'Ăn sáng',
-      description: 'Buffet ăn sáng',
-      price: '150,000đ',
-    },
-    {
-      id: 3,
-      name: 'Phòng Gym',
-      description: 'Dịch vụ sử dụng phòng gym',
-      price: '300,000đ',
-    },
-    {
-      id: 4,
-      name: 'Bể bơi',
-      description: 'Sử dụng bể bơi ngoài trời',
-      price: '100,000đ',
-    },
-    {
-      id: 5,
-      name: 'Spa',
-      description: 'Dịch vụ chăm sóc spa',
-      price: '500,000đ',
-    },
-    {
-      id: 6,
-      name: 'Karaoke',
-      description: 'Phòng karaoke cao cấp',
-      price: '200,000đ',
-    },
-    {
-      id: 7,
-      name: 'Thuê sân',
-      description: 'Thuê xe du lịch 7 chỗ',
-      price: '600,000đ',
-    },
-  ];
+  const [services, setServices] = useState([]);
+  const [revenue, setRevenue] = useState(0);
+
+  const openDeleteModal = (service) => {
+    setSelectedService(service);
+    setShowDeleteModal(true);
+  }
+
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      const result = await getAllServices();
+      console.log("Fetched services:", result.services);
+      if (result.success) {
+        const mappedServices = result.services.map((service) => ({
+          id: service.serviceId,
+          name: service.serviceName,
+          description: service.description,
+          price: service.price,
+        }));
+        setServices(mappedServices);
+      } else {
+        console.error(result.message);
+      } 
+    };
+    fetchServices();
+
+    const fetchRevenue = async () => {
+      const currentDate = new Date();
+      const month = currentDate.getMonth() + 1;
+      const year = currentDate.getFullYear();
+      const result = await getRevenueByMonth(month, year);
+      console.log("Fetched revenue:", result.revenue);
+      console.log("For month/year:", month, year);
+      if (result.success) {
+        setRevenue(result.revenue);
+      } else {
+        console.error(result.message);
+      }
+    };
+    fetchRevenue();
+  }, []);
 
   const handleAddService = () => {
     setShowAddModal(true);
@@ -72,9 +75,17 @@ const ServiceManagementPage = () => {
     setShowEditModal(true);
   };
 
-  const handleDeleteService = (service) => {
-    setSelectedService(service);
-    setShowDeleteModal(true);
+  const handleDeleteService = async(service) => {
+    const result = await deleteService(service.id);
+    if (result.success) {
+      toast.success('Xóa dịch vụ thành công!');
+      // Refresh service list
+      const updatedServices = services.filter((s) => s.id !== service.id);
+      setServices(updatedServices);
+      setShowDeleteModal(false);
+    } else {
+      toast.error(result.message || 'Xóa dịch vụ thất bại.');
+    }
   };
 
   const handleAdd = (newService) => {
@@ -94,6 +105,11 @@ const ServiceManagementPage = () => {
     // TODO: Add API call to delete service
     setShowDeleteModal(false);
   };
+
+  const filteredServices = services.filter((service) =>
+    service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    service.price.toString().toLowerCase().includes(searchTerm.toLowerCase()) 
+  );
 
   return (
     <div className="admin-service-management-page">
@@ -115,11 +131,11 @@ const ServiceManagementPage = () => {
           <div className="admin-service-stats">
             <div className="admin-service-stat-card">
               <p className="admin-service-stat-label">Tổng dịch vụ </p>
-              <p className="admin-service-stat-value">7</p>
+              <p className="admin-service-stat-value">{services.length}</p>
             </div>
             <div className="admin-service-stat-card">
               <p className="admin-service-stat-label">Doanh thu dịch vụ tháng này</p>
-              <p className="admin-service-stat-value">45 triệu đồng</p>
+              <p className="admin-service-stat-value">{revenue ? revenue.toLocaleString('vi-VN') + ' VND' : '0 VND'}</p>
             </div>
           </div>
 
@@ -141,15 +157,15 @@ const ServiceManagementPage = () => {
           </div>
 
           <div className="admin-service-grid">
-            {services.map((service) => (
-              <div key={service.id} className="admin-service-card">
+            {filteredServices.map((service, index) => (
+              <div key={service.id || index} className="admin-service-card">
                 <div className="admin-service-card-info">
                   <div className="admin-service-card-text">
                     <h3>{service.name}</h3>
                     <p>{service.description}</p>
                   </div>
                   <div className="admin-service-card-price">
-                    <p>{service.price}</p>
+                    <p>{service.price.toLocaleString('vi-VN')} VND</p>
                   </div>
                 </div>
                 <div className="admin-service-card-actions">
@@ -162,7 +178,7 @@ const ServiceManagementPage = () => {
                   </button>
                   <button
                     className="admin-service-delete-btn"
-                    onClick={() => handleDeleteService(service)}
+                    onClick={() => openDeleteModal(service)}
                   >
                     <img src={DeleteIcon} alt="Delete" />
                     <span>Xóa</span>
@@ -190,7 +206,7 @@ const ServiceManagementPage = () => {
       <DeleteServiceModal
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
-        onDelete={handleDelete}
+        onDelete={handleDeleteService}
         service={selectedService}
       />
     </div>

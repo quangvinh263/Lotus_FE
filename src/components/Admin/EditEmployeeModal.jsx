@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './EmployeeModal.css';
+import { updateEmployee } from '../../api/employeeApi';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditEmployeeModal = ({ isOpen, onClose, onUpdate, employee }) => {
   const [formData, setFormData] = useState({
@@ -9,7 +12,8 @@ const EditEmployeeModal = ({ isOpen, onClose, onUpdate, employee }) => {
     fullName: '',
     position: '',
     email: '',
-    phone: ''
+    phone: '',
+    isactive: true
   });
 
   useEffect(() => {
@@ -21,7 +25,8 @@ const EditEmployeeModal = ({ isOpen, onClose, onUpdate, employee }) => {
         fullName: employee.name || '',
         position: employee.position || '',
         email: employee.email || '',
-        phone: employee.phone || ''
+        phone: employee.phone || '',
+        isactive: employee.isActive !== undefined ? employee.isActive : true
       });
     }
   }, [employee]);
@@ -35,12 +40,40 @@ const EditEmployeeModal = ({ isOpen, onClose, onUpdate, employee }) => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
+    if (
+        !formData.username.trim() ||
+        !formData.fullName.trim() ||
+        !formData.position.trim() ||
+        !formData.email.trim() ||
+        !formData.phone.trim()
+      ) {
+        toast.error('Vui lòng nhập đầy đủ tất cả các trường!');
+        return;
+    }
     if (formData.password && formData.password !== formData.confirmPassword) {
-      alert('Mật khẩu không khớp!');
+      toast.error('Mật khẩu không khớp!');
       return;
     }
-    onUpdate(employee.id, formData);
+    const payload = {
+      username: formData.username,
+      password: formData.password,
+      fullName: formData.fullName,
+      email: formData.email,
+      phoneNumber: formData.phone,
+      position: formData.position,
+      isActive: formData.isactive
+    };
+    console.log("Payload gửi lên API:", payload);
+    const result = await updateEmployee(employee.id, payload);
+    if (result.success) {
+      toast.success('Cập nhật nhân viên thành công!');
+      onUpdate(payload);
+      onClose();
+      window.location.reload();
+    } else {
+      toast.error(result.message || 'Cập nhật nhân viên thất bại!');
+    }
   };
 
   return (
@@ -145,6 +178,20 @@ const EditEmployeeModal = ({ isOpen, onClose, onUpdate, employee }) => {
                 className="admin-form-input"
               />
             </div>
+    
+            <div className="admin-form-group"> 
+              <label className="admin-form-label">Trạng thái hoạt động *</label>
+              <select
+                name="isactive"
+                value={formData.isactive}
+                onChange={e => setFormData({ ...formData, isactive: e.target.value === "true" })}
+                className="admin-form-select"
+              >
+                <option value={true}>Hoạt động</option>
+                <option value={false}>Không hoạt động</option>
+              </select>
+            </div>
+
           </div>
         </div>
 

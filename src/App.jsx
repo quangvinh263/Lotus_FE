@@ -25,13 +25,16 @@ import BookingOrderManagementPage from './pages/Admin/BookingOrderManagementPage
 import CustomerManagementPage from './pages/Admin/CustomerManagementPage';
 import AdminServiceManagementPage from './pages/Admin/ServiceManagementPage';
 import RevenueReportPage from './pages/Admin/RevenueReportPage';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
   return (
     <Router>
+      <ToastContainer />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<DashboardPage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/complete-profile" element={<FirstTimePersonalInfoPage />} />

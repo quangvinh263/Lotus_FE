@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ServiceModal.css';
+import { updateService } from '../../api/serviceApi';
+import { toast } from 'react-toastify';
 
 const EditServiceModal = ({ isOpen, onClose, onEdit, service }) => {
   const [formData, setFormData] = useState({
@@ -12,7 +14,7 @@ const EditServiceModal = ({ isOpen, onClose, onEdit, service }) => {
     if (service) {
       setFormData({
         name: service.name || '',
-        price: service.price?.replace(/[^\d]/g, '') || '',
+        price: service.price ? service.price.toString().replace(/\D/g, '') : '',
         description: service.description || '',
       });
     }
@@ -22,8 +24,23 @@ const EditServiceModal = ({ isOpen, onClose, onEdit, service }) => {
 
   const handleSubmit = () => {
     if (formData.name && formData.price) {
-      onEdit({ ...service, ...formData });
-      onClose();
+      const result = updateService(service.id, {
+        name: formData.name,
+        price: parseFloat(formData.price),
+        description: formData.description,
+      });
+      result.then((res) => {
+        if (res.success) {
+          onEdit(res.service);
+          onClose();
+          window.location.reload();
+        } else {
+          toast.error(res.message || 'Cập nhật dịch vụ thất bại.');
+        }
+      });
+    }
+    else {
+      toast.error('Vui lòng điền đầy đủ thông tin bắt buộc.');
     }
   };
 

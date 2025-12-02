@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/Admin/CustomerManagementPage.css';
 import AdminSidebar from '../../components/Admin/AdminSidebar';
 import AdminHeader from '../../components/Admin/AdminHeader';
@@ -9,81 +9,62 @@ import GenderIcon from '../../assets/icons/GenderIcon.svg';
 import WalletIcon from '../../assets/icons/WalletIcon.svg';
 import HotelIcon from '../../assets/icons/HotelIcon.svg';
 import EyeIcon from '../../assets/icons/EyeIcon.svg';
+import { getAllGuests } from '../../api/guestApi';
+import { getGuestById } from '../../api/guestApi';
 
 const CustomerManagementPage = () => {
+  const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
 
-  // Sample customer data
-  const customers = [
-    {
-      id: 1,
-      name: 'Nguyễn Văn A',
-      cccd: '001234567890',
-      gender: 'Nam',
-      room: 'P101',
-      roomType: 'Deluxe',
-    },
-    {
-      id: 2,
-      name: 'Trần Thị B',
-      cccd: '001234567891',
-      gender: 'Nữ',
-      room: null,
-      roomType: null,
-    },
-    {
-      id: 3,
-      name: 'Lê Văn C',
-      cccd: '001234567892',
-      gender: 'Nam',
-      room: 'P205',
-      roomType: 'Suite',
-    },
-    {
-      id: 4,
-      name: 'Phạm Thị D',
-      cccd: '001234567893',
-      gender: 'Nữ',
-      room: null,
-      roomType: null,
-    },
-    {
-      id: 5,
-      name: 'Hoàng Văn E',
-      cccd: '001234567894',
-      gender: 'Nam',
-      room: 'P302',
-      roomType: 'Superior',
-    },
-    {
-      id: 6,
-      name: 'Ngô Thị F',
-      cccd: '001234567895',
-      gender: 'Nữ',
-      room: 'P103',
-      roomType: 'Lotus Suite',
-    },
-    {
-      id: 7,
-      name: 'Đặng Văn G',
-      cccd: '001234567896',
-      gender: 'Nam',
-      room: null,
-      roomType: null,
-    },
-  ];
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      const result = await getAllGuests();
+      if (result.success) {
+        const rawData = result.guests;
+        
+        const mappedCustomers = rawData.map((guest) => ({
+          id: guest.guestId,
+          name: guest.fullName,
+          cccd: guest.cccd,
+          gender: guest.gender,
+          room: guest.roomNumber || null,
+          roomType: guest.typeRoom || null,
+        }));
+        setCustomers(mappedCustomers);
 
-  const handleViewDetail = (customer) => {
-    setSelectedCustomer(customer);
-    setShowDetailModal(true);
+      } else {
+        // Handle error, e.g., show a notification
+        console.error(result.message);
+      }
+    };
+
+    fetchCustomers();
+  }, []);
+
+  const handleViewDetail = async(customer) => {
+    const result = await getGuestById(customer.id);
+    console.log("Fetched guest detail:", result.guest);
+    console.log("Customer ID:", customer.id);
+    if (result.success) {
+      setSelectedCustomer(result.guest);
+      setShowDetailModal(true);
+    } else {
+      console.error(result.message);
+    }
   };
 
   const handleCloseModal = () => {
     setShowDetailModal(false);
     setSelectedCustomer(null);
   };
+
+  const filteredCustomers = customers.filter((customer) =>
+    customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    customer.cccd.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (customer.room && customer.room.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   return (
     <div className="admin-customer-management-page">
@@ -100,7 +81,7 @@ const CustomerManagementPage = () => {
             <div className="admin-customer-management-search-wrapper">
               <input
                 type="text"
-                placeholder="Tìm kiếm khách hàng theo tên, email, SĐT..."
+                placeholder="Tìm kiếm khách hàng theo tên, cccd, số phòng..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="admin-customer-management-search-input"
@@ -111,10 +92,6 @@ const CustomerManagementPage = () => {
                 className="admin-customer-management-search-icon"
               />
             </div>
-            <button className="admin-customer-management-filter-btn">
-              <img src={FilterIcon} alt="Filter" />
-              <span>Lọc</span>
-            </button>
           </div>
 
           <div className="admin-customer-management-table-container">
@@ -129,8 +106,8 @@ const CustomerManagementPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {customers.map((customer, index) => (
-                  <tr key={customer.id} className={index === 6 ? 'last-row' : ''}>
+                {filteredCustomers.map((customer, index) => (
+                  <tr key={customer.id || index} className={index === 6 ? 'last-row' : ''}>
                     <td>
                       <div className="admin-customer-name">{customer.name}</div>
                     </td>
@@ -143,7 +120,7 @@ const CustomerManagementPage = () => {
                     <td>
                       <div className="admin-customer-info-with-icon">
                         <img src={GenderIcon} alt="Gender" className="admin-customer-info-icon" />
-                        <span className="admin-customer-info-text">{customer.gender}</span>
+                        <span className="admin-customer-info-text">{customer.gender === 'Male' ? 'Nam' : 'Nữ'}</span>
                       </div>
                     </td>
                     <td>

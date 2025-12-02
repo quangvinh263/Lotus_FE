@@ -22,7 +22,7 @@ const CustomerDetailModal = ({ isOpen, onClose, customer }) => {
         <div className="customer-detail-modal-content">
           <div className="customer-detail-info-section">
             <div className="customer-detail-name">
-              <h3>{customer.name}</h3>
+              <h3>{customer.fullName}</h3>
             </div>
 
             <div className="customer-detail-info-grid">
@@ -38,13 +38,13 @@ const CustomerDetailModal = ({ isOpen, onClose, customer }) => {
                 <p className="customer-detail-label">Giới tính</p>
                 <div className="customer-detail-value-with-icon">
                   <img src={GenderIcon} alt="Gender" />
-                  <span>{customer.gender}</span>
+                  <span>{customer.gender === 'Male' ? 'Nam' : 'Nữ'}</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {customer.room && (
+          {customer.roomNumber && (
             <div className="customer-detail-stay-section">
               <div className="customer-detail-stay-header">
                 <img src={HotelIcon} alt="Hotel" />
@@ -54,17 +54,17 @@ const CustomerDetailModal = ({ isOpen, onClose, customer }) => {
               <div className="customer-detail-stay-info">
                 <div className="customer-detail-stay-item">
                   <p className="customer-detail-label">Phòng</p>
-                  <p className="customer-detail-value">{customer.room} - {customer.roomType}</p>
+                  <p className="customer-detail-value">{customer.roomNumber} - {customer.typeRoom}</p>
                 </div>
 
                 <div className="customer-detail-stay-item">
                   <p className="customer-detail-label">Check-in</p>
-                  <p className="customer-detail-value">{customer.checkIn || '08/11/2025'}</p>
+                  <p className="customer-detail-value">{new Date(customer.actualCheckIn).toLocaleString() || '08/11/2025'}</p>
                 </div>
 
                 <div className="customer-detail-stay-item full-width">
                   <p className="customer-detail-label">Check-out dự kiến</p>
-                  <p className="customer-detail-value">{customer.checkOut || '12/11/2025'}</p>
+                  <p className="customer-detail-value">{new Date(customer.checkOut).toLocaleString() || '12/11/2025'}</p>
                 </div>
               </div>
             </div>
