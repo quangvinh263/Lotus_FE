@@ -42,7 +42,6 @@ const DashboardPage = () => {
     occupancyRate: 0,
     newBookings: 0,
     totalCustomers: 0,
-    totalCustomers: 0,
     revenueGrowthPercent: 0, 
     occupancyGrowthPercent: 0, 
     bookingGrowthPercent: 0
@@ -192,7 +191,7 @@ const DashboardPage = () => {
       title: `Doanh thu ${currentMonth}`,
       value: `${statsData.monthlyRevenue}M VNĐ`,
       change: `${statsData.revenueGrowthPercent.toFixed(1)}%`,
-      changeType: 'positive',
+      changeType: statsData.revenueGrowthPercent.toFixed(1) >= 0 ? 'positive' : 'neutral',
       icon: MoneyIcon,
       iconClass: 'icon-money'
     },
@@ -201,7 +200,7 @@ const DashboardPage = () => {
       title: 'Tỷ lệ lấp đầy',
       value: `${statsData.occupancyRate}%`,
       change: `${statsData.occupancyGrowthPercent.toFixed(1)}%`,
-      changeType: 'positive',
+      changeType: statsData.occupancyGrowthPercent.toFixed(1) >= 0 ? 'positive' : 'neutral',
       icon: ReservationIcon,
       iconClass: 'icon-reservation'
     },
@@ -210,7 +209,7 @@ const DashboardPage = () => {
       title: 'Đặt phòng mới',
       value: statsData.newBookings,
       change: `${statsData.bookingGrowthPercent.toFixed(1)}%`,
-      changeType: 'positive',
+      changeType: statsData.bookingGrowthPercent.toFixed(1) >= 0 ? 'positive' : 'neutral',
       icon: CalendarIcon,
       iconClass: 'icon-calendar'
     },
@@ -261,7 +260,7 @@ const DashboardPage = () => {
           {/* Charts Section */}
           <div className="admin-charts-row">
             <div className="admin-chart-card">
-              <h3 className="admin-chart-title">Doanh thu 6 tháng gần đây (triệu vnđ)</h3>
+              <h3 className="admin-chart-title">Doanh thu 6 tháng gần đây (triệu đồng)</h3>
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={revenueData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#CBDCEB" />
@@ -318,7 +317,7 @@ const DashboardPage = () => {
 
             <div className="admin-booking-stats-card">
               <div className="admin-booking-header">
-                <h3 className="admin-section-title">Thống kê lượng đặt phòng</h3>
+                <h3 className="admin-section-title">Thống kê lượng đặt phòng (%)</h3>
                 <button className="admin-filter-btn">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M6.67 1.67H13.33V5H6.67V1.67Z" stroke="#667085" strokeWidth="1.67"/>
@@ -330,7 +329,10 @@ const DashboardPage = () => {
               <div className="admin-booking-chart">
                 <ResponsiveContainer width="100%" height={240}>
                   <BarChart data={bookingData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#CBDCEB" />
                     <XAxis dataKey="month" stroke="#858D9D" style={{ fontSize: '12px' }} />
+                    <YAxis stroke="#858D9D" style={{ fontSize: '12px' }} />
+                    <Tooltip />
                     <Bar dataKey="value" fill="#133E87" radius={[2, 2, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
