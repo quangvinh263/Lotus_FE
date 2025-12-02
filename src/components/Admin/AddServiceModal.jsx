@@ -1,20 +1,31 @@
 import React, { useState } from 'react';
 import './ServiceModal.css';
+import { addService } from '../../api/serviceApi';
+import {toast} from 'react-toastify';
 
 const AddServiceModal = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    price: '',
+    serviceName: '',
     description: '',
+    price: '',
   });
 
   if (!isOpen) return null;
 
-  const handleSubmit = () => {
-    if (formData.name && formData.price) {
-      onAdd(formData);
-      setFormData({ name: '', price: '', description: '' });
-      onClose();
+  const handleSubmit = async () => {
+    if (formData.serviceName && formData.price) {
+      const result = await addService(formData);
+      console.log("data: ", formData)
+      if (result.success) {
+        onAdd(result.service);
+        onClose();
+        window.location.reload();
+      } else {
+        toast.error (result.message || "Có lỗi xảy ra khi thêm dịch vụ.");
+      }
+    }
+    else {
+      toast.error("Vui lòng điền đầy đủ ít nhất tên và giá dịch vụ.");
     }
   };
 
@@ -36,8 +47,8 @@ const AddServiceModal = ({ isOpen, onClose, onAdd }) => {
             <input
               type="text"
               placeholder="Nhập tên dịch vụ"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              value={formData.serviceName}
+              onChange={(e) => setFormData({ ...formData, serviceName: e.target.value })}
             />
           </div>
 

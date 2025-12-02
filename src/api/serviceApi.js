@@ -50,3 +50,75 @@ export const getRevenueByMonth = async (month, year) => {
         };
     }
 };
+
+export const addService = async (serviceData) => {
+    try {
+        const response = await axios.post(`${API_URL}/Services`, serviceData);
+        if (response.status === 201 || response.data.success === true) {
+            return {
+                success: true,
+                service: response.data.data,
+              };
+        }
+        else {
+             return {
+            success: false,
+            message: "Có lỗi xảy ra khi thêm dịch vụ.",
+          };
+        }
+    } 
+    catch (error) {
+        return {
+            success: false, 
+            message: error.response?.data?.message || "Không thể kết nối tới máy chủ.",
+        };
+    }
+};
+
+export const updateService = async (serviceId, serviceData) => {
+    try {
+        const response = await axios.put(`${API_URL}/Services/${serviceId}`, serviceData);
+        if (response.status === 200 || response.data.success === true) {
+            return {
+                success: true,
+                service: response.data.data,
+              };
+        }   
+        else {
+             return {
+            success: false,
+            message: "Có lỗi xảy ra khi cập nhật dịch vụ.",
+          };
+        }
+    } 
+    catch (error) {
+        return {
+            success: false, 
+            message: error.response?.data?.message || "Không thể kết nối tới máy chủ.",
+        };
+    }       
+};
+
+export const deleteService = async (serviceId) => {
+    try {
+        const response = await axios.delete(`${API_URL}/Services/${serviceId}`);
+        if (response.status === 200 || response.data.success === true) {
+            return {
+                success: true,
+                message: response.data.message || "Dịch vụ đã được xóa thành công.",
+                };
+        }
+        else {
+             return {
+            success: false,
+            message: response.data.message || "Có lỗi xảy ra khi xóa dịch vụ.",
+          };
+        }
+    }
+    catch (error) {
+        return {
+            success: false, 
+            message: error.response?.data?.message || "Không thể kết nối tới máy chủ.",
+        };
+    }
+};

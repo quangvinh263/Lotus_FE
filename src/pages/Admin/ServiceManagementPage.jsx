@@ -11,6 +11,8 @@ import ModifyIcon from '../../assets/icons/ModifyIcon.svg';
 import DeleteIcon from '../../assets/icons/DeleteIcon.svg';
 import { getAllServices } from '../../api/serviceApi';
 import { getRevenueByMonth } from '../../api/serviceApi';
+import { deleteService } from '../../api/serviceApi';
+import { toast } from 'react-toastify';
 
 
 const ServiceManagementPage = () => {
@@ -24,6 +26,10 @@ const ServiceManagementPage = () => {
   const [services, setServices] = useState([]);
   const [revenue, setRevenue] = useState(0);
 
+  const openDeleteModal = (service) => {
+    setSelectedService(service);
+    setShowDeleteModal(true);
+  }
 
 
   useEffect(() => {
@@ -69,9 +75,17 @@ const ServiceManagementPage = () => {
     setShowEditModal(true);
   };
 
-  const handleDeleteService = (service) => {
-    setSelectedService(service);
-    setShowDeleteModal(true);
+  const handleDeleteService = async(service) => {
+    const result = await deleteService(service.id);
+    if (result.success) {
+      toast.success('Xóa dịch vụ thành công!');
+      // Refresh service list
+      const updatedServices = services.filter((s) => s.id !== service.id);
+      setServices(updatedServices);
+      setShowDeleteModal(false);
+    } else {
+      toast.error(result.message || 'Xóa dịch vụ thất bại.');
+    }
   };
 
   const handleAdd = (newService) => {
@@ -121,7 +135,7 @@ const ServiceManagementPage = () => {
             </div>
             <div className="admin-service-stat-card">
               <p className="admin-service-stat-label">Doanh thu dịch vụ tháng này</p>
-              <p className="admin-service-stat-value">{revenue} triệu đồng</p>
+              <p className="admin-service-stat-value">{revenue ? revenue.toLocaleString('vi-VN') + ' VND' : '0 VND'}</p>
             </div>
           </div>
 
@@ -151,7 +165,7 @@ const ServiceManagementPage = () => {
                     <p>{service.description}</p>
                   </div>
                   <div className="admin-service-card-price">
-                    <p>{service.price} đồng</p>
+                    <p>{service.price.toLocaleString('vi-VN')} VND</p>
                   </div>
                 </div>
                 <div className="admin-service-card-actions">
@@ -164,7 +178,7 @@ const ServiceManagementPage = () => {
                   </button>
                   <button
                     className="admin-service-delete-btn"
-                    onClick={() => handleDeleteService(service)}
+                    onClick={() => openDeleteModal(service)}
                   >
                     <img src={DeleteIcon} alt="Delete" />
                     <span>Xóa</span>
@@ -192,7 +206,7 @@ const ServiceManagementPage = () => {
       <DeleteServiceModal
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
-        onDelete={handleDelete}
+        onDelete={handleDeleteService}
         service={selectedService}
       />
     </div>
