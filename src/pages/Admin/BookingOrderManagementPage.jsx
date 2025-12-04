@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/Admin/BookingOrderManagementPage.css';
 import AdminSidebar from '../../components/Admin/AdminSidebar';
 import AdminHeader from '../../components/Admin/AdminHeader';
 import BookingOrderDetailModal from '../../components/Admin/BookingOrderDetailModal';
+import PaymentFilterPopup from '../../components/Admin/PaymentFilterPopup';
+import { getBookingsStatistic, getBookingsList, getBookingDetail } from '../../api/bookingApi';
 import SearchIcon from '../../assets/icons/SearchIcon.svg';
 import FilterIcon from '../../assets/icons/FilterIcon.svg';
 import EyeIcon from '../../assets/icons/EyeIcon.svg';
@@ -12,92 +14,147 @@ const BookingOrderManagementPage = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
+  const [statistics, setStatistics] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showPaymentFilter, setShowPaymentFilter] = useState(false);
+  const [paymentFilter, setPaymentFilter] = useState('all');
+  const filterButtonRef = useRef(null);
+  const [bookingList, setBookingList] = useState([]);
+  const [isLoadingBookings, setIsLoadingBookings] = useState(false);
 
-  const [bookingList] = useState([
-    {
-      id: 'KB001',
-      bookingDate: '05/11/2025',
-      customerName: 'Nguyễn Văn A',
-      phone: '0901234567',
-      roomCount: 2,
-      checkIn: '10/11/2025',
-      checkOut: '12/11/2025',
-      nights: 2,
-      totalAmount: 1600000,
-      paymentStatus: 'Chưa đặt cọc',
-      remainingAmount: 1100000,
-      status: 'pending',
-      statusText: 'Chờ xác nhận'
-    },
-    {
-      id: 'KB002',
-      bookingDate: '06/11/2025',
-      customerName: 'Nguyễn Thị B',
-      phone: '0901544324',
-      roomCount: 2,
-      checkIn: '11/11/2025',
-      checkOut: '13/11/2025',
-      nights: 3,
-      totalAmount: 2600000,
-      paymentStatus: 'Đã đặt cọc',
-      remainingAmount: 1100000,
-      status: 'confirmed',
-      statusText: 'Đã xác nhận'
-    },
-    {
-      id: 'KB003',
-      bookingDate: '07/11/2025',
-      customerName: 'Tăng Quang C',
-      phone: '0901234567',
-      roomCount: 3,
-      checkIn: '15/11/2025',
-      checkOut: '17/11/2025',
-      nights: 2,
-      totalAmount: 3600000,
-      paymentStatus: 'Chưa thanh toán',
-      remainingAmount: 1100000,
-      status: 'checkedin',
-      statusText: 'Đã check-in'
-    },
-    {
-      id: 'KB004',
-      bookingDate: '07/11/2025',
-      customerName: 'Tăng Quang C',
-      phone: '0901234567',
-      roomCount: 3,
-      checkIn: '15/11/2025',
-      checkOut: '17/11/2025',
-      nights: 2,
-      totalAmount: 3600000,
-      paymentStatus: 'Đã thanh toán',
-      remainingAmount: 0,
-      status: 'completed',
-      statusText: 'Đã hoàn thành'
-    },
-    {
-      id: 'KB005',
-      bookingDate: '07/11/2025',
-      customerName: 'Tăng Quang C',
-      phone: '0901234567',
-      roomCount: 3,
-      checkIn: '15/11/2025',
-      checkOut: '17/11/2025',
-      nights: 2,
-      totalAmount: 3600000,
-      paymentStatus: 'Chưa thanh toán',
-      remainingAmount: 1100000,
-      status: 'cancelled',
-      statusText: 'Đã hủy'
+  useEffect(() => {
+    fetchStatistics();
+    fetchBookings();
+  }, []);
+
+  useEffect(() => {
+    fetchBookings();
+  }, [activeFilter, searchTerm]);
+
+  const fetchStatistics = async () => {
+    setIsLoading(true);
+    const result = await getBookingsStatistic();
+    
+    if (result.success) {
+      const data = result.data;
+      console.log('Raw statistics from backend:', data);
+      
+      // Map từ backend keys sang frontend
+      const mappedStats = {
+        'All': data.All || 0,
+        'Pending': data.Pending || 0,
+        'Confirmed': data.Confirmed || 0,
+        'InHouse': data.InHouse || 0,
+        'Completed': data.Completed || 0,
+        'Cancelled': data.Cancelled || 0
+      };
+      
+      setStatistics(mappedStats);
+      console.log('Mapped statistics:', mappedStats);
+    } else {
+      console.warn('Statistics not available:', result.message);
+      // Set default statistics nếu chưa có data
+      setStatistics({
+        'All': 0,
+        'Pending': 0,
+        'Confirmed': 0,
+        'InHouse': 0,
+        'Completed': 0,
+        'Cancelled': 0
+      });
     }
-  ]);
+    setIsLoading(false);
+  };
 
-  const stats = [
-    { label: 'Tổng đơn', value: '5', color: '#133E87' },
-    { label: 'Chờ xác nhận', value: '1', color: '#F0B100' },
-    { label: 'Đã xác nhận', value: '1', color: '#133E87' },
-    { label: 'Đã check-in', value: '1', color: '#00A63E' },
-    { label: 'Hoàn thành', value: '1', color: '#4A5565' },
-    { label: 'Đã hủy', value: '1', color: '#FB2C36' }
+  const fetchBookings = async () => {
+    setIsLoadingBookings(true);
+    // Map frontend filter key sang backend status value
+    const statusFilterValue = activeFilter === 'all' ? null : mapFilterKeyToBackendStatus(activeFilter);
+    const result = await getBookingsList(statusFilterValue, searchTerm);
+    
+    if (result.success && Array.isArray(result.data)) {
+      const mappedBookings = result.data.map(booking => ({
+        id: booking.reservationId,
+        bookingDate: new Date(booking.reservationDate).toLocaleDateString('vi-VN'),
+        customerName: booking.fullName,
+        phone: booking.phone,
+        roomCount: booking.roomCount,
+        checkIn: booking.checkInDate !== '0001-01-01' ? new Date(booking.checkInDate).toLocaleDateString('vi-VN') : '-',
+        checkOut: booking.checkOutDate !== '0001-01-01' ? new Date(booking.checkOutDate).toLocaleDateString('vi-VN') : '-',
+        nights: booking.durationNights,
+        totalAmount: booking.totalAmount,
+        paymentStatus: mapPaymentStatus(booking.statusPayment),
+        remainingAmount: booking.totalDue,
+        status: mapReservationStatusToKey(booking.statusReservation),
+        statusText: mapReservationStatus(booking.statusReservation)
+      }));
+      
+      setBookingList(mappedBookings);
+      console.log('Mapped bookings:', mappedBookings);
+    } else {
+      console.warn('Bookings not available:', result.message);
+      setBookingList([]);
+    }
+    setIsLoadingBookings(false);
+  };
+
+  const mapPaymentStatus = (status) => {
+    const statusMap = {
+      'Paid': 'Đã thanh toán',
+      'Deposited': 'Đã đặt cọc',
+      'Unpaid': 'Chưa thanh toán',
+      'NotDeposited': 'Chưa đặt cọc'
+    };
+    return statusMap[status] || status;
+  };
+
+  const mapReservationStatus = (status) => {
+    const statusMap = {
+      'Pending': 'Chờ xác nhận',
+      'Confirmed': 'Đã xác nhận',
+      'InHouse': 'Đã check-in',
+      'Completed': 'Đã hoàn thành',
+      'Cancelled': 'Đã hủy'
+    };
+    return statusMap[status] || status;
+  };
+
+  const mapReservationStatusToKey = (status) => {
+    const statusMap = {
+      'Pending': 'pending',
+      'Confirmed': 'confirmed',
+      'InHouse': 'checkedin',
+      'Completed': 'completed',
+      'Cancelled': 'cancelled'
+    };
+    return statusMap[status] || 'pending';
+  };
+
+  const mapFilterKeyToBackendStatus = (filterKey) => {
+    const keyMap = {
+      'pending': 'Pending',
+      'confirmed': 'Confirmed',
+      'checkedin': 'InHouse',
+      'completed': 'Completed',
+      'cancelled': 'Cancelled'
+    };
+    return keyMap[filterKey] || null;
+  };
+
+  const stats = statistics ? [
+    { label: 'Tổng đơn', value: statistics.All || 0, color: '#133E87' },
+    { label: 'Chờ xác nhận', value: statistics.Pending || 0, color: '#F0B100' },
+    { label: 'Đã xác nhận', value: statistics.Confirmed || 0, color: '#133E87' },
+    { label: 'Đã check-in', value: statistics.InHouse || 0, color: '#00A63E' },
+    { label: 'Hoàn thành', value: statistics.Completed || 0, color: '#4A5565' },
+    { label: 'Đã hủy', value: statistics.Cancelled || 0, color: '#FB2C36' }
+  ] : [
+    { label: 'Tổng đơn', value: 0, color: '#133E87' },
+    { label: 'Chờ xác nhận', value: 0, color: '#F0B100' },
+    { label: 'Đã xác nhận', value: 0, color: '#133E87' },
+    { label: 'Đã check-in', value: 0, color: '#00A63E' },
+    { label: 'Hoàn thành', value: 0, color: '#4A5565' },
+    { label: 'Đã hủy', value: 0, color: '#FB2C36' }
   ];
 
   const filterButtons = [
@@ -126,19 +183,92 @@ const BookingOrderManagementPage = () => {
     return '#F0B100';
   };
 
-  const handleViewDetail = (booking) => {
-    setSelectedBooking({
-      ...booking,
-      statusColor: getStatusColor(booking.status),
-      paymentStatusColor: getPaymentColor(booking.paymentStatus),
-      depositAmount: 500000
-    });
+  const handleViewDetail = async (booking) => {
+    // Fetch chi tiết từ API
+    const result = await getBookingDetail(booking.id);
+    
+    if (result.success) {
+      const detail = result.data;
+      
+      console.log('🔍 Raw booking detail from API:', detail);
+      
+      // Kiểm tra nếu backend trả về array hoặc có thuộc tính lồng nhau
+      const detailData = Array.isArray(detail) ? detail[0] : detail;
+      
+      // Map data từ backend - ưu tiên data có đầy đủ thông tin
+      const mappedDetail = {
+        id: detailData.reservationId,
+        bookingDate: new Date(detailData.reservationDate).toLocaleDateString('vi-VN'),
+        customerName: detailData.fullName,
+        phone: detailData.phone,
+        email: detailData.email || 'N/A',
+        roomCount: detailData.roomCount || 0,
+        checkIn: detailData.checkInDate && detailData.checkInDate !== '0001-01-01' 
+          ? new Date(detailData.checkInDate).toLocaleDateString('vi-VN') 
+          : '-',
+        checkOut: detailData.checkOutDate && detailData.checkOutDate !== '0001-01-01'
+          ? new Date(detailData.checkOutDate).toLocaleDateString('vi-VN')
+          : '-',
+        nights: detailData.durationNights || 0,
+        countPeople: detailData.countPeople || 0,
+        totalAmount: detailData.totalAmount || 0,
+        totalRoom: detailData.totalRoom || 0,
+        totalService: detailData.totalService || 0,
+        totalPaid: detailData.totalPaid || 0,
+        remainingAmount: detailData.totalDue || 0,
+        paymentStatus: mapPaymentStatus(detailData.statusPayment),
+        status: mapReservationStatusToKey(detailData.statusReservation),
+        statusText: mapReservationStatus(detailData.statusReservation),
+        statusColor: getStatusColor(mapReservationStatusToKey(detailData.statusReservation)),
+        paymentStatusColor: getPaymentColor(mapPaymentStatus(detailData.statusPayment)),
+        roomTypes: detailData.typeDetails || [],
+        depositAmount: detailData.totalPaid || 0
+      };
+      
+      setSelectedBooking(mappedDetail);
+      console.log('📝 Mapped booking detail:', mappedDetail);
+    } else {
+      console.error('❌ Failed to fetch booking detail:', result.message);
+      // Fallback: sử dụng data từ list
+      setSelectedBooking({
+        ...booking,
+        statusColor: getStatusColor(booking.status),
+        paymentStatusColor: getPaymentColor(booking.paymentStatus),
+        depositAmount: booking.totalPaid || 0,
+        email: 'N/A',
+        countPeople: 0,
+        totalRoom: 0,
+        totalService: 0,
+        totalPaid: 0,
+        roomTypes: []
+      });
+    }
+    
     setShowDetailModal(true);
   };
 
-  const filteredBookings = activeFilter === 'all' 
-    ? bookingList 
-    : bookingList.filter(booking => booking.status === activeFilter);
+  const handlePaymentFilterApply = (selectedPaymentStatus) => {
+    setPaymentFilter(selectedPaymentStatus);
+  };
+
+  const getPaymentFilterKey = (paymentStatus) => {
+    if (paymentStatus === 'Đã thanh toán') return 'paid';
+    if (paymentStatus === 'Đã đặt cọc') return 'deposited';
+    if (paymentStatus === 'Chưa thanh toán' || paymentStatus === 'Chưa đặt cọc') return 'unpaid';
+    return 'all';
+  };
+
+  const filteredBookings = bookingList.filter(booking => {
+    // Double-check: Đảm bảo filter status khớp với activeFilter
+    if (activeFilter !== 'all' && booking.status !== activeFilter) {
+      return false;
+    }
+    
+    // Filter theo payment status
+    if (paymentFilter === 'all') return true;
+    const bookingPaymentKey = getPaymentFilterKey(booking.paymentStatus);
+    return bookingPaymentKey === paymentFilter;
+  });
 
   return (
     <div className="admin-booking-order-page">
@@ -154,14 +284,18 @@ const BookingOrderManagementPage = () => {
 
           {/* Stats Cards */}
           <div className="admin-booking-order-stats">
-            {stats.map((stat, index) => (
-              <div key={index} className="admin-booking-order-stat-card">
-                <p className="admin-booking-order-stat-label">{stat.label}</p>
-                <h2 className="admin-booking-order-stat-value" style={{ color: stat.color }}>
-                  {stat.value}
-                </h2>
-              </div>
-            ))}
+            {isLoading ? (
+              <div className="admin-booking-order-loading">Đang tải thống kê...</div>
+            ) : (
+              stats.map((stat, index) => (
+                <div key={index} className="admin-booking-order-stat-card">
+                  <p className="admin-booking-order-stat-label">{stat.label}</p>
+                  <h2 className="admin-booking-order-stat-value" style={{ color: stat.color }}>
+                    {stat.value}
+                  </h2>
+                </div>
+              ))
+            )}
           </div>
 
           {/* Filter Buttons */}
@@ -191,9 +325,14 @@ const BookingOrderManagementPage = () => {
               />
               <img src={SearchIcon} alt="Search" className="admin-booking-order-search-icon" />
             </div>
-            <button className="admin-booking-order-filter-action-btn">
+            <button 
+              ref={filterButtonRef}
+              className="admin-booking-order-filter-action-btn"
+              onClick={() => setShowPaymentFilter(!showPaymentFilter)}
+            >
               <img src={FilterIcon} alt="Filter" className="admin-booking-order-filter-icon" />
               <span>Lọc</span>
+              {paymentFilter !== 'all' && <span className="filter-badge"></span>}
             </button>
           </div>
 
@@ -213,7 +352,20 @@ const BookingOrderManagementPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredBookings.map((booking) => (
+                {isLoadingBookings ? (
+                  <tr>
+                    <td colSpan="8" style={{ textAlign: 'center', padding: '32px' }}>
+                      Đang tải danh sách đơn đặt phòng...
+                    </td>
+                  </tr>
+                ) : filteredBookings.length === 0 ? (
+                  <tr>
+                    <td colSpan="8" style={{ textAlign: 'center', padding: '32px' }}>
+                      Không tìm thấy đơn đặt phòng nào
+                    </td>
+                  </tr>
+                ) : (
+                  filteredBookings.map((booking) => (
                   <tr key={booking.id}>
                     <td>
                       <div className="admin-booking-order-cell-primary">{booking.id}</div>
@@ -266,12 +418,20 @@ const BookingOrderManagementPage = () => {
                       </button>
                     </td>
                   </tr>
-                ))}
+                )))}
               </tbody>
             </table>
           </div>
         </div>
       </div>
+
+      {/* Payment Filter Popup */}
+      <PaymentFilterPopup
+        isOpen={showPaymentFilter}
+        onClose={() => setShowPaymentFilter(false)}
+        onApply={handlePaymentFilterApply}
+        buttonRef={filterButtonRef}
+      />
 
       {/* Detail Modal */}
       <BookingOrderDetailModal 
