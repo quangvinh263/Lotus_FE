@@ -79,8 +79,8 @@ const RevenueReportPage = () => {
                 <div className="admin-revenue-stat-icon revenue-total-icon">
                   <img src={MoneyIcon} alt="Money" className="revenue-icon-green" />
                 </div>
-                <div className={`admin-revenue-stat-change ${overview.revenueGrowthPercent >= 0 ? 'positive' : 'negative'}`}>
-                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.revenueGrowthPercent < 0 ? 'rotate(180deg)' : 'none' }} />
+                <div className={`admin-revenue-stat-change ${overview.revenueGrowthPercent >= 0 ? 'positive' : 'neutral'}`}>
+                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.revenueGrowthPercent < 0 ? 'none' : 'rotate(180deg)' }} />
                   <span>{overview.revenueGrowthPercent >= 0 ? '+' : ''}{overview.revenueGrowthPercent.toFixed(1)}%</span>
                 </div>
               </div>
@@ -93,8 +93,8 @@ const RevenueReportPage = () => {
                 <div className="admin-revenue-stat-icon revenue-room-icon">
                   <img src={HotelIcon} alt="Hotel" className="revenue-icon-red" />
                 </div>
-                <div className={`admin-revenue-stat-change ${overview.roomGrowthPercent >= 0 ? 'positive' : 'negative'}`}>
-                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.roomGrowthPercent < 0 ? 'rotate(180deg)' : 'none' }} />
+                <div className={`admin-revenue-stat-change ${overview.roomGrowthPercent >= 0 ? 'positive' : 'neutral'}`}>
+                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.roomGrowthPercent < 0 ? 'none' : 'rotate(180deg)' }} />
                   <span>{overview.roomGrowthPercent >= 0 ? '+' : ''}{overview.roomGrowthPercent.toFixed(1)}%</span>
                 </div>
               </div>
@@ -107,8 +107,8 @@ const RevenueReportPage = () => {
                 <div className="admin-revenue-stat-icon revenue-service-icon">
                   <img src={ServiceIcon} alt="Service" className="revenue-icon-blue" />
                 </div>
-                <div className={`admin-revenue-stat-change ${overview.serviceGrowthPercent >= 0 ? 'positive' : 'negative'}`}>
-                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.serviceGrowthPercent < 0 ? 'rotate(180deg)' : 'none' }} />
+                <div className={`admin-revenue-stat-change ${overview.serviceGrowthPercent >= 0 ? 'positive' : 'neutral'}`}>
+                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.serviceGrowthPercent < 0 ? 'none' : 'rotate(180deg)' }} />
                   <span>{overview.serviceGrowthPercent >= 0 ? '+' : ''}{overview.serviceGrowthPercent.toFixed(1)}%</span>
                 </div>
               </div>
@@ -121,8 +121,8 @@ const RevenueReportPage = () => {
                 <div className="admin-revenue-stat-icon revenue-average-icon">
                   <img src={RevenueIcon} alt="Revenue" className="revenue-icon-purple" />
                 </div>
-                <div className={`admin-revenue-stat-change ${overview.averageGrowthPercent >= 0 ? 'positive' : 'negative'}`}>
-                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.averageGrowthPercent < 0 ? 'rotate(180deg)' : 'none' }} />
+                <div className={`admin-revenue-stat-change ${overview.averageGrowthPercent >= 0 ? 'positive' : 'neutral'}`}>
+                  <img src={DownFallIcon} alt="Change" style={{ transform: overview.averageGrowthPercent < 0 ? 'none' : 'rotate(180deg)' }} />
                   <span>{overview.averageGrowthPercent >= 0 ? '+' : ''}{overview.averageGrowthPercent.toFixed(1)}%</span>
                 </div>
               </div>

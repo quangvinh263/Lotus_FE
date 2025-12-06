@@ -105,6 +105,12 @@ const BookingOrderDetailModal = ({ isOpen, onClose, booking }) => {
                   {booking.depositAmount?.toLocaleString('vi-VN') || '500,000'}đ
                 </span>
               </div>
+              <div className="booking-order-detail-payment-row">
+                <span className="booking-order-detail-payment-label">Đã thanh toán:</span>
+                <span className="booking-order-detail-payment-value">
+                  {booking.paidAmount?.toLocaleString('vi-VN') || '0'}đ
+                </span>
+              </div>
               <div className="booking-order-detail-payment-row border-top">
                 <span className="booking-order-detail-payment-label-bold">Còn lại:</span>
                 <span className="booking-order-detail-payment-value">
