@@ -86,3 +86,44 @@ export const getBookingDetail = async (reservationId) => {
         };
     }
 }
+
+export const createBooking = async (bookingData) => {
+    try {
+        // Map frontend data to backend format
+        const requestData = {
+            customerID: bookingData.customerId,
+            checkInDate: new Date(bookingData.checkIn).toISOString().split('T')[0], // Format: YYYY-MM-DD
+            checkOutDate: new Date(bookingData.checkOut).toISOString().split('T')[0],
+            details: bookingData.rooms.map(room => ({
+                typeID: room.roomTypeId,
+                roomCount: room.numberOfRooms,
+                peopleNumber: room.guestsPerRoom
+            }))
+        };
+
+        console.log('Creating booking with data:', requestData);
+
+        const response = await axios.post(`${API_URL}/Reservations/create`, requestData);
+        
+        console.log('Create Booking Response:', response.data);
+        
+        if (response.status === 200 || response.status === 201) {
+            return {
+                success: true,
+                data: response.data,
+                message: "Tạo đơn đặt phòng thành công!"
+            };
+        }
+        
+        return {
+            success: false,
+            message: "Response không hợp lệ",
+        };
+    } catch (error) {
+        console.error('Error creating booking:', error);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.response?.data?.title || "Không thể tạo đơn đặt phòng.",
+        };
+    }
+}
