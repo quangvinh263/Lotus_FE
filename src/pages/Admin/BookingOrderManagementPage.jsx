@@ -102,6 +102,7 @@ const BookingOrderManagementPage = () => {
     const statusMap = {
       'Paid': 'Đã thanh toán',
       'Deposited': 'Đã đặt cọc',
+      'PaidAmount': 'Đã thanh toán một phần',
       'Unpaid': 'Chưa thanh toán',
       'NotDeposited': 'Chưa đặt cọc'
     };
@@ -215,6 +216,7 @@ const BookingOrderManagementPage = () => {
         totalRoom: detailData.totalRoom || 0,
         totalService: detailData.totalService || 0,
         totalPaid: detailData.totalPaid || 0,
+        paidAmount: detailData.paidAmount || 0,
         remainingAmount: detailData.totalDue || 0,
         paymentStatus: mapPaymentStatus(detailData.statusPayment),
         status: mapReservationStatusToKey(detailData.statusReservation),
@@ -222,7 +224,7 @@ const BookingOrderManagementPage = () => {
         statusColor: getStatusColor(mapReservationStatusToKey(detailData.statusReservation)),
         paymentStatusColor: getPaymentColor(mapPaymentStatus(detailData.statusPayment)),
         roomTypes: detailData.typeDetails || [],
-        depositAmount: detailData.totalPaid || 0
+        depositAmount: detailData.depositAmount || 0
       };
       
       setSelectedBooking(mappedDetail);
@@ -234,7 +236,7 @@ const BookingOrderManagementPage = () => {
         ...booking,
         statusColor: getStatusColor(booking.status),
         paymentStatusColor: getPaymentColor(booking.paymentStatus),
-        depositAmount: booking.totalPaid || 0,
+        depositAmount: booking.depositAmount || 0,
         email: 'N/A',
         countPeople: 0,
         totalRoom: 0,

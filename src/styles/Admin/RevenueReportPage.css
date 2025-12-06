@@ -131,6 +131,9 @@
   color: #00A63E;
 }
 
+.admin-revenue-stat-change.neutral {
+  color: #E7000B;
+}
 .admin-revenue-stat-change.positive img {
   width: 16px;
   height: 16px;

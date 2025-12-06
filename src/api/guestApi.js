@@ -3,7 +3,7 @@ const API_URL = `${import.meta.env.VITE_API_BASE_URL}`;
 
 export const getAllGuests = async () => {
   try {
-    const response = await axios.get(`${API_URL}/Guest/guest`);
+    const response = await axios.get(`${API_URL}/Guests/guest`);
     if (response.status === 200 || response.data.success === true) {
         return {
             success: true,
@@ -26,7 +26,7 @@ export const getAllGuests = async () => {
 
 export const getGuestById = async (guestId) => {
   try {
-    const response = await axios.get(`${API_URL}/Guest/${guestId}`);
+    const response = await axios.get(`${API_URL}/Guests/${guestId}`);
     if (response.status === 200 || response.data.success === true) {
         return {
             success: true,
