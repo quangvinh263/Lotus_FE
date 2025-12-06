@@ -86,3 +86,36 @@ export const getBookingDetail = async (reservationId) => {
         };
     }
 }
+
+
+// Check-in booking
+export const checkInBooking = async (checkInData) => {
+  try {
+    console.log('📤 Sending check-in request:', checkInData);
+    
+    const response = await axios.put(`${API_URL}/Reservations/check-in`, checkInData);
+    
+    console.log('✅ Check-in response:', response);
+
+    return {
+      success: true,
+      data: response.data,
+      message: response.data.message || "Check-in thành công"
+    };
+  } catch (error) {
+    console.error('❌ Check-in error:', error);
+    console.error('Error response:', error.response?.data);
+    
+    // ✅ Log chi tiết validation errors
+    if (error.response?.data?.errors) {
+      console.error('🔍 Validation errors:', error.response.data.errors);
+    }
+    
+    return {
+      success: false,
+      message: error.response?.data?.errors 
+        ? JSON.stringify(error.response.data.errors)
+        : error.response?.data?.message || "Không thể check-in"
+    };
+  }
+};
