@@ -106,7 +106,7 @@ const BookingOrderDetailModal = ({ isOpen, onClose, booking }) => {
                 </span>
               </div>
               <div className="booking-order-detail-payment-row">
-                <span className="booking-order-detail-payment-label">Đã thanh toán thêm:</span>
+                <span className="booking-order-detail-payment-label">Đã thanh toán:</span>
                 <span className="booking-order-detail-payment-value">
                   {booking.paidAmount?.toLocaleString('vi-VN') || '0'}đ
                 </span>
