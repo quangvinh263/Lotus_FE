@@ -140,8 +140,7 @@
 .navbar-user-info {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
+  gap: 30px; /* ✅ Tăng khoảng cách giữa profile và logout */
   padding: 6px 20px;
   border: 1px solid #133E87;
   border-radius: 50px;
@@ -164,19 +163,126 @@
   filter: brightness(0) invert(1);
 }
 
+.navbar-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.navbar-profile-btn:hover {
+  background-color: #f8f9fa;
+  border-color: #999;
+}
+
 .navbar-user-icon {
-  width: 24px;
-  height: 24px;
-  transition: filter 0.3s ease;
+  width: 20px;
+  height: 20px;
 }
 
 .navbar-user-name {
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.navbar-user-role {
+  font-size: 12px;
+  color: #666;
+  margin-left: 4px;
+  font-style: italic;
+}
+
+.navbar-logout-btn {
+  padding: 8px 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.navbar-logout-btn:hover {
+  background-color: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.navbar-logged-in-group {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Khoảng cách giữa nút profile và nút logout */
+}
+
+/* 1. Style cho nút Profile (Hình viên thuốc) */
+.navbar-profile-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 20px;
+  border: 1px solid #133E87;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  height: 38px;
+  min-width: 120px; /* Độ rộng tối thiểu để tên không bị ép */
+  justify-content: center;
+}
+
+.navbar-profile-pill:hover {
+  background-color: #133E87;
+}
+
+.navbar-profile-pill:hover .navbar-user-name {
+  color: #F3F3E0;
+}
+
+.navbar-profile-pill:hover .navbar-user-icon {
+  filter: brightness(0) invert(1); /* Đổi màu icon sang trắng khi hover */
+}
+
+.navbar-user-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.navbar-user-name {
+  font-family: 'Abhaya Libre', serif;
   font-weight: 400;
-  font-size: 20px;
-  line-height: 1.18;
-  letter-spacing: 0.1em;
+  font-size: 18px;
   color: #133E87;
   white-space: nowrap;
   transition: color 0.3s ease;
+}
+
+/* 2. Style cho nút Logout riêng biệt */
+.navbar-logout-btn {
+  height: 38px;
+  padding: 0 15px;
+  background-color: transparent;
+  color: #c0392b; /* Màu đỏ trầm cho nút thoát */
+  border: 1px solid #c0392b;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Abhaya Libre', serif;
+  font-size: 16px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.navbar-logout-btn:hover {
+  background-color: #c0392b;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.2);
 }
 

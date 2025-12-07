@@ -31,7 +31,7 @@ export const getBookingsList = async (statusFilter = null, keyword = null) => {
     try {
         const params = {};
         if (statusFilter && statusFilter !== 'all') {
-            params.statusFilter = statusFilter;
+            params.status = statusFilter;
         }
         if (keyword && keyword.trim()) {
             params.keyword = keyword.trim();

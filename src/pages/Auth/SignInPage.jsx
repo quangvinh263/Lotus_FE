@@ -116,7 +116,11 @@ const SignIn = () => {
 
         if (userRole === 'Receptionist') {
           navigate('/about');
-        } else {
+        }
+         else if (result.isNewUser) {
+          navigate('/complete-profile');
+        }
+         else {
           navigate('/profile');
         }
       } else {
@@ -167,7 +171,10 @@ const SignIn = () => {
         login(result);
         if (userRole === 'Receptionist') {
           navigate('/about');
-        } else {
+        } else if (result.isNewUser) {
+          navigate('/complete-profile');
+        }
+         else {
           navigate('/profile');
         }
       } else {
@@ -191,32 +198,7 @@ const SignIn = () => {
   };
 
   const handleForgotPassword = () => {
-    setShowForgotPasswordModal(true);
-    setResetMessage('');
-    setForgotPasswordEmail('');
-  };
-
-  const handleCloseForgotPasswordModal = () => {
-    setShowForgotPasswordModal(false);
-    setResetMessage('');
-    setForgotPasswordEmail('');
-  };
-
-  const handleResetPassword = (e) => {
-    e.preventDefault();
-    if (!forgotPasswordEmail) {
-      setResetMessage('Please enter your email address');
-      return;
-    }
-    
-    // TODO: Call API to send reset password email
-    console.log('Reset password for:', forgotPasswordEmail);
-    setResetMessage('Password reset link has been sent to your email!');
-    
-    // Close modal after 2 seconds
-    setTimeout(() => {
-      handleCloseForgotPasswordModal();
-    }, 2000);
+    navigate('/forgot-password'); // ✅ Chuyển sang trang ForgotPasswordPage thay vì modal
   };
 
   return (
@@ -283,15 +265,22 @@ const SignIn = () => {
                   />
                   <label htmlFor="rememberMe">Remember me</label>
                 </div>
-                <div className="forgot-password-link">
-                  <button 
-                    type="button" 
-                    className="forgot-password-btn"
-                    onClick={handleForgotPassword}
-                  >
-                    Forgot password?
-                  </button>
-                </div>
+                {/* Forgot Password Link */}
+                <button 
+                  type="button"
+                  onClick={handleForgotPassword}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#608BC1',
+                    fontSize: '14px',
+                    cursor: 'pointer',
+                    padding: 0,
+                    textDecoration: 'underline'
+                  }}
+                >
+                  Forgot Password?
+                </button>
               </div>
             </div>
 
