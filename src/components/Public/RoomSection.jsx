@@ -11,7 +11,6 @@ import BathIcon from '../../assets/icons/BathIcon.svg';
 const RoomSection = ({ 
   roomType = "SUPERIOR ROOM",
   price = "USD200",
-  imageUrl = ImageRoom,
   description = "A cozy retreat designed for comfort, offering a peaceful space to unwind after a day of exploration.",
   roomSize = "32 sqm",
   beds = "1 King bed or 2 Single beds",
@@ -19,6 +18,7 @@ const RoomSection = ({
   view = "City view",
   smoking = "No",
   bathroom = "Toilet, washbasin, and shower",
+  imageUrl = ImageRoom,
   onBookRoom,
   onMoreInfo
 }) => {
@@ -26,11 +26,13 @@ const RoomSection = ({
     <div className="room-section">
       {/* Image */}
       <div className="room-section-image">
-        {imageUrl ? (
-          <img src={imageUrl} alt={roomType} />
-        ) : (
-          <div className="room-section-image-placeholder" />
-        )}
+        <img 
+          src={imageUrl} 
+          alt={roomType}
+          onError={(e) => {
+            e.target.src = ImageRoom; // Fallback to default image
+          }}
+        />
       </div>
 
       {/* Room Type and Price */}
@@ -39,7 +41,7 @@ const RoomSection = ({
           {roomType}
           <br />
           <p className="room-section-price">
-          Available from {price}
+            Available from {price}
           </p>
         </h2>
       </div>
