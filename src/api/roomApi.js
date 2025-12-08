@@ -54,6 +54,11 @@ export const searchRooms = async (filterParams = {}) => {
         if (filterParams.status && filterParams.status !== 'Tất cả') {
             params.Status = filterParams.status;
         }
+
+        if (filterParams.checkInDate && filterParams.checkOutDate) {
+            params.CheckIn = filterParams.checkInDate;
+            params.CheckOut = filterParams.checkOutDate;
+        }
         
         console.log('Query params gửi đi:', params);
         
