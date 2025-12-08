@@ -102,7 +102,7 @@ const BookingOrderManagementPage = () => {
     const statusMap = {
       'Paid': 'Đã thanh toán',
       'Deposited': 'Đã đặt cọc',
-      'PaidAmount': 'Đã thanh toán một phần',
+      'PaidAmount': 'Đã thanh toán',
       'Unpaid': 'Chưa thanh toán',
       'NotDeposited': 'Chưa đặt cọc'
     };
@@ -145,16 +145,16 @@ const BookingOrderManagementPage = () => {
   const stats = statistics ? [
     { label: 'Tổng đơn', value: statistics.All || 0, color: '#133E87' },
     { label: 'Chờ xác nhận', value: statistics.Pending || 0, color: '#F0B100' },
-    { label: 'Đã xác nhận', value: statistics.Confirmed || 0, color: '#133E87' },
-    { label: 'Đã check-in', value: statistics.InHouse || 0, color: '#00A63E' },
-    { label: 'Hoàn thành', value: statistics.Completed || 0, color: '#4A5565' },
+    { label: 'Đã xác nhận', value: statistics.Confirmed || 0, color: '#2563EB' },
+    { label: 'Đã check-in', value: statistics.InHouse || 0, color: '#8B5CF6' },
+    { label: 'Hoàn thành', value: statistics.Completed || 0, color: '#00A63E' },
     { label: 'Đã hủy', value: statistics.Cancelled || 0, color: '#FB2C36' }
   ] : [
     { label: 'Tổng đơn', value: 0, color: '#133E87' },
     { label: 'Chờ xác nhận', value: 0, color: '#F0B100' },
-    { label: 'Đã xác nhận', value: 0, color: '#133E87' },
-    { label: 'Đã check-in', value: 0, color: '#00A63E' },
-    { label: 'Hoàn thành', value: 0, color: '#4A5565' },
+    { label: 'Đã xác nhận', value: 0, color: '#2563EB' },
+    { label: 'Đã check-in', value: 0, color: '#8B5CF6' },
+    { label: 'Hoàn thành', value: 0, color: '#00A63E' },
     { label: 'Đã hủy', value: 0, color: '#FB2C36' }
   ];
 
@@ -169,18 +169,20 @@ const BookingOrderManagementPage = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'pending': return '#F0B100';
-      case 'confirmed': return '#133E87';
-      case 'checkedin': return '#00A63E';
-      case 'completed': return '#4A5565';
-      case 'cancelled': return '#FB2C36';
+      case 'pending': return '#F0B100';      // Vàng - Chờ xác nhận
+      case 'confirmed': return '#2563EB';     // Xanh dương - Đã xác nhận
+      case 'checkedin': return '#8B5CF6';     // Tím - Đã check-in
+      case 'completed': return '#00A63E';     // Xanh lá - Hoàn thành
+      case 'cancelled': return '#FB2C36';     // Đỏ - Đã hủy
       default: return '#133E87';
     }
   };
 
   const getPaymentColor = (paymentStatus) => {
-    if (paymentStatus === 'Đã thanh toán') return '#00A63E';
-    if (paymentStatus === 'Chưa thanh toán') return '#FB2C36';
+    if (paymentStatus === 'Đã thanh toán') return '#00A63E';      // Xanh lá - Đã thanh toán
+    if (paymentStatus === 'Đã đặt cọc') return '#F0B100';         // Vàng - Đã đặt cọc
+    if (paymentStatus === 'Chưa thanh toán') return '#FB2C36';    // Đỏ - Chưa thanh toán
+    if (paymentStatus === 'Chưa đặt cọc') return '#FB2C36';       // Đỏ - Chưa đặt cọc
     return '#F0B100';
   };
 

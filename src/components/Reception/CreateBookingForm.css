@@ -6,16 +6,18 @@
   padding: 24px 24px 0 24px;
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 32px;
 }
 
 .cbf-section-title {
   font-family: Arial;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 1.5em;
   color: #133E87;
   margin: 0;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(19, 62, 135, 0.1);
 }
 
 .cbf-content {
@@ -35,7 +37,7 @@
 .cbf-section-heading {
   font-family: Arial;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.5em;
   color: #133E87;
   margin: 0;
@@ -56,16 +58,23 @@
   gap: 16px;
 }
 
-.cbf-fields.cbf-date-fields {
+.cbf-field-full {
   display: flex;
   justify-content: space-between;
   gap: 16px;
+.cbf-field-small,
+.cbf-field-medium {
+  /* Make these fields behave like regular fields: fill available column width
+     so their inner .cbf-input (which is width:100%) appears the same size */
+  width: 100%;
+  max-width: 100%;
+  flex: 0 0 auto;
 }
 
-.cbf-fields.cbf-room-fields {
-  display: flex;
-  gap: 44px;
-  align-items: flex-end;
+/* Ensure fields fill available grid cell by default */
+.cbf-field {
+  width: 100%;
+}
 }
 
 .cbf-field {
@@ -94,6 +103,11 @@
   color: #133E87;
 }
 
+.cbf-required {
+  color: #FF0000;
+  margin-left: 2px;
+}
+
 .cbf-input-wrapper {
   position: relative;
   width: 100%;
@@ -110,13 +124,27 @@
   width: 100%;
   height: 36px;
   background-color: #FFFFFF;
-  border: none;
+  border: 0.8px solid rgba(19, 62, 135, 0.1);
   border-radius: 8px;
-  padding: 0 12px 0 40px;
+  padding: 0 12px;
   font-family: Arial;
   font-size: 14px;
   color: #133E87;
   outline: none;
+  transition: border-color 0.2s;
+}
+
+.cbf-input:focus {
+  border-color: #133E87;
+}
+
+.cbf-input-wrapper .cbf-input {
+  border: none;
+  padding: 0 12px 0 40px;
+}
+
+.cbf-input-wrapper .cbf-input:focus {
+  border: none;
 }
 
 .cbf-input-icon {
