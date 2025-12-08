@@ -4,8 +4,15 @@ import './DateTimePicker.css';
 
 function DateTimePicker({ value, onChange, placeholder = 'Chọn ngày' }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(value || new Date());
   const pickerRef = useRef(null);
+
+  // Update currentDate khi value thay đổi
+  useEffect(() => {
+    if (value) {
+      setCurrentDate(value);
+    }
+  }, [value]);
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -66,17 +73,33 @@ function DateTimePicker({ value, onChange, placeholder = 'Chọn ngày' }) {
   };
 
   const handlePrevMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
+    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
   };
 
   const handleNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
+    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+  };
+
+  const handleYearChange = (e) => {
+    const newYear = parseInt(e.target.value);
+    setCurrentDate(new Date(newYear, currentDate.getMonth(), 1));
+  };
+
+  const handleMonthChange = (e) => {
+    const newMonth = parseInt(e.target.value);
+    setCurrentDate(new Date(currentDate.getFullYear(), newMonth, 1));
   };
 
   const handleDateSelect = (date) => {
     onChange(date);
     setIsOpen(false);
   };
+
+  // Generate year options (từ 1940 đến 2050)
+  const yearOptions = [];
+  for (let year = 2050; year >= 1940; year--) {
+    yearOptions.push(year);
+  }
 
   const formatDate = (date) => {
     if (!date) return '';
@@ -128,8 +151,43 @@ function DateTimePicker({ value, onChange, placeholder = 'Chọn ngày' }) {
               </svg>
             </button>
             
-            <div className="dtp-month-year">
-              {months[currentDate.getMonth()]} {currentDate.getFullYear()}
+            <div className="dtp-month-year" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <select 
+                value={currentDate.getMonth()} 
+                onChange={handleMonthChange}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  fontFamily: 'Arial',
+                  fontSize: '14px',
+                  color: '#133E87',
+                  border: 'none',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                  outline: 'none'
+                }}
+              >
+                {months.map((month, idx) => (
+                  <option key={idx} value={idx}>{month}</option>
+                ))}
+              </select>
+              <select 
+                value={currentDate.getFullYear()} 
+                onChange={handleYearChange}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  fontFamily: 'Arial',
+                  fontSize: '14px',
+                  color: '#133E87',
+                  border: 'none',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                  outline: 'none'
+                }}
+              >
+                {yearOptions.map((year) => (
+                  <option key={year} value={year}>{year}</option>
+                ))}
+              </select>
             </div>
 
             <button
