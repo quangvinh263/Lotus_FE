@@ -1,45 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/HomePage.css';
 import Navbar from '../../components/Public/NavBar';
 import RoomCard from '../../components/Public/RoomCard';
 import Footer from '../../components/Public/Footer';
-import ImageHome1 from '../../assets/images/ImageHome1.png';
 import ImageHome2 from '../../assets/images/ImageHome2.png';
 import ImageHome3 from '../../assets/images/ImageHome3.png';
+import ImageRoom from '../../assets/images/ImageRoom.jpg';
 import WifiIcon from '../../assets/icons/WifiIcon.png';
-import BedIcon from '../../assets/icons/BedIcon.png';
+import BedIcon from '../../assets/icons/StarIcon.png';
 import StarIcon from '../../assets/icons/StarIcon.png';
 import ShoppingIcon from '../../assets/icons/ShoppingIcon.png';
-
-const rooms = [
-  {
-    id: 1,
-    title: "Superior Room",
-    description: "A cozy retreat designed for comfort and simplicity, offering a peaceful space to unwind after a day of exploration."
-  },
-  {
-    id: 2,
-    title: "Deluxe Room",
-    description: "An elevated experience with extra space and refined furnishings, blending modern style with sophisticated comfort."
-  },
-  {
-    id: 3,
-    title: "Executive Room",
-    description: "Designed for the discerning traveler, offering premium amenities and exclusive access for a truly seamless stay."
-  },
-  {
-    id: 4,
-    title: "Grand Suite",
-    description: "A spacious and opulent suite featuring a separate living area, offering an indulgent experience with breathtaking views."
-  },
-  {
-    id: 5,
-    title: "Lotus Suite",
-    description: "The pinnacle of luxury at our hotel. An elegant suite with a spacious balcony, where we arrange outdoor seating for your private moments of relaxation."
-  }
-];
+import { getRoomOverview } from '../../api/roomTypeApi';
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const [roomTypes, setRoomTypes] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ State kiểm tra đăng nhập
+
+  useEffect(() => {
+    // 1. Fetch Room Data
+    const fetchRooms = async () => {
+      try {
+        const response = await getRoomOverview();
+        if (response.success && Array.isArray(response.overview)) {
+          setRoomTypes(response.overview);
+        }
+      } catch (error) {
+        console.error('Error fetching rooms:', error);
+      }
+    };
+
+    fetchRooms();
+
+    // 2. ✅ Check Login Status
+    // Kiểm tra token hoặc user info trong localStorage
+    // Bạn hãy thay 'token' hoặc 'user' bằng key thực tế bạn đang lưu khi login
+    const token = localStorage.getItem('token') || localStorage.getItem('user');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleExplore = (id) => {
+    navigate(`/room-details/${id}`);
+  };
+
+  // ✅ Hàm điều hướng
+  const handleJoin = () => {
+    navigate('/signup');
+  };
+
+  const handleSignIn = () => {
+    navigate('/signin');
+  };
+
   return (
     <div className="homepage">
       {/* Navbar */}
@@ -96,15 +111,20 @@ const HomePage = () => {
           <h2 className="rooms-title">Rooms & Suites</h2>
         </div>
         <div className="rooms-list">
-          {rooms.map((room) => (
-            <div key={room.id} className="room-card-wrapper">
-              <RoomCard
-                title={room.title}
-                description={room.description}
-                onExplore={() => console.log(`Explore ${room.title}`)}
-              />
-            </div>
-          ))}
+          {roomTypes.length > 0 ? (
+            roomTypes.map((room) => (
+              <div key={room.roomTypeId} className="room-card-wrapper">
+                <RoomCard
+                  title={room.roomTypeName}
+                  description={room.description}
+                  image={room.urlImage || ImageRoom}
+                  onExplore={() => handleExplore(room.roomTypeId)}
+                />
+              </div>
+            ))
+          ) : (
+            <p style={{ textAlign: 'center', width: '100%' }}>Loading rooms...</p>
+          )}
         </div>
       </section>
 
@@ -116,10 +136,19 @@ const HomePage = () => {
             <p className="banner-description">
               Get the best prices plus free Wi-Fi when you become a Lotus Premium member.
             </p>
-            <div className="banner-actions">
-              <button className="banner-btn btn-join">Join for Free</button>
-              <button className="banner-btn btn-signin-outline">Sign In</button>
-            </div>
+            
+            {/* ✅ Conditional Rendering: Chỉ hiện nút khi chưa đăng nhập */}
+            {!isLoggedIn && (
+              <div className="banner-actions">
+                <button className="banner-btn btn-join" onClick={handleJoin}>
+                  Join for Free
+                </button>
+                <button className="banner-btn btn-signin-outline" onClick={handleSignIn}>
+                  Sign In
+                </button>
+              </div>
+            )}
+
           </div>
           <div className="banner-features">
             <div className="feature-item">

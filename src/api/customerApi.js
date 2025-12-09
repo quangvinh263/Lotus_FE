@@ -65,6 +65,9 @@ export const updatePersonalInfo = async (accountId, data) => {
     return {
       success: false,
       message: error.response?.data?.message || "Không thể kết nối tới máy chủ.",
+    }
+}
+};
 // Tạo customer mới (cho Reception tạo đơn walk-in)
 export const createCustomer = async (customerData) => {
   try {

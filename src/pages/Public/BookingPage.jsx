@@ -1,98 +1,83 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import '../../styles/BookingPage.css';
 import Navbar from '../../components/Public/NavBar';
 import Footer from '../../components/Public/Footer';
 import Filter from '../../components/Public/Filter';
-import RoomBooking from '../../components//Public/RoomBooking';
+import RoomBooking from '../../components/Public/RoomBooking';
 import BookingSummary from '../../components/Public/BookingSummary';
+import { getAvailableRoomTypesByFilter } from '../../api/roomTypeApi';
 
 const BookingPage = () => {
   const navigate = useNavigate();
+  
+  // State cho dữ liệu phòng từ API
+  const [rooms, setRooms] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   // Store selected rooms as array of {roomId, quantity}
   const [selectedRooms, setSelectedRooms] = useState([]);
+  
   const [filterData, setFilterData] = useState({
-    checkInDate: new Date(2025, 9, 18), // Oct 18, 2025
-    checkOutDate: new Date(2025, 9, 19), // Oct 19, 2025
+    checkInDate: new Date(2025, 9, 18), // Default date
+    checkOutDate: new Date(2025, 9, 19),
     rooms: 1,
     guests: 2
   });
+  
   const filterRef = useRef(null);
   const isProcessing = useRef(false);
 
-  // Sample room data - in real app this would come from API
-  const allRooms = [
-    {
-      id: 1,
-      name: 'Superior Room',
-      price: 'VND 5,000,000',
-      priceDescription: 'Cost for 1 night, 2 guests',
-      capacity: 2, // Maximum guests
-      bedType: '2 Single beds',
-      bathroom: '1 Bathroom',
-      description: `32m² • City view • Non-smoking • Shower • Internet Access • Smart TV • Alarm Clock • Daily Room Service • Television • Desk • Telephone • Hairdryer • Air conditioned • Mini Bar • Room Safe • Housekeeping • Wireless Internet • Free Toiletries
+  // Fetch rooms from API when filter changes
+  useEffect(() => {
+    const fetchRooms = async () => {
+      setIsLoading(true);
+      try {
+        const response = await getAvailableRoomTypesByFilter(filterData);
+        
+        if (response && response.data) {
+          // Map API data to component format
+          const mappedRooms = response.data.map(item => ({
+            id: item.roomTypeId,
+            name: item.roomTypeName,
+            // Format price to string for display, keep raw value for calculation if needed
+            price: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.averagePriceForThreeNight),
+            rawPrice: item.averagePriceForThreeNight,
+            priceDescription: `Cost for 1 night, ${item.capacity} guests`,
+            capacity: item.capacity,
+            square: item.square,
+            bedType: '1 King or 2 Single', // API chưa có field này, để default hoặc map từ description
+            bathroom: 'Private Bathroom',
+            description: item.description,
+            image: item.images && item.images.length > 0 ? item.images[0].urlImage : null,
+            // Quan trọng: Số lượng phòng khả dụng từ API
+            maxAvailable: item.roomCountIsAvailable, 
+            unavailable: item.roomCountIsAvailable === 0
+          }));
+          
+          setRooms(mappedRooms);
+          // Reset selected rooms when filter changes (new search)
+          setSelectedRooms([]);
+        }
+      } catch (error) {
+        console.error('Error fetching rooms:', error);
+        toast.error('Failed to load available rooms');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-        A cozy retreat designed for comfort, offering a peaceful space to unwind after a day of exploration.`
-    },
-    {
-      id: 2,
-      name: 'Deluxe Room',
-      price: 'VND 7,000,000',
-      priceDescription: 'Cost for 1 night, 3 guests',
-      capacity: 3, // Maximum guests
-      bedType: '1 King bed + 1 Single bed',
-      bathroom: '1 Bathroom',
-      description: `45m² • City view • Non-smoking • Shower • Internet Access • Smart TV • Alarm Clock • Daily Room Service • Television • Desk • Telephone • Hairdryer • Air conditioned • Mini Bar • Room Safe • Housekeeping • Wireless Internet • Free Toiletries
-
-        An elevated experience with extra space and refined furnishings, blending modern style with sophisticated comfort.`
-    },
-    {
-      id: 3,
-      name: 'Executive Room',
-      price: 'VND 10,000,000',
-      priceDescription: 'Cost for 1 night, 4 guests',
-      capacity: 4, // Maximum guests
-      bedType: '2 King beds',
-      bathroom: '2 Bathrooms',
-      description: `60m² • City view • Non-smoking • Shower • Internet Access • Smart TV • Alarm Clock • Daily Room Service • Television • Desk • Telephone • Hairdryer • Air conditioned • Mini Bar • Room Safe • Housekeeping • Wireless Internet • Free Toiletries
-
-        Designed for the discerning traveler, offering premium amenities and exclusive access for a truly seamless stay.`
-    },
-    {
-      id: 4,
-      name: 'Grand Suite',
-      price: 'VND 15,000,000',
-      priceDescription: 'Cost for 1 night, 6 guests',
-      capacity: 6, // Maximum guests
-      bedType: '3 King beds',
-      bathroom: '3 Bathrooms',
-      description: `90m² • City view • Non-smoking • Shower • Internet Access • Smart TV • Alarm Clock • Daily Room Service • Television • Desk • Telephone • Hairdryer • Air conditioned • Mini Bar • Room Safe • Housekeeping • Wireless Internet • Free Toiletries
-
-        A spacious and opulent suite featuring a separate living area, offering an indulgent experience with breathtaking views.`
-    },
-    {
-      id: 5,
-      name: 'Lotus Suite',
-      price: 'VND 20,000,000',
-      priceDescription: 'Cost for 1 night, 8 guests',
-      capacity: 8, // Maximum guests
-      bedType: '4 King beds',
-      bathroom: '4 Bathrooms',
-      description: `120m² • City view • Non-smoking • Shower • Internet Access • Smart TV • Alarm Clock • Daily Room Service • Television • Desk • Telephone • Hairdryer • Air conditioned • Mini Bar • Room Safe • Housekeeping • Wireless Internet • Free Toiletries
-
-        The pinnacle of luxury at our hotel. An elegant suite with a spacious balcony, where we arrange outdoor seating for your private moments of relaxation.`
+    if (filterData.checkInDate && filterData.checkOutDate) {
+      fetchRooms();
     }
-  ];
-
-  // Don't filter rooms - show all available rooms
-  const rooms = allRooms;
+  }, [filterData]);
 
   const handleFilterChange = (newFilterData) => {
     setFilterData(newFilterData);
   };
 
   const handleRoomSelect = useCallback((roomId) => {
-    // Prevent double clicks
     if (isProcessing.current) return;
     isProcessing.current = true;
     
@@ -101,63 +86,75 @@ const BookingPage = () => {
     }, 300);
     
     setSelectedRooms(prev => {
-      // Find if this room type is already selected
+      const roomData = rooms.find(room => room.id === roomId);
+      if (!roomData) return prev;
+
       const existingRoom = prev.find(r => r.roomId === roomId);
+      const currentQuantity = existingRoom ? existingRoom.quantity : 0;
       
-      // Calculate total rooms already selected
+      // 1. Check availability limit (Logic API: roomCountIsAvailable)
+      if (currentQuantity >= roomData.maxAvailable) {
+        toast.warning(`Chỉ còn lại ${roomData.maxAvailable} phòng loại này.`);
+        return prev;
+      }
+
+      // Calculate total rooms already selected across all types
       const totalRoomsSelected = prev.reduce((sum, r) => sum + r.quantity, 0);
       
+      // Calculate total capacity currently selected
+      const currentTotalCapacity = prev.reduce((sum, r) => {
+        const room = rooms.find(rm => rm.id === r.roomId);
+        return sum + (room.capacity * r.quantity);
+      }, 0);
+
+      // Dự kiến sau khi thêm phòng này
+      const nextTotalRooms = totalRoomsSelected + 1;
+      const nextTotalCapacity = currentTotalCapacity + roomData.capacity;
+
+      // 2. Check user request limit (Logic Filter: filterData.rooms)
+      if (totalRoomsSelected >= filterData.rooms) {
+        toast.info(`Bạn chỉ có thể chọn tối đa ${filterData.rooms} phòng theo yêu cầu.`);
+        return prev;
+      }
+
+      // 3. ✅ Thêm điều kiện kiểm tra: Nếu đã đủ sức chứa và đủ số phòng thì cảnh báo (Optional)
+      // Logic: Nếu số phòng đã đủ VÀ sức chứa đã đủ cho số khách
+      if (nextTotalRooms > filterData.rooms) {
+         // Đã chặn ở trên rồi, nhưng logic này để đảm bảo
+         return prev;
+      }
+
+      // Logic bạn yêu cầu: count * capacity >= rooms * guests
+      // Giả sử ý bạn là kiểm tra xem việc thêm phòng này có vượt quá nhu cầu không?
+      // Hoặc kiểm tra xem đã đủ điều kiện để book chưa (thường check lúc bấm Book).
+      
+      // Nếu ý bạn là chặn không cho chọn thêm nếu tổng sức chứa đã vượt quá quá nhiều?
+      // Ví dụ: Khách cần 2 người, đã chọn phòng chứa 4 người rồi thì thôi?
+      // Hiện tại code chỉ chặn theo số lượng phòng (filterData.rooms).
+
       if (existingRoom) {
-        // If clicking on already selected room, increase quantity
-        if (totalRoomsSelected >= filterData.rooms) {
-          alert(`Bạn chỉ có thể chọn tối đa ${filterData.rooms} phòng theo yêu cầu đặt phòng của bạn.`);
-          return prev;
-        }
-        
-        // Calculate total capacity after adding one more of this room
-        const roomData = rooms.find(room => room.id === roomId);
-        const totalCapacity = prev.reduce((sum, r) => {
-          const room = rooms.find(rm => rm.id === r.roomId);
-          return sum + (room.capacity * r.quantity);
-        }, 0) + roomData.capacity;
-        
-        // Check if total capacity is sufficient when we reach max rooms
-        if (totalRoomsSelected + 1 === filterData.rooms && totalCapacity < filterData.guests) {
-          alert(`Tổng sức chứa của ${filterData.rooms} phòng phải đủ cho ${filterData.guests} khách. Hiện tại tổng chỉ có ${totalCapacity} người.`);
-          return prev;
-        }
-        
-        // Increase quantity
         return prev.map(r => r.roomId === roomId ? {...r, quantity: r.quantity + 1} : r);
       } else {
-        // First time selecting this room type
-        if (totalRoomsSelected >= filterData.rooms) {
-          alert(`Bạn chỉ có thể chọn tối đa ${filterData.rooms} phòng theo yêu cầu đặt phòng của bạn.`);
-          return prev;
-        }
-        
-        // Calculate total capacity after adding this room
-        const roomData = rooms.find(room => room.id === roomId);
-        const totalCapacity = prev.reduce((sum, r) => {
-          const room = rooms.find(rm => rm.id === r.roomId);
-          return sum + (room.capacity * r.quantity);
-        }, 0) + roomData.capacity;
-        
-        // Check if total capacity is sufficient when we reach max rooms
-        if (totalRoomsSelected + 1 === filterData.rooms && totalCapacity < filterData.guests) {
-          alert(`Tổng sức chứa của ${filterData.rooms} phòng phải đủ cho ${filterData.guests} khách. Hiện tại tổng chỉ có ${totalCapacity} người.`);
-          return prev;
-        }
-        
-        // Add new room type
         return [...prev, {roomId, quantity: 1}];
       }
     });
   }, [filterData.rooms, filterData.guests, rooms]);
 
+  const handleDeleteRoom = useCallback((roomId) => {
+    setSelectedRooms(prev => {
+      const room = prev.find(r => r.roomId === roomId);
+      if (!room) return prev;
+      
+      if (room.quantity > 1) {
+        return prev.map(r => r.roomId === roomId ? {...r, quantity: r.quantity - 1} : r);
+      } else {
+        return prev.filter(r => r.roomId !== roomId);
+      }
+    });
+  }, []);
+
   const handleBook = () => {
     if (selectedRooms.length > 0) {
-      // Prepare rooms data with quantities
       const selectedRoomsData = selectedRooms.flatMap(({roomId, quantity}) => {
         const room = rooms.find(r => r.id === roomId);
         return Array(quantity).fill(room);
@@ -165,17 +162,14 @@ const BookingPage = () => {
       
       const nights = calculateNights();
       
-      // Calculate total
       const totalPrice = selectedRooms.reduce((sum, {roomId, quantity}) => {
         const room = rooms.find(r => r.id === roomId);
         if (!room) return sum;
-        const price = parseInt(room.price.replace(/[^\d]/g, ''));
-        return sum + (price * nights * quantity);
+        return sum + (room.rawPrice * nights * quantity);
       }, 0);
       
       const totalRoomsCount = selectedRooms.reduce((sum, r) => sum + r.quantity, 0);
       
-      // Navigate to guest info page with booking data
       navigate('/guest-info', {
         state: {
           rooms: selectedRoomsData,
@@ -184,27 +178,12 @@ const BookingPage = () => {
           checkOut: formatDateRange().split(' - ')[1],
           guests: `${filterData.guests} adult${filterData.guests > 1 ? 's' : ''}`,
           nights: nights,
-          total: `VND ${totalPrice.toLocaleString()}`,
+          total: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice),
           pricePerNight: selectedRoomsData[0]?.price
         }
       });
     }
   };
-
-  const handleDeleteRoom = useCallback((roomId) => {
-    setSelectedRooms(prev => {
-      const room = prev.find(r => r.roomId === roomId);
-      if (!room) return prev;
-      
-      if (room.quantity > 1) {
-        // Decrease quantity by 1
-        return prev.map(r => r.roomId === roomId ? {...r, quantity: r.quantity - 1} : r);
-      } else {
-        // Remove room completely
-        return prev.filter(r => r.roomId !== roomId);
-      }
-    });
-  }, []);
 
   const handleOpenDatePicker = () => {
     // Scroll to filter section
@@ -244,22 +223,12 @@ const BookingPage = () => {
 
   const nights = calculateNights();
 
-  // Prepare selected rooms data with quantities
-  const selectedRoomsData = selectedRooms.flatMap(({roomId, quantity}) => {
-    const room = rooms.find(r => r.id === roomId);
-    // Create array with quantity of this room
-    return Array(quantity).fill(room);
-  }).filter(Boolean);
-
-  // Calculate total rooms count
+  // Calculate totals for summary
   const totalRoomsCount = selectedRooms.reduce((sum, r) => sum + r.quantity, 0);
-
-  // Calculate total price
   const totalPrice = selectedRooms.reduce((sum, {roomId, quantity}) => {
     const room = rooms.find(r => r.id === roomId);
     if (!room) return sum;
-    const price = parseInt(room.price.replace(/[^\d]/g, ''));
-    return sum + (price * nights * quantity);
+    return sum + (room.rawPrice * nights * quantity);
   }, 0);
 
   const bookingData = selectedRooms.length > 0 ? {
@@ -276,8 +245,8 @@ const BookingPage = () => {
         quantity: quantity
       };
     }),
-    totalPrice: `VND ${totalPrice.toLocaleString()} total`,
-    deposit: `Deposit: VND ${totalPrice.toLocaleString()}`
+    totalPrice: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice),
+    deposit: `Deposit: ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)}`
   } : {
     dates: formatDateRange(),
     rooms: `${filterData.rooms} room${filterData.rooms > 1 ? 's' : ''}, ${filterData.guests} guest${filterData.guests > 1 ? 's' : ''}`,
@@ -286,48 +255,59 @@ const BookingPage = () => {
 
   return (
     <div className="booking-page">
-      {/* Navbar */}
       <Navbar />
-
-      {/* Hero Section */}
       <div className="booking-hero">
         <div className="hero-overlay"></div>
       </div>
 
-      {/* Main Content */}
       <div className="booking-content">
         <div className="booking-container">
-          {/* Filter Section */}
           <div className="filter-section">
-            <Filter 
-              ref={filterRef}
-              onFilterChange={handleFilterChange}
-            />
+            <Filter ref={filterRef} onFilterChange={handleFilterChange} />
           </div>
 
-          {/* Rooms and Booking Summary Layout */}
           <div className="booking-layout">
-            {/* Rooms List */}
             <div className="rooms-list">
-              {rooms.map((room) => {
-                const selectedRoom = selectedRooms.find(r => r.roomId === room.id);
-                const quantity = selectedRoom ? selectedRoom.quantity : 0;
-                return (
-                  <RoomBooking
-                    key={room.id}
-                    room={room}
-                    variant={room.unavailable ? 'variant2' : 'default'}
-                    isSelected={quantity > 0}
-                    selectedQuantity={quantity}
-                    unavailableDates={room.unavailable ? room.unavailableDates : null}
-                    onSelect={() => !room.unavailable && handleRoomSelect(room.id)}
-                    onOpenDatePicker={handleOpenDatePicker}
-                  />
-                );
-              })}
+              {isLoading ? (
+                <div className="rooms-loading">
+                  <div className="loading-spinner"></div>
+                  <p>Searching available rooms...</p>
+                </div>
+              ) : rooms.length > 0 ? (
+                rooms.map((room) => {
+                  // Logic: Tính số lượng còn lại để hiển thị
+                  const selectedRoom = selectedRooms.find(r => r.roomId === room.id);
+                  const quantityInCart = selectedRoom ? selectedRoom.quantity : 0;
+                  const remainingAvailable = room.maxAvailable - quantityInCart;
+                  
+                  // Nếu hết phòng (do đã chọn hết hoặc API trả về 0) -> disable
+                  const isSoldOut = remainingAvailable <= 0;
+
+                  return (
+                    <RoomBooking
+                      key={room.id}
+                      room={{
+                        ...room,
+                        // Cập nhật description hoặc thêm field để hiển thị số lượng còn lại
+                        description: `${room.description}\n\nOnly ${remainingAvailable} room(s) left!`
+                      }}
+                      variant={isSoldOut ? 'variant2' : 'default'}
+                      isSelected={quantityInCart > 0}
+                      selectedQuantity={quantityInCart}
+                      unavailableDates={null}
+                      // Disable click nếu hết phòng
+                      onSelect={() => !isSoldOut && handleRoomSelect(room.id)}
+                      onOpenDatePicker={handleOpenDatePicker}
+                    />
+                  );
+                })
+              ) : (
+                <div className="no-rooms-found">
+                  <p>No rooms available for the selected dates and criteria.</p>
+                </div>
+              )}
             </div>
 
-            {/* Booking Summary Sidebar */}
             <div className="booking-sidebar">
               <BookingSummary
                 variant={selectedRooms.length > 0 ? 'default' : 'variant2'}
@@ -340,7 +320,6 @@ const BookingPage = () => {
         </div>
       </div>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import './RoomDetailSection.css';
-import RoomSection from './RoomSection';
+// Xóa import RoomSection vì không dùng ở đây nữa
 import ImageRoom from '../../assets/images/ImageRoom.jpg';
 import ApartmentIcon from '../../assets/icons/ApartmentIcon.png';
 import PersonIcon from '../../assets/icons/PersonIcon.svg';
@@ -21,7 +21,7 @@ const RoomDetailSection = ({
   smoking = "No",
   bathroom = "Toilet, washbasin, and shower",
   onBookRoom,
-  relatedRooms = []
+  // Xóa prop relatedRooms vì không dùng ở đây nữa
 }) => {
   return (
     <div className="room-detail-section">
@@ -135,56 +135,7 @@ const RoomDetailSection = ({
         </div>
       </div>
 
-      {/* Related Rooms Section */}
-      <div className="room-detail-related-section">
-        <h2 className="room-detail-section-title">You may also be interested</h2>
-        <div className="room-detail-related-rooms">
-          {relatedRooms.length > 0 ? (
-            relatedRooms.map((room, index) => (
-              <RoomSection
-                key={index}
-                roomType={room.roomType}
-                price={room.price}
-                imageUrl={room.imageUrl}
-                description={room.description}
-                roomSize={room.roomSize}
-                beds={room.beds}
-                maxOccupancy={room.maxOccupancy}
-                view={room.view}
-                smoking={room.smoking}
-                bathroom={room.bathroom}
-                onBookRoom={room.onBookRoom}
-                onMoreInfo={room.onMoreInfo}
-              />
-            ))
-          ) : (
-            <>
-              <RoomSection
-                roomType="SUPERIOR ROOM"
-                price="USD200"
-                description="A cozy retreat designed for comfort, offering a peaceful space to unwind after a day of exploration."
-                roomSize="32 sqm"
-                beds="1 King bed or 2 Single beds"
-                maxOccupancy="2 pax"
-                view="City view"
-                smoking="No"
-                bathroom="Toilet, washbasin, and shower"
-              />
-              <RoomSection
-                roomType="SUPERIOR ROOM"
-                price="USD200"
-                description="A cozy retreat designed for comfort, offering a peaceful space to unwind after a day of exploration."
-                roomSize="32 sqm"
-                beds="1 King bed or 2 Single beds"
-                maxOccupancy="2 pax"
-                view="City view"
-                smoking="No"
-                bathroom="Toilet, washbasin, and shower"
-              />
-            </>
-          )}
-        </div>
-      </div>
+      {/* ĐÃ XÓA PHẦN RELATED ROOMS Ở ĐÂY VÌ ĐÃ CÓ Ở COMPONENT CHA */}
     </div>
   );
 };
