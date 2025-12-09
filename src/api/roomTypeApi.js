@@ -173,4 +173,24 @@ export const updateRoomType = async (roomTypeId, roomTypeData) => {
         };
     }
 };
-        
+
+export const getRoomOverview = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/RoomTypes/overview`);
+        if (response.status === 200 && response.data) {
+            return {
+                success: true,
+                overview: response.data,
+            };
+        }
+        return {
+            success: false,
+            message: "Response không hợp lệ",
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.response?.data?.message || "Không thể kết nối tới máy chủ.",
+        };
+    }
+};

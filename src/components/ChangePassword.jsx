@@ -117,7 +117,6 @@ const ChangePassword = () => {
       
       if (response.success) {
         toast.success(response.message || 'Password changed successfully!');
-        // Close modal after 2 seconds
         setMessage({ type: 'success', text: 'Password changed successfully!' });
       } else {
         toast.error(response.message || 'Failed to change password');
