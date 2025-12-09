@@ -160,7 +160,8 @@ export const createBooking = async (bookingData) => {
                 typeID: room.roomTypeId,
                 roomCount: room.numberOfRooms,
                 peopleNumber: room.guestsPerRoom
-            }))
+            })),
+            requireDeposit: false
         };
 
         console.log('Creating booking with data:', requestData);
