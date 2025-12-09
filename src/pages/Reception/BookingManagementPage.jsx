@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from '../../components/Reception/Sidebar';
 import TopBar from '../../components/Reception/TopBar';
 import BookingStatsCards from '../../components/Reception/BookingStatsCards';
+import { getBookingsStatistic } from '../../api/bookingApi';
 import BookingSearchFilter from '../../components/Reception/BookingSearchFilter';
 import BookingTable from '../../components/Reception/BookingTable';
 import BookingDetailsModal from '../../components/Reception/BookingDetailsModal';
@@ -103,9 +104,52 @@ function BookingManagementPage() {
       pending: bookings.filter(b => b.status === 'pending').length,
       confirmed: bookings.filter(b => b.status === 'confirmed').length,
       checkedIn: bookings.filter(b => b.status === 'checked-in').length,
-      completed: bookings.filter(b => b.status === 'completed').length
+      completed: bookings.filter(b => b.status === 'completed').length,
+      cancelled: bookings.filter(b => b.status === 'cancelled').length
     };
   };
+
+  const [apiStats, setApiStats] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchStats = async () => {
+      setStatsLoading(true);
+      try {
+        const result = await getBookingsStatistic();
+        
+        if (!mounted) return;
+        
+        if (result.success && result.data) {
+          const data = result.data;
+          console.log('Raw statistics from backend:', data);
+          
+          // Map từ backend keys sang frontend format
+          const mappedStats = {
+            all: data.All || data.all || 0,
+            pending: data.Pending || data.pending || 0,
+            confirmed: data.Confirmed || data.confirmed || 0,
+            checkedIn: data.InHouse || data.CheckedIn || data.checkedIn || 0,
+            completed: data.Completed || data.completed || 0,
+            cancelled: data.Cancelled || data.cancelled || 0
+          };
+          
+          setApiStats(mappedStats);
+          console.log('Mapped statistics:', mappedStats);
+        } else {
+          console.warn('Statistics not available:', result.message);
+        }
+      } catch (err) {
+        console.error('Error fetching statistics:', err);
+      } finally {
+        if (mounted) setStatsLoading(false);
+      }
+    };
+
+    fetchStats();
+    return () => { mounted = false; };
+  }, []);
 
   const filteredBookings = bookings.filter(booking => {
     const matchesStatus = selectedStatus === 'all' || booking.status === selectedStatus;
@@ -150,7 +194,7 @@ function BookingManagementPage() {
           </div>
 
           <BookingStatsCards 
-            stats={getStats()} 
+            stats={apiStats || getStats()} 
             selectedStatus={selectedStatus}
             onStatusClick={setSelectedStatus}
           />
