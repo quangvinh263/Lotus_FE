@@ -1,25 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DeleteIcon from '../../assets/icons/DeleteIcon.svg';
 import PeopleIcon from '../../assets/icons/PeopleIcon.svg';
 import RoomTypeDropdown from './RoomTypeDropdown';
 import DateTimePicker from './DateTimePicker';
 import GuestInfoForm from './GuestInfoForm';
+import { createBooking } from '../../api/bookingApi';
+import { createCustomer, findCustomerByPhone } from '../../api/customerApi';
+import { getAllRoomTypes } from '../../api/roomTypeApi';
 import './CreateBookingForm.css';
 
 function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate, setCheckInDate, checkOutDate, setCheckOutDate }) {
-  // Khởi tạo với 1 khách đại diện
-  const [guests, setGuests] = useState([
-    {
-      fullName: '',
-      idNumber: '',
-      phoneNumber: '',
-      email: '',
-      dateOfBirth: '',
-      nationality: 'Việt Nam',
-      address: '',
-      isPrimary: true
-    }
-  ]);
+  // Thông tin khách hàng đại diện
+  const [guestInfo, setGuestInfo] = useState({
+    fullName: '',
+    phoneNumber: '',
+    address: '',
+    gender: 'male',
+    dateOfBirth: ''
+  });
 
   const [roomData, setRoomData] = useState({
     roomType: '',
@@ -27,18 +25,46 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
     guestsPerRoom: 1,
   });
 
+  const [roomTypes, setRoomTypes] = useState([]);
+  const [isLoadingRoomTypes, setIsLoadingRoomTypes] = useState(true);
+
+  // Fetch room types từ API khi component mount
+  useEffect(() => {
+    const fetchRoomTypes = async () => {
+      try {
+        setIsLoadingRoomTypes(true);
+        const result = await getAllRoomTypes();
+        
+        if (result.success && result.roomTypes) {
+          // Map sang format phù hợp cho dropdown
+          const mappedRoomTypes = result.roomTypes.map(rt => ({
+            id: rt.id, // roomTypeId từ backend
+            name: rt.name + ' Room', // "Deluxe" -> "Deluxe Room"
+            price: rt.price,
+            description: rt.description || '',
+            capacity: rt.capacity
+          }));
+          
+          setRoomTypes(mappedRoomTypes);
+          console.log('✅ Loaded room types:', mappedRoomTypes);
+        } else {
+          console.error('❌ Failed to load room types:', result.message);
+          alert('Không thể tải danh sách loại phòng. Vui lòng thử lại.');
+        }
+      } catch (error) {
+        console.error('❌ Error fetching room types:', error);
+        alert('Có lỗi xảy ra khi tải danh sách loại phòng.');
+      } finally {
+        setIsLoadingRoomTypes(false);
+      }
+    };
+
+    fetchRoomTypes();
+  }, []);
+
   const calculateTotalGuests = () => {
     return selectedRooms.reduce((total, room) => total + (room.guestsPerRoom * room.numberOfRooms), 0);
   };
-
-  // Sample room types with prices
-  const roomTypes = [
-    { id: 1, name: 'Superior Room', price: 1200000, description: 'Không gian ấm cúng, thiết kế đơn giản và tinh tế' },
-    { id: 2, name: 'Deluxe Room', price: 1800000, description: 'Diện tích rộng rãi, nội thất cao cấp, phong cách hiện đại' },
-    { id: 3, name: 'Executive Room', price: 2400000, description: 'Tiện nghi cao cấp, dịch vụ ưu tiên cho khách doanh nhân' },
-    { id: 4, name: 'Grand Suite', price: 3500000, description: 'Suite rộng rãi với khu vực tiếp khách riêng biệt, view tuyệt đẹp' },
-    { id: 5, name: 'Lotus Suite', price: 5000000, description: 'Đỉnh cao sang trọng với ban công rộng và khu vực thư giãn riêng' },
-  ];
 
   const handleRoomDataChange = (e) => {
     const { name, value } = e.target;
@@ -52,9 +78,20 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
     }
 
     const selectedRoomType = roomTypes.find(rt => rt.name === roomData.roomType);
+    const numRooms = parseInt(roomData.numberOfRooms) || 1;
+    const guestsPerRoom = parseInt(roomData.guestsPerRoom) || 1;
+    
+    // Validate số khách/phòng không vượt quá capacity
+    if (guestsPerRoom > selectedRoomType.capacity) {
+      const maxTotal = selectedRoomType.capacity * numRooms;
+      alert(`Số khách/phòng không được vượt quá ${selectedRoomType.capacity} người.\n` +
+            `Với ${numRooms} phòng, tối đa ${maxTotal} khách tổng (${selectedRoomType.capacity} khách/phòng).`);
+      return;
+    }
     
     const newRoom = {
       roomType: roomData.roomType,
+      roomTypeId: selectedRoomType.id, // Lưu typeID cho backend
       numberOfRooms: parseInt(roomData.numberOfRooms),
       guestsPerRoom: parseInt(roomData.guestsPerRoom),
       pricePerNight: selectedRoomType.price,
@@ -74,10 +111,8 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
     return selectedRooms.reduce((total, room) => total + room.numberOfRooms, 0);
   };
 
-  const handleSubmit = () => {
-    const primaryGuest = guests[0];
-    
-    if (!primaryGuest.fullName || !primaryGuest.phoneNumber) {
+  const handleSubmit = async () => {
+    if (!guestInfo.fullName || !guestInfo.phoneNumber) {
       alert('Vui lòng điền đầy đủ thông tin bắt buộc (Họ và tên, Số điện thoại)');
       return;
     }
@@ -92,19 +127,71 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
       return;
     }
 
-    const bookingData = {
-      primaryGuest: primaryGuest,
-      guests: guests, // Danh sách người đại diện (có thể thêm nhiều người sau khi check-in)
-      checkIn: checkInDate,
-      checkOut: checkOutDate,
-      rooms: selectedRooms,
-      totalGuests: calculateTotalGuests(),
-      totalRooms: calculateTotalRooms(),
-    };
+    // Validate check-out after check-in
+    if (checkOutDate <= checkInDate) {
+      alert('Ngày check-out phải sau ngày check-in');
+      return;
+    }
 
-    console.log('Booking Data:', bookingData);
-    alert('Tạo đơn đặt phòng thành công!');
-    // TODO: Send to backend API
+    try {
+      // Bước 1: Tìm hoặc tạo customer
+      console.log('Bước 1: Tìm khách hàng theo SĐT:', guestInfo.phoneNumber);
+      let customerResult = await findCustomerByPhone(guestInfo.phoneNumber);
+      
+      let customerId;
+      if (customerResult.success) {
+        console.log('Tìm thấy khách hàng cũ, customerID:', customerResult.customerId);
+        customerId = customerResult.customerId;
+      } else {
+        // Không tìm thấy -> tạo mới
+        console.log('Không tìm thấy -> Tạo khách hàng mới');
+        const createResult = await createCustomer(guestInfo);
+        
+        if (!createResult.success) {
+          alert(`Lỗi tạo khách hàng: ${createResult.message}`);
+          return;
+        }
+        
+        console.log('Tạo khách hàng thành công, customerID:', createResult.customerId);
+        customerId = createResult.customerId;
+      }
+
+      // Bước 2: Tạo reservation với customerID
+      console.log('Bước 2: Tạo reservation với customerID:', customerId);
+      const bookingData = {
+        customerId: customerId,
+        checkIn: checkInDate,
+        checkOut: checkOutDate,
+        rooms: selectedRooms,
+        totalGuests: calculateTotalGuests(),
+        totalRooms: calculateTotalRooms(),
+      };
+
+      console.log('Booking Data:', bookingData);
+
+      const result = await createBooking(bookingData);
+      
+      if (result.success) {
+        alert(result.message);
+        // Reset form after successful creation
+        setGuestInfo({
+          fullName: '',
+          phoneNumber: '',
+          address: '',
+          gender: 'male',
+          dateOfBirth: ''
+        });
+        setCheckInDate(null);
+        setCheckOutDate(null);
+        // Clear selected rooms (handled by parent component)
+        selectedRooms.forEach((_, index) => onRemoveRoom(0));
+      } else {
+        alert(`Lỗi tạo đơn: ${result.message}`);
+      }
+    } catch (error) {
+      console.error('Error in handleSubmit:', error);
+      alert('Có lỗi xảy ra khi tạo đơn đặt phòng');
+    }
   };
 
   return (
@@ -114,12 +201,65 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
       <div className="cbf-content">
         {/* Thông tin khách hàng - Người đại diện */}
         <div className="cbf-section">
-          <GuestInfoForm
-            guests={guests}
-            onGuestsChange={setGuests}
-            totalGuests={calculateTotalGuests() || 1}
-            showIdNumber={false}
-          />
+          <h3 className="cbf-section-heading">Thông tin khách hàng</h3>
+          <div className="cbf-fields">
+            <div className="cbf-field">
+              <label className="cbf-label">Họ và tên <span className="cbf-required">*</span></label>
+              <input
+                type="text"
+                className="cbf-input"
+                value={guestInfo.fullName}
+                onChange={(e) => setGuestInfo({...guestInfo, fullName: e.target.value})}
+                placeholder="Nhập họ và tên"
+              />
+            </div>
+
+            <div className="cbf-field">
+              <label className="cbf-label">Số điện thoại <span className="cbf-required">*</span></label>
+              <input
+                type="tel"
+                className="cbf-input"
+                value={guestInfo.phoneNumber}
+                onChange={(e) => setGuestInfo({...guestInfo, phoneNumber: e.target.value})}
+                placeholder="Nhập số điện thoại"
+              />
+            </div>
+
+            {/* Email removed - only primary contact (name & phone) required */}
+
+            <div className="cbf-field">
+              <label className="cbf-label">Địa chỉ</label>
+              <input
+                type="text"
+                className="cbf-input"
+                value={guestInfo.address}
+                onChange={(e) => setGuestInfo({...guestInfo, address: e.target.value})}
+                placeholder="Nhập địa chỉ"
+              />
+            </div>
+
+            <div className="cbf-field">
+              <label className="cbf-label">Giới tính</label>
+              <select
+                className="cbf-input"
+                value={guestInfo.gender}
+                onChange={(e) => setGuestInfo({...guestInfo, gender: e.target.value})}
+              >
+                <option value="male">Nam</option>
+                <option value="female">Nữ</option>
+                <option value="other">Khác</option>
+              </select>
+            </div>
+
+            <div className="cbf-field">
+              <label className="cbf-label">Ngày sinh</label>
+              <DateTimePicker
+                value={guestInfo.dateOfBirth}
+                onChange={(val) => setGuestInfo({...guestInfo, dateOfBirth: val})}
+                placeholder="Chọn ngày sinh"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Chi tiết đặt phòng */}
@@ -149,7 +289,7 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
         {/* Chọn phòng */}
         <div className="cbf-section">
           <h3 className="cbf-section-heading-large">Chọn phòng</h3>
-          <div className="cbf-fields cbf-room-fields">
+          <div className="cbf-fields cbf-room-fields" style={{ gridTemplateColumns: "repeat(3,1fr)" }}>
             <div className="cbf-field">
               <label className="cbf-label">Loại phòng</label>
               <RoomTypeDropdown
@@ -178,9 +318,18 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
                 name="guestsPerRoom"
                 className="cbf-input-number"
                 min="1"
+                max={roomData.roomType ? 
+                  Math.floor((roomTypes.find(rt => rt.name === roomData.roomType)?.capacity * parseInt(roomData.numberOfRooms || 1)) / parseInt(roomData.numberOfRooms || 1)) 
+                  : undefined}
                 value={roomData.guestsPerRoom}
                 onChange={handleRoomDataChange}
               />
+              {roomData.roomType && (
+                <span style={{ fontFamily: 'Arial', fontSize: '12px', color: '#608BC1', marginTop: '4px' }}>
+                  Tối đa: {roomTypes.find(rt => rt.name === roomData.roomType)?.capacity} khách/phòng 
+                  ({roomTypes.find(rt => rt.name === roomData.roomType)?.capacity * parseInt(roomData.numberOfRooms || 1)} khách tổng)
+                </span>
+              )}
             </div>
           </div>
 
