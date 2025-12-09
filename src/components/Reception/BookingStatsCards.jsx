@@ -24,7 +24,7 @@ function BookingStatsCards({ stats, selectedStatus, onStatusClick }) {
       color: '#008236'
     },
     { 
-      key: 'checked-in', 
+      key: 'inhouse', 
       label: 'Đang ở', 
       value: stats.checkedIn, 
       gradient: 'linear-gradient(135deg, rgba(239, 246, 255, 1) 0%, rgba(255, 255, 255, 1) 100%)',
@@ -36,6 +36,13 @@ function BookingStatsCards({ stats, selectedStatus, onStatusClick }) {
       value: stats.completed, 
       gradient: 'linear-gradient(135deg, rgba(249, 250, 251, 1) 0%, rgba(255, 255, 255, 1) 100%)',
       color: '#364153'
+    },
+    { 
+      key: 'cancelled', 
+      label: 'Đã hủy', 
+      value: stats.cancelled, 
+      gradient: 'linear-gradient(135deg, rgba(254, 242, 242, 1) 0%, rgba(255, 255, 255, 1) 100%)',
+      color: '#C10007'
     }
   ];
 

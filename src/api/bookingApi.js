@@ -31,15 +31,17 @@ export const getBookingsList = async (statusFilter = null, keyword = null) => {
     try {
         const params = {};
         if (statusFilter && statusFilter !== 'all') {
-            params.statusFilter = statusFilter;
+            // Try lowercase parameter name
+            params.status = statusFilter;
         }
         if (keyword && keyword.trim()) {
             params.keyword = keyword.trim();
         }
 
+        console.log('API Request - getBookingsList:', { statusFilter, keyword, params });
         const response = await axios.get(`${API_URL}/Reservations/list`, { params });
         
-        console.log('Bookings List Response:', response.data);
+        console.log('Bookings List Response:', { count: response.data?.length, data: response.data });
         
         if (response.status === 200 && response.data) {
             return {
@@ -83,6 +85,36 @@ export const getBookingDetail = async (reservationId) => {
         return {
             success: false,
             message: error.response?.data?.message || "Không thể kết nối tới máy chủ.",
+        };
+    }
+}
+
+export const cancelBooking = async (reservationId) => {
+    try {
+        console.log('Canceling booking with ID:', reservationId);
+        
+        const response = await axios.put(`${API_URL}/Reservations/${reservationId}/cancel`);
+        
+        console.log('Cancel Booking Response:', response.data);
+        
+        if (response.status === 200) {
+            return {
+                success: true,
+                message: response.data?.message || "Hủy đơn đặt phòng thành công",
+                data: response.data
+            };
+        }
+        
+        return {
+            success: false,
+            message: "Response không hợp lệ",
+        };
+    } catch (error) {
+        console.error('Error canceling booking:', error);
+        console.error('Error details:', error.response?.data);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.response?.data || "Không thể hủy đơn đặt phòng.",
         };
     }
 }

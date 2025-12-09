@@ -9,15 +9,17 @@ import './BookingTable.css';
 
 function BookingTable({ bookings, onViewBooking, onConfirmBooking, onCancelBooking }) {
   const getStatusBadge = (status) => {
+    // Map backend status to display config
+    const normalizedStatus = status?.toLowerCase();
     const statusConfig = {
       'pending': { label: 'Chờ xác nhận', bg: '#FEF9C2', color: '#A65F00' },
       'confirmed': { label: 'Đã xác nhận', bg: '#DCFCE7', color: '#008236' },
-      'checked-in': { label: 'Đã check-in', bg: '#DBEAFE', color: '#1447E6' },
-      'completed': { label: 'Đã check-out', bg: '#F3F4F6', color: '#364153' },
+      'inhouse': { label: 'Đang ở', bg: '#DBEAFE', color: '#1447E6' },
+      'completed': { label: 'Hoàn thành', bg: '#F3F4F6', color: '#364153' },
       'cancelled': { label: 'Đã hủy', bg: '#FFE2E2', color: '#C10007' }
     };
 
-    const config = statusConfig[status] || statusConfig.pending;
+    const config = statusConfig[normalizedStatus] || statusConfig.pending;
 
     return (
       <div 
@@ -27,6 +29,13 @@ function BookingTable({ bookings, onViewBooking, onConfirmBooking, onCancelBooki
         {config.label}
       </div>
     );
+  };
+
+  const formatDate = (iso) => {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString('vi-VN');
   };
 
   const formatCurrency = (amount) => {
@@ -54,7 +63,7 @@ function BookingTable({ bookings, onViewBooking, onConfirmBooking, onCancelBooki
               <td className="bt-td bt-td-code">
                 <div className="bt-code-info">
                   <div className="bt-code">{booking.id}</div>
-                  <div className="bt-booking-date">{booking.bookingDate}</div>
+                  <div className="bt-booking-date">{formatDate(booking.bookingDate)}</div>
                 </div>
               </td>
               <td className="bt-td bt-td-customer">
@@ -82,14 +91,22 @@ function BookingTable({ bookings, onViewBooking, onConfirmBooking, onCancelBooki
               </td>
               <td className="bt-td bt-td-rooms">
                 <div className="bt-rooms-info">
-                  {booking.rooms.map((room, idx) => (
-                    <div key={idx} className="bt-room-badge">
-                      {room.type} x{room.quantity}
+                  {booking.rooms && booking.rooms.length > 0 ? (
+                    <>
+                      {booking.rooms.map((room, idx) => (
+                        <div key={idx} className="bt-room-badge">
+                          {room.type} x{room.quantity}
+                        </div>
+                      ))}
+                      <div className="bt-room-total">
+                        {booking.roomCount || booking.rooms.reduce((sum, room) => sum + room.quantity, 0)} phòng • {booking.guestCount} người
+                      </div>
+                    </>
+                  ) : (
+                    <div className="bt-room-total">
+                      {booking.roomCount || 0} phòng • {booking.guestCount} người
                     </div>
-                  ))}
-                  <div className="bt-room-total">
-                    Tổng: {booking.rooms.reduce((sum, room) => sum + room.quantity, 0)} phòng
-                  </div>
+                  )}
                 </div>
               </td>
               <td className="bt-td bt-td-dates">
@@ -120,16 +137,7 @@ function BookingTable({ bookings, onViewBooking, onConfirmBooking, onCancelBooki
                   >
                     <img src={EyeIcon} alt="View" />
                   </button>
-                  {booking.status === 'pending' && (
-                    <button 
-                      className="bt-action-btn bt-action-confirm"
-                      onClick={() => onConfirmBooking(booking.id)}
-                      title="Xác nhận"
-                    >
-                      <img src={TickIcon} alt="Confirm" />
-                    </button>
-                  )}
-                  {(booking.status === 'pending' || booking.status === 'confirmed') && (
+                  {(booking.status?.toLowerCase() === 'pending' || booking.status?.toLowerCase() === 'confirmed') && (
                     <button 
                       className="bt-action-btn bt-action-cancel"
                       onClick={() => onCancelBooking(booking.id)}
