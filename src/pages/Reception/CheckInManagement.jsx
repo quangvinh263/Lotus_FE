@@ -7,6 +7,7 @@ import RoomButton from '../../components/Reception/RoomButton';
 import CheckInModal from '../../components/Reception/CheckInModal';
 import SearchIcon from '../../assets/icons/SearchIcon.svg';
 import { getBookingsList } from '../../api/bookingApi';
+import { searchRooms } from '../../api/roomApi';
 
 
 const CheckInManagement = () => {
@@ -14,6 +15,7 @@ const CheckInManagement = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [bookingsList, setBookingsList] = useState([]);
+  const [availableRooms, setAvailableRooms] = useState([]);
   
   const mapReservationStatus = [
     { key: 'all', label: 'Tất cả' },
@@ -94,27 +96,32 @@ const CheckInManagement = () => {
         console.error('❌ Failed to fetch bookings:', result.message);
       }
     };
+    
+    const fetchAvailableRooms = async () => {
+      const result = await searchRooms({ status: 'Available' });
+      if (result.success) {
+        console.log('🏨 Available rooms from API:', result.rooms);
+        
+        const mappedRooms = result.rooms.map(room => ({
+          id: room.roomId,
+          number: room.roomNumber,
+          type: room.roomTypeName,
+          price: room.averagePrice || 0,
+          status: 'available',
+          floor: room.floor
+        }));
+        
+        setAvailableRooms(mappedRooms);
+      } else {
+        console.error('❌ Failed to fetch available rooms:', result.message);
+        setAvailableRooms([]);
+      }
+    };
+    
     fetchBookings();
+    fetchAvailableRooms();
   }, []);
 
-
-  const availableRooms = [
-    { id: 1, number: '101', type: 'Superior', price: 1500000, status: 'available' },
-    { id: 2, number: '102', type: 'Deluxe', price: 1800000, status: 'available' },
-    { id: 3, number: '103', type: 'Superior', price: 1500000, status: 'available' },
-    { id: 4, number: '104', type: 'Deluxe', price: 1800000, status: 'available' },
-    { id: 5, number: '201', type: 'Executive', price: 2000000, status: 'available' },
-    { id: 6, number: '202', type: 'Executive', price: 2000000, status: 'available' },
-    { id: 7, number: '203', type: 'Deluxe', price: 1800000, status: 'available' },
-    { id: 8, number: '301', type: 'Suite', price: 2500000, status: 'available' },
-    { id: 9, number: '302', type: 'Suite', price: 2500000, status: 'available' },
-    { id: 10, number: '303', type: 'Executive', price: 2000000, status: 'available' },
-    { id: 11, number: '401', type: 'Suite', price: 2500000, status: 'available' },
-    { id: 12, number: '402', type: 'Deluxe', price: 1800000, status: 'available' },
-    { id: 13, number: '403', type: 'Superior', price: 1500000, status: 'available' },
-    { id: 14, number: '501', type: 'Suite', price: 2500000, status: 'available' },
-    { id: 15, number: '502', type: 'Executive', price: 2000000, status: 'available' },
-  ];
 
   const handleCheckIn = (booking) => {
     setSelectedBooking(booking);

@@ -2,13 +2,12 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 12px 12px 0px 12px;
+  padding: 12px;
   background: #F0FDF4;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: 319px;
   height: 76px;
 }
 
