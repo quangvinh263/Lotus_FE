@@ -9,6 +9,7 @@ import CalenderIcon from '../../assets/icons/CalenderIcon.svg';
 import GenderIcon from '../../assets/icons/GenderIcon.svg';
 import { AuthContext } from '../../context/AuthContext';
 import { createPersonalInfo } from '../../api/customerApi';
+import { toast } from 'react-toastify';
 
 
 const FirstTimePersonalInfoPage = () => {
@@ -81,29 +82,29 @@ const FirstTimePersonalInfoPage = () => {
     
     
     if (!accountId) {
-      console.error('❌ Cannot find account ID in user object');
-      alert('Account ID not found. Please login again.');
+      console.error('Cannot find account ID in user object');
+      toast.error('Account ID not found. Please login again.');
       setIsLoading(false);
       navigate('/signin');
       return;
     }
 
-    console.log('✅ Using account ID:', accountId);
+    console.log('Using account ID:', accountId);
 
     try {
       const result = await createPersonalInfo(accountId, formData);
       setIsLoading(false);
 
       if (result?.success) {
-        alert('Profile completed successfully!');
+        toast.success('Profile completed successfully!');
         navigate('/');
       } else {
-        alert(result?.message || 'An error occurred while saving your information.');
+        toast.error(result?.message || 'An error occurred while saving your information.');
       }
     } catch (error) {
       setIsLoading(false);
       console.error('Error:', error);
-      alert('Failed to save profile. Please try again.');
+      toast.error('Failed to save profile. Please try again.');
     }
   };
 
@@ -208,9 +209,9 @@ const FirstTimePersonalInfoPage = () => {
                 className={errors.Gender ? 'ftpi-input-error' : ''}
               >
                 <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
               </select>
               {errors.Gender && <span className="ftpi-error-text">{errors.Gender}</span>}
             </div>

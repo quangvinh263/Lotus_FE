@@ -11,6 +11,7 @@ import ImageHome1 from '../../assets/images/ImageHome1.png';
 import ImageHome2 from '../../assets/images/ImageHome2.png';
 import ImageHome3 from '../../assets/images/ImageHome3.png';
 
+
 const ProfilePage = () => {
   const upcomingBookings = [
     {
@@ -71,7 +72,6 @@ const ProfilePage = () => {
   return (
     <div className="profile-page">
       <Navbar />
-      <ProfileHeader />
       
       <div className="profile-container">
         <div className="profile-content">
