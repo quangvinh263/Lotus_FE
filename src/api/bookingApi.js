@@ -31,7 +31,6 @@ export const getBookingsList = async (statusFilter = null, keyword = null) => {
     try {
         const params = {};
         if (statusFilter && statusFilter !== 'all') {
-            // Try lowercase parameter name
             params.status = statusFilter;
         }
         if (keyword && keyword.trim()) {
@@ -104,7 +103,7 @@ export const cancelBooking = async (reservationId) => {
                 data: response.data
             };
         }
-        
+
         return {
             success: false,
             message: "Response không hợp lệ",
@@ -115,6 +114,78 @@ export const cancelBooking = async (reservationId) => {
         return {
             success: false,
             message: error.response?.data?.message || error.response?.data || "Không thể hủy đơn đặt phòng.",
+        };
+    }
+}
+
+// Check-in booking
+export const checkInBooking = async (checkInData) => {
+  try {
+    console.log('📤 Sending check-in request:', checkInData);
+    
+    const response = await axios.put(`${API_URL}/Reservations/check-in`, checkInData);
+    
+    console.log('✅ Check-in response:', response);
+
+    return {
+      success: true,
+      data: response.data,
+      message: response.data.message || "Check-in thành công"
+    };
+  } catch (error) {
+    console.error('❌ Check-in error:', error);
+    console.error('Error response:', error.response?.data);
+    
+    // ✅ Log chi tiết validation errors
+    if (error.response?.data?.errors) {
+      console.error('🔍 Validation errors:', error.response.data.errors);
+    }
+    
+    return {
+      success: false,
+      message: error.response?.data?.errors 
+        ? JSON.stringify(error.response.data.errors)
+        : error.response?.data?.message || "Không thể check-in"
+    };
+  }
+};
+export const createBooking = async (bookingData) => {
+    try {
+        // Map frontend data to backend format
+        const requestData = {
+            customerID: bookingData.customerId,
+            checkInDate: new Date(bookingData.checkIn).toISOString().split('T')[0], // Format: YYYY-MM-DD
+            checkOutDate: new Date(bookingData.checkOut).toISOString().split('T')[0],
+            details: bookingData.rooms.map(room => ({
+                typeID: room.roomTypeId,
+                roomCount: room.numberOfRooms,
+                peopleNumber: room.guestsPerRoom
+            }))
+        };
+
+        console.log('Creating booking with data:', requestData);
+
+        const response = await axios.post(`${API_URL}/Reservations/create`, requestData);
+        
+        console.log('Create Booking Response:', response.data);
+        
+        if (response.status === 200 || response.status === 201) {
+            return {
+                success: true,
+                data: response.data,
+                message: "Tạo đơn đặt phòng thành công!"
+            };
+        }
+        
+        return {
+            success: false,
+            message: "Response không hợp lệ",
+        };
+    } catch (error) {
+        console.error('Error creating booking:', error);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.response?.data?.title || "Không thể tạo đơn đặt phòng.",
         };
     }
 }

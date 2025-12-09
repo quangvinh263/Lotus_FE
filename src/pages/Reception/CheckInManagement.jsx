@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CheckInManagement.css';
 import Sidebar from '../../components/Reception/Sidebar';
 import TopBar from '../../components/Reception/TopBar';
@@ -6,77 +6,97 @@ import CheckInCard from '../../components/Reception/CheckInCard';
 import RoomButton from '../../components/Reception/RoomButton';
 import CheckInModal from '../../components/Reception/CheckInModal';
 import SearchIcon from '../../assets/icons/SearchIcon.svg';
+import { getBookingsList } from '../../api/bookingApi';
+
 
 const CheckInManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
-  // Sample data - replace with API calls
-  const bookings = [
-    {
-      id: 1,
-      guestName: 'Nguyễn Văn An',
-      bookingCode: 'BK001',
-      phone: '0901234567',
-      email: 'an.nguyen@email.com',
-      checkInDate: '2/11/2025',
-      checkOutDate: '5/11/2025',
-      status: 'confirmed',
-      guestCount: 5, // 5 khách
-      totalRooms: 2,
-      roomsByType: {
-        'Deluxe': 1,
-        'Superior': 1
-      }
-    },
-    {
-      id: 2,
-      guestName: 'Trần Thị Bình',
-      bookingCode: 'BK002',
-      phone: '0912345678',
-      email: 'binh.tran@email.com',
-      checkInDate: '2/11/2025',
-      checkOutDate: '4/11/2025',
-      status: 'pending',
-      guestCount: 2, // 2 khách
-      totalRooms: 1,
-      roomsByType: {
-        'Deluxe': 1
-      }
-    },
-    {
-      id: 3,
-      guestName: 'Lê Minh Tuấn',
-      bookingCode: 'BK003',
-      phone: '0923456789',
-      email: 'tuan.le@email.com',
-      checkInDate: '2/11/2025',
-      checkOutDate: '6/11/2025',
-      status: 'confirmed',
-      guestCount: 6, // 6 khách - test UI nhiều người
-      totalRooms: 2,
-      roomsByType: {
-        'Suite': 1,
-        'Deluxe': 1
-      }
-    },
-    {
-      id: 4,
-      guestName: 'Phạm Thị Hương',
-      bookingCode: 'BK004',
-      phone: '0934567890',
-      email: 'huong.pham@email.com',
-      checkInDate: '2/11/2025',
-      checkOutDate: '4/11/2025',
-      status: 'confirmed',
-      guestCount: 4, // 4 khách
-      totalRooms: 2,
-      roomsByType: {
-        'Executive': 2
-      }
-    }
+  const [bookingsList, setBookingsList] = useState([]);
+  
+  const mapReservationStatus = [
+    { key: 'all', label: 'Tất cả' },
+    { key: 'pending', label: 'Chờ xác nhận' },
+    { key: 'confirmed', label: 'Đã xác nhận' },
+    { key: 'checkedin', label: 'Đã check-in' },
+    { key: 'completed', label: 'Đã hoàn thành' },
+    { key: 'cancelled', label: 'Đã hủy' }
   ];
+
+  // ✅ Thêm hàm helper
+  const mapReservationStatusToKey = (status) => {
+    const statusMap = {
+      'Pending': 'pending',
+      'Confirmed': 'confirmed',
+      'CheckedIn': 'checkedin',
+      'Completed': 'completed',
+      'Cancelled': 'cancelled',
+      'PartialCheckout': 'checkedin'
+    };
+    return statusMap[status] || 'pending';
+  };
+
+  // ✅ Thêm hàm helper
+  const mapReservationStatusText = (status) => {
+    const statusTextMap = {
+      'Pending': 'Chờ xác nhận',
+      'Confirmed': 'Đã xác nhận',
+      'CheckedIn': 'Đã check-in',
+      'Completed': 'Đã hoàn thành',
+      'Cancelled': 'Đã hủy',
+      'PartialCheckout': 'Đang check-out'
+    };
+    return statusTextMap[status] || 'Chờ xác nhận';
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'pending': return '#F0B100';
+      case 'confirmed': return '#133E87';
+      case 'checkedin': return '#00A63E';
+      case 'completed': return '#4A5565';
+      case 'cancelled': return '#FB2C36';
+      default: return '#133E87';
+    }
+  };
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      const result = await getBookingsList('Confirmed', '');
+      if (result.success) {
+        const details = result.data;
+        console.log('🔍 Raw booking details from API:', details);
+        
+        // ✅ Map từng booking trong array
+        const mappedBookings = details.map((detail, index) => ({
+          id: index + 1,
+          bookingCode: detail.reservationId,
+          bookingDate: new Date(detail.reservationDate).toLocaleDateString('vi-VN'),
+          guestName: detail.fullName,
+          phone: detail.phone,
+          email: detail.email || 'N/A',
+          checkInDate: detail.checkInDate && detail.checkInDate !== '0001-01-01' 
+            ? new Date(detail.checkInDate).toLocaleDateString('vi-VN') 
+            : '-',
+          checkOutDate: detail.checkOutDate && detail.checkOutDate !== '0001-01-01'
+            ? new Date(detail.checkOutDate).toLocaleDateString('vi-VN')
+            : '-',
+          status: mapReservationStatusToKey(detail.statusReservation),
+          statusText: mapReservationStatusText(detail.statusReservation),
+          statusColor: getStatusColor(mapReservationStatusToKey(detail.statusReservation)),
+          roomTypes: detail.typeDetails || [],
+        }));
+
+        console.log('✅ Mapped bookings:', mappedBookings);
+        setBookingsList(mappedBookings);
+      } else {
+        console.error('❌ Failed to fetch bookings:', result.message);
+      }
+    };
+    fetchBookings();
+  }, []);
+
 
   const availableRooms = [
     { id: 1, number: '101', type: 'Superior', price: 1500000, status: 'available' },
@@ -108,7 +128,7 @@ const CheckInManagement = () => {
     setSelectedBooking(null);
   };
 
-  const filteredBookings = bookings.filter(booking =>
+  const filteredBookings = bookingsList.filter(booking =>
     booking.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     booking.bookingCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
     booking.phone.includes(searchTerm) ||

@@ -96,6 +96,7 @@ export const loginWithGoogle = async (idToken) => {
         token: response.data.token,
         refreshToken: response.data.refreshToken,
         accountId: response.data.accountID,
+        isNewUser: response.data.message?.includes("complete customer profile"),
       };
     }
     return {
@@ -142,6 +143,7 @@ export const LoginWithFacebook = async (accessToken) => {
         token: response.data.token,
         refreshToken: response.data.refreshToken,
         accountId: response.data.accountID,
+        isNewUser: response.data.message?.includes("complete customer profile"),
       };
     }
     return {
@@ -171,6 +173,85 @@ export const LoginWithFacebook = async (accessToken) => {
           return {
             success: false,
             message: data.message || "Đăng nhập bằng Facebook thất bại.",
+          };
+      }
+    } else {
+      return {
+        success: false,
+        message: "Không thể kết nối tới máy chủ.",
+      };
+    }
+  }
+};
+
+export const forgotPassword = async (email) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/forgot-password`, { email });
+    return {
+      success: true,
+      message: response.data.message || "Đã gửi email đặt lại mật khẩu.",
+    };
+  } catch (error) {
+    if (error.response) {
+      const { status, data } = error.response;
+      switch (status) {
+        case 404:
+          return {
+            success: false,
+            message: data.message || "Email không tồn tại trong hệ thống.",
+          };
+        case 500:
+          return {
+            success: false,
+            message: "Lỗi máy chủ. Vui lòng thử lại sau.",
+          };
+        default:
+          return {
+            success: false,
+            message: data.message || "Yêu cầu đặt lại mật khẩu thất bại.",
+          };
+      }
+    } else {
+      return {
+        success: false,
+        message: "Không thể kết nối tới máy chủ.",
+      };
+    }
+  }
+};
+
+export const resetPassword = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/reset-password`, data);
+    if (response.status === 200){
+      return {
+      success: true,
+      message: response.data.message || "Đặt lại mật khẩu thành công.",
+    };
+  }
+  } catch (error) {
+    if (error.response) {
+      const { status, data } = error.response;
+      switch (status) {
+        case 400:
+          return {
+            success: false,
+            message: data.message || "Dữ liệu không hợp lệ.",
+          };
+        case 404:
+          return {
+            success: false,
+            message: data.message || "Liên kết đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.",
+          };
+        case 500:
+          return {
+            success: false,
+            message: "Lỗi máy chủ. Vui lòng thử lại sau.",
+          };
+        default:
+          return {
+            success: false,
+            message: data.message || "Đặt lại mật khẩu thất bại.",
           };
       }
     } else {

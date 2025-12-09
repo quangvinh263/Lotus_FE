@@ -44,6 +44,13 @@ function BookingStatsCards({ stats, selectedStatus, onStatusClick }) {
       gradient: 'linear-gradient(135deg, rgba(254, 242, 242, 1) 0%, rgba(255, 255, 255, 1) 100%)',
       color: '#C10007'
     }
+    ,{ 
+      key: 'cancelled',
+      label: 'Đã hủy',
+      value: stats.cancelled,
+      gradient: 'linear-gradient(135deg, rgba(255, 244, 244, 1) 0%, rgba(255, 255, 255, 1) 100%)',
+      color: '#D23B3B'
+    }
   ];
 
   return (

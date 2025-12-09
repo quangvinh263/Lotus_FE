@@ -27,14 +27,15 @@ import AdminServiceManagementPage from './pages/Admin/ServiceManagementPage';
 import RevenueReportPage from './pages/Admin/RevenueReportPage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import ForgotPasswordPage from './pages/Auth/ForgotPasswordPage';
+import ResetPasswordPage from './pages/Auth/ResetPasswordPage';
 
 function App() {
   return (
     <Router>
       <ToastContainer />
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/complete-profile" element={<FirstTimePersonalInfoPage />} />
@@ -63,6 +64,9 @@ function App() {
         <Route path="/admin/customers" element={<CustomerManagementPage />} />
         <Route path="/admin/services" element={<AdminServiceManagementPage />} />
         <Route path="/admin/revenue" element={<RevenueReportPage />} />
+        
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Routes>
  </Router>
   )

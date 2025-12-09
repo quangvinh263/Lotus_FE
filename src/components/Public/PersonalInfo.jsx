@@ -1,20 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './PersonalInfo.css';
 import MailIcon from '../../assets/icons/MailIcon.svg';
 import PhoneIcon from '../../assets/icons/PhoneIcon.svg';
 import LocationIcon from '../../assets/icons/LocationIcon.svg';
 import CalenderIcon from '../../assets/icons/CalenderIcon.svg';
 import GenderIcon from '../../assets/icons/GenderIcon.svg';
+import PersonIcon from '../../assets/icons/PersonIcon.svg';
+import { getPersonalInfo } from '../../api/customerApi';
+import { toast } from 'react-toastify';
+import { AuthContext } from '../../context/AuthContext';
+import { updatePersonalInfo } from '../../api/customerApi';
 
 const PersonalInfo = () => {
   const [showModal, setShowModal] = useState(false);
   const [personalData, setPersonalData] = useState({
+    fullName: '',
     email: 'sarah.anderson@email.com',
     phone: '+1 (555) 123-4567',
     address: '123 Park Avenue, New York, NY 10017',
     dateOfBirth: '1990-05-15',
     gender: 'Female'
   });
+
+  const { auth } = React.useContext(AuthContext);
+
+  useEffect(() => {
+    // Fetch personal info from API
+    const fetchPersonalInfo = async () => {
+      const accountId = auth?.accountId;
+      const result = await getPersonalInfo(accountId);
+      if (result.success) {
+        console.log('Personal info fetched:', result.data);
+        setPersonalData(result.data);
+      } else {
+        toast.error(result.message);
+      }
+    };
+
+    fetchPersonalInfo();
+  }, []);
+
   const [editData, setEditData] = useState({ ...personalData });
   const [message, setMessage] = useState({ type: '', text: '' });
 
@@ -38,9 +63,9 @@ const PersonalInfo = () => {
     }));
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async() => {
     // Validation
-    if (!editData.email || !editData.phone || !editData.address || !editData.dateOfBirth || !editData.gender) {
+    if (!editData.fullName || !editData.email || !editData.phone || !editData.address || !editData.dateOfBirth || !editData.gender) {
       setMessage({ type: 'error', text: 'Please fill in all fields' });
       return;
     }
@@ -53,16 +78,17 @@ const PersonalInfo = () => {
     }
 
     // TODO: Add API call to update personal info
-    console.log('Updating personal info...', editData);
-    
+    const accountId = auth?.accountId;
+    const result = await updatePersonalInfo(accountId, editData);
+    if (!result.success) {
+      setMessage({ type: 'error', text: result.message });
+      return;
+    } 
     // Update local state
     setPersonalData(editData);
     setMessage({ type: 'success', text: 'Personal information updated successfully!' });
     
-    // Close modal after 2 seconds
-    setTimeout(() => {
-      handleCloseModal();
-    }, 2000);
+    
   };
 
   return (
@@ -80,6 +106,16 @@ const PersonalInfo = () => {
         </div>
         
         <div className="personal-info-content">
+          <div className="info-item">
+            <div className="info-icon">
+              <img src={PersonIcon} alt="Full Name" />
+            </div>
+            <div className="info-details">
+              <p className="info-label">Full Name</p>
+              <p className="info-value">{personalData.fullName}</p>
+            </div>
+          </div>
+
           <div className="info-item">
             <div className="info-icon">
               <img src={MailIcon} alt="Email" />
@@ -151,15 +187,15 @@ const PersonalInfo = () => {
 
               <div className="pi-form-field">
                 <label>
-                  <img src={MailIcon} alt="Email" className="pi-field-icon" />
-                  <span>Email Address</span>
+                  <img src={PersonIcon} alt="Full Name" className="pi-field-icon" />
+                  <span>Full Name</span>
                 </label>
                 <input
-                  type="email"
-                  name="email"
-                  value={editData.email}
+                  type="text"
+                  name="fullName"
+                  value={editData.fullName}
                   onChange={handleInputChange}
-                  placeholder="Enter email address"
+                  placeholder="Enter full name"
                 />
               </div>
 

@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import './ChangePassword.css';
 import LockIcon from '../assets/icons/LockIcon.svg';
+import { resetPassword } from '../api/authApi';
+import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const ChangePassword = () => {
+  const { auth } = React.useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -14,6 +18,8 @@ const ChangePassword = () => {
     new: false,
     confirm: false
   });
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
   const handleOpenModal = () => {
@@ -23,6 +29,7 @@ const ChangePassword = () => {
       newPassword: '',
       confirmPassword: ''
     });
+    setErrors({});
     setMessage({ type: '', text: '' });
   };
 
@@ -33,6 +40,7 @@ const ChangePassword = () => {
       newPassword: '',
       confirmPassword: ''
     });
+    setErrors({});
     setMessage({ type: '', text: '' });
   };
 
@@ -42,6 +50,13 @@ const ChangePassword = () => {
       ...prev,
       [name]: value
     }));
+    // Clear error for this field when user types
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
   const togglePasswordVisibility = (field) => {
@@ -51,33 +66,67 @@ const ChangePassword = () => {
     }));
   };
 
-  const handleChangePassword = () => {
-    // Validation
-    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
-      setMessage({ type: 'error', text: 'Please fill in all fields' });
-      return;
-    }
+  const validateForm = () => {
+    const newErrors = {};
 
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
+    if (!passwordData.newPassword) {
+      newErrors.newPassword = 'New password is required';
       setMessage({ type: 'error', text: 'New passwords do not match' });
+    } else if (passwordData.newPassword.length < 8) {
+      newErrors.newPassword = 'Password must be at least 8 characters';
+      setMessage({ type: 'error', text: 'Password must be at least 8 characters' });
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(passwordData.newPassword)) {
+      newErrors.newPassword = 'Password must contain uppercase, lowercase and number';
+      setMessage({ type: 'error', text: 'Password must contain uppercase, lowercase and number' });
+    }
+
+    if (!passwordData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+      setMessage({ type: 'error', text: 'Please confirm your password' });
+    } else if (passwordData.newPassword !== passwordData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+      setMessage({ type: 'error', text: 'New passwords do not match' });
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChangePassword = async () => {
+    if (!validateForm()) {
       return;
     }
 
-    if (passwordData.newPassword.length < 6) {
-      setMessage({ type: 'error', text: 'Password must be at least 6 characters' });
+    if (!auth?.accountId) {
+      toast.error('Account ID not found. Please login again.');
       return;
     }
 
-    // TODO: Add API call to change password
-    console.log('Changing password...', passwordData);
-    
-    // Simulate success
-    setMessage({ type: 'success', text: 'Password changed successfully!' });
-    
-    // Close modal after 2 seconds
-    setTimeout(() => {
-      handleCloseModal();
-    }, 2000);
+    setIsLoading(true);
+
+    try {
+      const data = {
+        accountId: auth.accountId,
+        oldPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword
+      };
+      
+      console.log('data:', data);
+
+      const response = await resetPassword(data);
+      
+      if (response.success) {
+        toast.success(response.message || 'Password changed successfully!');
+        setMessage({ type: 'success', text: 'Password changed successfully!' });
+      } else {
+        toast.error(response.message || 'Failed to change password');
+      }
+    } catch (error) {
+      console.error('Error changing password:', error);
+      toast.error('Failed to change password. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -108,12 +157,6 @@ const ChangePassword = () => {
             </div>
 
             <div className="cp-modal-content">
-              {message.text && (
-                <div className={`cp-message cp-message-${message.type}`}>
-                  {message.text}
-                </div>
-              )}
-
               <div className="cp-form-field">
                 <label>Current Password</label>
                 <div className="cp-input-wrapper">
@@ -123,15 +166,20 @@ const ChangePassword = () => {
                     value={passwordData.currentPassword}
                     onChange={handleInputChange}
                     placeholder="Enter current password"
+                    className={errors.currentPassword ? 'cp-input-error' : ''}
+                    disabled={isLoading}
                   />
                   <button
                     type="button"
                     className="cp-toggle-password"
                     onClick={() => togglePasswordVisibility('current')}
                   >
-                    {showPasswords.current ? 'Hide' : 'Show'}
+                    {showPasswords.current ? '👁️' : '👁️‍🗨️'}
                   </button>
                 </div>
+                {errors.currentPassword && (
+                  <span className="cp-error-text">{errors.currentPassword}</span>
+                )}
               </div>
 
               <div className="cp-form-field">
@@ -143,15 +191,20 @@ const ChangePassword = () => {
                     value={passwordData.newPassword}
                     onChange={handleInputChange}
                     placeholder="Enter new password"
+                    className={errors.newPassword ? 'cp-input-error' : ''}
+                    disabled={isLoading}
                   />
                   <button
                     type="button"
                     className="cp-toggle-password"
                     onClick={() => togglePasswordVisibility('new')}
                   >
-                    {showPasswords.new ? 'Hide' : 'Show'}
+                    {showPasswords.new ? '👁️' : '👁️‍🗨️'}
                   </button>
                 </div>
+                {errors.newPassword && (
+                  <span className="cp-error-text">{errors.newPassword}</span>
+                )}
               </div>
 
               <div className="cp-form-field">
@@ -163,24 +216,47 @@ const ChangePassword = () => {
                     value={passwordData.confirmPassword}
                     onChange={handleInputChange}
                     placeholder="Confirm new password"
+                    className={errors.confirmPassword ? 'cp-input-error' : ''}
+                    disabled={isLoading}
                   />
                   <button
                     type="button"
                     className="cp-toggle-password"
                     onClick={() => togglePasswordVisibility('confirm')}
                   >
-                    {showPasswords.confirm ? 'Hide' : 'Show'}
+                    {showPasswords.confirm ? '👁️' : '👁️‍🗨️'}
                   </button>
                 </div>
+                {errors.confirmPassword && (
+                  <span className="cp-error-text">{errors.confirmPassword}</span>
+                )}
+              </div>
+
+              <div className="cp-password-requirements">
+                <p>Password must contain:</p>
+                <ul>
+                  <li>At least 8 characters</li>
+                  <li>One uppercase letter</li>
+                  <li>One lowercase letter</li>
+                  <li>One number</li>
+                </ul>
               </div>
             </div>
 
             <div className="cp-modal-actions">
-              <button className="cp-btn-cancel" onClick={handleCloseModal}>
+              <button 
+                className="cp-btn-cancel" 
+                onClick={handleCloseModal}
+                disabled={isLoading}
+              >
                 Cancel
               </button>
-              <button className="cp-btn-save" onClick={handleChangePassword}>
-                Change Password
+              <button 
+                className="cp-btn-save" 
+                onClick={handleChangePassword}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Changing...' : 'Change Password'}
               </button>
             </div>
           </div>
