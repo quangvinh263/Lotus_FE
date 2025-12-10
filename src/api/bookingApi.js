@@ -151,11 +151,21 @@ export const checkInBooking = async (checkInData) => {
 };
 export const createBooking = async (bookingData) => {
     try {
+        // Helper function to format date without timezone issues
+        const formatDateYYYYMMDD = (date) => {
+            if (!date) return '';
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
         // Map frontend data to backend format
         const requestData = {
             customerID: bookingData.customerId,
-            checkInDate: new Date(bookingData.checkIn).toISOString().split('T')[0], // Format: YYYY-MM-DD
-            checkOutDate: new Date(bookingData.checkOut).toISOString().split('T')[0],
+            checkInDate: formatDateYYYYMMDD(bookingData.checkIn),
+            checkOutDate: formatDateYYYYMMDD(bookingData.checkOut),
             details: bookingData.rooms.map(room => ({
                 typeID: room.roomTypeId,
                 roomCount: room.numberOfRooms,
@@ -186,6 +196,58 @@ export const createBooking = async (bookingData) => {
         return {
             success: false,
             message: error.response?.data?.message || error.response?.data?.title || "Không thể tạo đơn đặt phòng.",
+        };
+    }
+}
+
+// Check-out booking - calls backend for each reservationDetailId individually
+export const checkOutBooking = async (reservationDetailId) => {
+    try {
+        console.log('📤 Calling check-out API for detail:', reservationDetailId);
+        
+        const response = await axios.post(`${API_URL}/Reservations/check-out/${reservationDetailId}`);
+        
+        console.log('📥 Check-out response:', response.data);
+        
+        if (response.status === 200) {
+            return {
+                success: true,
+                data: response.data,
+                message: response.data?.message || "Check-out thành công"
+            };
+        }
+        
+        return {
+            success: false,
+            message: "Response không hợp lệ",
+        };
+    } catch (error) {
+        console.error('❌ Check-out error for detail:', reservationDetailId);
+        console.error('❌ Error status:', error.response?.status);
+        console.error('❌ Error data:', error.response?.data);
+        console.error('❌ Full error:', error);
+        
+        let errorMessage = "Không thể check-out.";
+        
+        if (error.response?.data) {
+            // Try to extract meaningful error message
+            if (typeof error.response.data === 'string') {
+                errorMessage = error.response.data;
+            } else if (error.response.data.message) {
+                errorMessage = error.response.data.message;
+            } else if (error.response.data.title) {
+                errorMessage = error.response.data.title;
+            } else if (error.response.data.errors) {
+                errorMessage = JSON.stringify(error.response.data.errors);
+            }
+        } else if (error.message) {
+            errorMessage = error.message;
+        }
+        
+        return {
+            success: false,
+            message: errorMessage,
+            error: error.response?.data
         };
     }
 }
