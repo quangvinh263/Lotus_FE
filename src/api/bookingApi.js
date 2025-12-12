@@ -159,3 +159,42 @@ export const createBooking = async (bookingData) => {
         };
     }
 }
+
+export const getUpcomingBookings = async (accountId) => {
+    try {
+        const response = await axios.get(`${API_URL}/Reservations/upcoming/${accountId}`);
+        console.log('Upcoming Bookings Response:', response.data);
+        
+        if (response.status === 200 && response.data) {
+            return { success: true, data: response.data };
+        }
+        return { success: false, message: "Response không hợp lệ" };
+    } catch (error) {
+        console.error('Error fetching upcoming bookings:', error);
+        return { success: false, message: error.response?.data?.message || "Lỗi kết nối." };
+    }
+}
+
+export const getPastBookings = async (accountId) => {
+    try {
+        // Giả định endpoint backend là /Reservations/history và dùng POST giống upcoming
+        const response = await axios.get(`${API_URL}/Reservations/past/${accountId}`)
+        
+        if (response.status === 200 && response.data) {
+            return {
+                success: true,
+                data: response.data
+            };
+        }
+        return {
+            success: false,
+            message: "Response không hợp lệ",
+        };
+    } catch (error) {
+        console.error('Error fetching past bookings:', error);
+        return {
+            success: false,
+            message: error.response?.data?.message || "Không thể kết nối tới máy chủ.",
+        };
+    }
+}
