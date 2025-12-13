@@ -1,14 +1,14 @@
 import SearchIcon from '../../assets/icons/SearchIcon.svg';
 import './BookingSearchFilter.css';
 
-function BookingSearchFilter({ searchQuery, onSearchChange, selectedStatus, onStatusChange, totalBookings }) {
+function BookingSearchFilter({ searchQuery, onSearchChange, selectedStatus, onStatusChange, stats }) {
   const statusOptions = [
-    { value: 'all', label: 'Tất cả' },
-    { value: 'pending', label: 'Chờ xác nhận' },
-    { value: 'confirmed', label: 'Đã xác nhận' },
-    { value: 'checked-in', label: 'Đang ở' },
-    { value: 'completed', label: 'Đã hoàn tất' },
-    { value: 'cancelled', label: 'Đã hủy' }
+    { value: 'all', label: 'Tất cả', count: stats?.all || 0 },
+    { value: 'pending', label: 'Chờ xác nhận', count: stats?.pending || 0 },
+    { value: 'confirmed', label: 'Đã xác nhận', count: stats?.confirmed || 0 },
+    { value: 'inhouse', label: 'Đang ở', count: stats?.checkedIn || 0 },
+    { value: 'completed', label: 'Đã hoàn tất', count: stats?.completed || 0 },
+    { value: 'cancelled', label: 'Đã hủy', count: stats?.cancelled || 0 }
   ];
 
   const getStatusLabel = (value) => {
@@ -42,7 +42,7 @@ function BookingSearchFilter({ searchQuery, onSearchChange, selectedStatus, onSt
           >
             {statusOptions.map(option => (
               <option key={option.value} value={option.value}>
-                {option.label} ({option.value === 'all' ? totalBookings : totalBookings})
+                {option.label} ({option.count})
               </option>
             ))}
           </select>

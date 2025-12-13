@@ -1,75 +1,65 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from '../../components/Reception/Sidebar';
 import TopBar from '../../components/Reception/TopBar';
 import ServiceSearchBar from '../../components/Reception/ServiceSearchBar';
 import ServiceTable from '../../components/Reception/ServiceTable';
 import ServiceModal from '../../components/Reception/ServiceModal';
+import { getServiceOrder } from '../../api/serviceApi';
 import './ServiceManagementPage.css';
 
 function ServiceManagementPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Sample active room data
-  const [rooms] = useState([
-    {
-      id: '201',
-      roomType: 'Deluxe Room',
-      customerName: 'Nguyễn Văn An',
-      checkIn: '01/11/2025',
-      checkOut: '04/11/2025',
-      services: [
-        { name: 'Giặt ủi', price: 100000 },
-        { name: 'Minibar', price: 100000 }
-      ],
-      totalServiceAmount: 200000
-    },
-    {
-      id: '102',
-      roomType: 'Superior Room',
-      customerName: 'Trần Thị Bình',
-      checkIn: '02/11/2025',
-      checkOut: '05/11/2025',
-      services: [],
-      totalServiceAmount: 0
-    },
-    {
-      id: '301',
-      roomType: 'Executive Room',
-      customerName: 'Lê Minh Châu',
-      checkIn: '01/11/2025',
-      checkOut: '06/11/2025',
-      services: [
-        { name: 'Ăn sáng phòng', price: 250000 },
-        { name: 'Massage thư giãn', price: 500000 }
-      ],
-      totalServiceAmount: 750000
-    },
-    {
-      id: '401',
-      roomType: 'Grand Suite',
-      customerName: 'Phạm Quốc Dũng',
-      checkIn: '02/11/2025',
-      checkOut: '05/11/2025',
-      services: [
-        { name: 'Ăn tối phòng', price: 400000 },
-        { name: 'Minibar', price: 100000 },
-        { name: 'Massage toàn thân', price: 700000 }
-      ],
-      totalServiceAmount: 1200000
-    },
-    {
-      id: '203',
-      roomType: 'Deluxe Room',
-      customerName: 'Hoàng Thị Em',
-      checkIn: '03/11/2025',
-      checkOut: '06/11/2025',
-      services: [
-        { name: 'Giặt ủi', price: 50000 }
-      ],
-      totalServiceAmount: 50000
+  // Fetch service orders from API
+  useEffect(() => {
+    fetchServiceOrders();
+  }, []);
+
+  const fetchServiceOrders = async (keyword = '') => {
+    setLoading(true);
+    console.log('📤 Fetching service orders...', keyword ? `keyword: ${keyword}` : '');
+    
+    try {
+      const searchParams = keyword ? { keyword } : {};
+      const result = await getServiceOrder(searchParams);
+      
+      if (result.success) {
+        console.log('📥 Service orders received:', result.orders);
+        
+        // Map API response to component format
+        const mappedRooms = result.orders.map(order => ({
+          id: order.roomNumber,
+          reservationDetailId: order.reservationDetailId,
+          roomType: order.roomType,
+          customerName: order.customerName,
+          checkIn: formatDate(order.checkInDate),
+          checkOut: formatDate(order.checkOutDate),
+          services: [], // Services will be loaded when modal opens
+          serviceCount: order.serviceCount,
+          totalServiceAmount: order.totalServiceAmount
+        }));
+        
+        setRooms(mappedRooms);
+      } else {
+        console.error('❌ Failed to fetch service orders:', result.message);
+        alert(result.message || 'Không thể tải danh sách phòng');
+      }
+    } catch (error) {
+      console.error('❌ Error fetching service orders:', error);
+      alert('Có lỗi xảy ra khi tải danh sách phòng');
+    } finally {
+      setLoading(false);
     }
-  ]);
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('vi-VN');
+  };
 
   const filteredRooms = rooms.filter(room => {
     if (searchQuery === '') return true;
@@ -83,21 +73,14 @@ function ServiceManagementPage() {
   });
 
   const handleManageService = (room) => {
+    console.log('📋Opening service modal for room:', room);
     setSelectedRoom(room);
   };
 
   const handleCloseModal = () => {
     setSelectedRoom(null);
-  };
-
-  const handleSaveServices = (roomId, services) => {
-    // Update room services
-    const totalAmount = services.reduce((sum, s) => sum + (s.price * s.quantity), 0);
-    
-    // In real app, would save to backend
-    console.log('Save services for room', roomId, services, 'Total:', totalAmount);
-    
-    // TODO: Update rooms state with new services
+    // Refresh the room list after closing modal
+    fetchServiceOrders();
   };
 
   return (
@@ -129,7 +112,6 @@ function ServiceManagementPage() {
         <ServiceModal
           room={selectedRoom}
           onClose={handleCloseModal}
-          onSave={handleSaveServices}
         />
       )}
     </div>

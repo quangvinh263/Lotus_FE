@@ -4,7 +4,7 @@
   background-color: #FFFFFF;
   border: 0.8px solid #CBDCEB;
   border-radius: 14px;
-  padding: 24px 24px 0 24px;
+  padding: 24px;
   display: flex;
   justify-content: space-between;
 }

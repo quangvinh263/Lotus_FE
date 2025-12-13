@@ -57,20 +57,9 @@ function ServiceTable({ rooms, onManageService }) {
                 <span className="st-date-text">{room.checkOut}</span>
               </td>
               <td className="st-td st-td-services">
-                {room.services.length > 0 ? (
-                  <div className="st-services-wrapper">
-                    <div className="st-services-badge">
-                      {room.services.length} dịch vụ
-                    </div>
-                    <div className="st-services-list">
-                      {room.services.map((service, idx) => (
-                        <span key={idx}>{service.name}</span>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="st-services-badge">0 dịch vụ</div>
-                )}
+                <div className="st-services-badge">
+                  {room.serviceCount || 0} dịch vụ
+                </div>
               </td>
               <td className="st-td st-td-amount">
                 <span className="st-amount-text">{formatCurrency(room.totalServiceAmount)}</span>

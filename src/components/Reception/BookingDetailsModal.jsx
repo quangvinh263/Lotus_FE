@@ -13,16 +13,25 @@ function BookingDetailsModal({ booking, onClose, onConfirm, onCancel }) {
     return new Intl.NumberFormat('vi-VN').format(amount) + ' VNĐ';
   };
 
+  const formatDate = (iso) => {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString('vi-VN');
+  };
+
   const getStatusBadge = (status) => {
+    // Map backend status to display config
+    const normalizedStatus = status?.toLowerCase();
     const statusConfig = {
       'pending': { label: 'Chờ xác nhận', bg: '#FEF9C2', color: '#A65F00' },
       'confirmed': { label: 'Đã xác nhận', bg: '#DCFCE7', color: '#008236' },
-      'checked-in': { label: 'Đã check-in', bg: '#DBEAFE', color: '#1447E6' },
-      'completed': { label: 'Đã check-out', bg: '#F3F4F6', color: '#364153' },
+      'inhouse': { label: 'Đang ở', bg: '#DBEAFE', color: '#1447E6' },
+      'completed': { label: 'Hoàn thành', bg: '#F3F4F6', color: '#364153' },
       'cancelled': { label: 'Đã hủy', bg: '#FFE2E2', color: '#C10007' }
     };
 
-    const config = statusConfig[status] || statusConfig.pending;
+    const config = statusConfig[normalizedStatus] || statusConfig.pending;
 
     return (
       <div 
@@ -59,7 +68,7 @@ function BookingDetailsModal({ booking, onClose, onConfirm, onCancel }) {
             </div>
             <div className="bdm-date-group">
               <span className="bdm-label-right">Ngày tạo</span>
-              <span className="bdm-value">{booking.bookingDate}</span>
+              <span className="bdm-value">{formatDate(booking.bookingDate)}</span>
             </div>
           </div>
 
@@ -87,95 +96,6 @@ function BookingDetailsModal({ booking, onClose, onConfirm, onCancel }) {
                 <span className="bdm-info-value">{booking.guestCount} người</span>
               </div>
             </div>
-            
-            {/* Danh sách tất cả khách theo phòng */}
-            {booking.roomAssignments && Object.keys(booking.roomAssignments).length > 0 ? (
-              <div className="bdm-guests-list">
-                <h4 className="bdm-guests-list-title">Danh sách khách theo phòng:</h4>
-                {Object.entries(booking.roomAssignments).map(([roomNumber, guestList]) => (
-                  <div key={roomNumber} className="bdm-room-guests-card">
-                    <div className="bdm-room-guests-header">
-                      <span className="bdm-room-badge">Phòng {roomNumber}</span>
-                      <span className="bdm-guest-count">{guestList.length} khách</span>
-                    </div>
-                    <div className="bdm-room-guests-list">
-                      {guestList.map((guest, index) => (
-                        <div key={index} className="bdm-guest-card">
-                          <div className="bdm-guest-header">
-                            <span className="bdm-guest-number">Khách {index + 1}</span>
-                            {guest.isPrimary && <span className="bdm-primary-badge">Người đại diện</span>}
-                          </div>
-                          <div className="bdm-guest-details">
-                            <div className="bdm-guest-detail-row">
-                              <span className="bdm-guest-detail-label">Họ tên:</span>
-                              <span className="bdm-guest-detail-value">{guest.fullName}</span>
-                            </div>
-                            {guest.idNumber && (
-                              <div className="bdm-guest-detail-row">
-                                <span className="bdm-guest-detail-label">CMND/CCCD:</span>
-                                <span className="bdm-guest-detail-value">{guest.idNumber}</span>
-                              </div>
-                            )}
-                            {guest.gender && (
-                              <div className="bdm-guest-detail-row">
-                                <span className="bdm-guest-detail-label">Giới tính:</span>
-                                <span className="bdm-guest-detail-value">
-                                  {guest.gender === 'male' ? 'Nam' : guest.gender === 'female' ? 'Nữ' : 'Khác'}
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : booking.guests && booking.guests.length > 0 && (
-              <div className="bdm-guests-list">
-                <h4 className="bdm-guests-list-title">Danh sách khách lưu trú:</h4>
-                {booking.guests.map((guest, index) => (
-                  <div key={index} className="bdm-guest-card">
-                    <div className="bdm-guest-header">
-                      <span className="bdm-guest-number">Khách {index + 1}</span>
-                      {guest.isPrimary && <span className="bdm-primary-badge">Người đại diện</span>}
-                    </div>
-                    <div className="bdm-guest-details">
-                      <div className="bdm-guest-detail-row">
-                        <span className="bdm-guest-detail-label">Họ tên:</span>
-                        <span className="bdm-guest-detail-value">{guest.fullName}</span>
-                      </div>
-                      {guest.idNumber && (
-                        <div className="bdm-guest-detail-row">
-                          <span className="bdm-guest-detail-label">CMND/CCCD:</span>
-                          <span className="bdm-guest-detail-value">{guest.idNumber}</span>
-                        </div>
-                      )}
-                      {guest.gender && (
-                        <div className="bdm-guest-detail-row">
-                          <span className="bdm-guest-detail-label">Giới tính:</span>
-                          <span className="bdm-guest-detail-value">
-                            {guest.gender === 'male' ? 'Nam' : guest.gender === 'female' ? 'Nữ' : 'Khác'}
-                          </span>
-                        </div>
-                      )}
-                      {guest.phoneNumber && (
-                        <div className="bdm-guest-detail-row">
-                          <span className="bdm-guest-detail-label">SĐT:</span>
-                          <span className="bdm-guest-detail-value">{guest.phoneNumber}</span>
-                        </div>
-                      )}
-                      {guest.email && (
-                        <div className="bdm-guest-detail-row">
-                          <span className="bdm-guest-detail-label">Email:</span>
-                          <span className="bdm-guest-detail-value">{guest.email}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
           {/* Room Info */}
@@ -192,13 +112,13 @@ function BookingDetailsModal({ booking, onClose, onConfirm, onCancel }) {
                     <span className="bdm-room-quantity">x {room.quantity} phòng</span>
                   </div>
                   <span className="bdm-room-price">
-                    {formatCurrency(room.price || booking.totalAmount / totalRooms / booking.nights)}/đêm
+                    {formatCurrency(room.price || 0)}/đêm
                   </span>
                 </div>
               ))}
               <div className="bdm-room-calculation">
                 <span className="bdm-calc-text">
-                  {totalRooms} phòng × {booking.nights} đêm × {formatCurrency(booking.totalAmount / totalRooms / booking.nights)} =
+                  Tổng tiền phòng ({booking.nights} đêm)
                 </span>
                 <span className="bdm-calc-total">{formatCurrency(booking.totalAmount)}</span>
               </div>
@@ -240,18 +160,13 @@ function BookingDetailsModal({ booking, onClose, onConfirm, onCancel }) {
 
           {/* Action Buttons */}
           <div className="bdm-actions">
-            {booking.status === 'pending' && (
-              <button className="bdm-btn bdm-btn-confirm" onClick={() => onConfirm(booking.id)}>
-                <img src={TickIcon} alt="Confirm" className="bdm-btn-icon" />
-                Xác nhận đơn
-              </button>
-            )}
             {(booking.status === 'pending' || booking.status === 'confirmed') && (
               <button className="bdm-btn bdm-btn-cancel" onClick={() => onCancel(booking.id)}>
                 <img src={XSignIcon} alt="Cancel" className="bdm-btn-icon" />
                 Hủy đơn
               </button>
             )}
+
             <button className="bdm-btn bdm-btn-close" onClick={onClose}>
               Đóng
             </button>
