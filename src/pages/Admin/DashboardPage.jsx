@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/Admin/DashboardPage.css';
 import AdminSidebar from '../../components/Admin/AdminSidebar';
 import AdminHeader from '../../components/Admin/AdminHeader';
+import AIInsightModal from '../../components/Admin/AIInsightModal';
 import PeopleIcon from '../../assets/icons/PeopleIcon.svg';
 import HotelIcon from '../../assets/icons/HotelIcon.svg';
 import MoneyIcon from '../../assets/icons/MoneyIcon.svg';
@@ -9,6 +10,7 @@ import ReservationIcon from '../../assets/icons/ReservationIcon.svg';
 import CalendarIcon from '../../assets/icons/CalenderIcon.svg';
 import CustomerIcon from '../../assets/icons/CustomerIcon.svg';
 import signalRService from '../../services/signalRService';
+import { getAvailableQuestions, generateInsight } from '../../api/campaign';
 import {
   BarChart,
   Bar,
@@ -18,15 +20,12 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer
 } from 'recharts';
 
 const now = new Date();
-const currentMonthNumber = now.getMonth() + 1; // 1-12
-const currentYear = now.getFullYear();
+const currentMonthNumber = now.getMonth() + 1;
 const currentMonth = now.toLocaleString('vi-VN', { month: 'long', year: 'numeric' });
-
 
 const DashboardPage = () => {
   const getMonthLabel = (offset) => {
@@ -34,7 +33,6 @@ const DashboardPage = () => {
     return `T${monthIndex + 1}`;
   };
 
-  // ✅ State cho Stats Cards
   const [statsData, setStatsData] = useState({
     totalEmployees: 0,
     totalRooms: 0,
@@ -42,70 +40,31 @@ const DashboardPage = () => {
     occupancyRate: 0,
     newBookings: 0,
     totalCustomers: 0,
-    revenueGrowthPercent: 0, 
-    occupancyGrowthPercent: 0, 
+    revenueGrowthPercent: 0,
+    occupancyGrowthPercent: 0,
     bookingGrowthPercent: 0
   });
-  
-  // ✅ State cho dữ liệu real-time
-  const [revenueData, setRevenueData] = useState([
-    { month: getMonthLabel(-5), value: 0 },
-    { month: getMonthLabel(-4), value: 0 },
-    { month: getMonthLabel(-3), value: 0 },
-    { month: getMonthLabel(-2), value: 0 },
-    { month: getMonthLabel(-1), value: 0 },
-    { month: getMonthLabel(0), value: 0 }
-  ]);
 
-  const [occupancyData, setOccupancyData] = useState([
-    { day: 'T2', value: 0 },
-    { day: 'T3', value: 0 },
-    { day: 'T4', value: 0 },
-    { day: 'T5', value: 0 },
-    { day: 'T6', value: 0 },
-    { day: 'T7', value: 0 },
-    { day: 'CN', value: 0 }
-  ]);
-
-  const [bookingData, setBookingData] = useState([
-    { month: 'Jan', value: 0 },
-    { month: 'Feb', value: 0 },
-    { month: 'Mar', value: 0 },
-    { month: 'Apr', value: 0 },
-    { month: 'May', value: 0 },
-    { month: 'Jun', value: 0 },
-    { month: 'Jul', value: 0 },
-    { month: 'Aug', value: 0 },
-    { month: 'Sep', value: 0 },
-    { month: 'Oct', value: 0 },
-    { month: 'Nov', value: 0 },
-    { month: 'Dec', value: 0 }
-  ]);
-
+  const [revenueData, setRevenueData] = useState([]);
+  const [occupancyData, setOccupancyData] = useState([]);
+  const [bookingData, setBookingData] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(null);
 
-  // ✅ Kết nối SignalR khi component mount
-  useEffect(() => {
-    const connectSignalR = async () => {
-      await signalRService.startConnection();
+  const [questions, setQuestions] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-      // Lắng nghe cập nhật từ server
+  useEffect(() => {
+    const fetchData = async () => {
+      const questionsRes = await getAvailableQuestions();
+      if (questionsRes && questionsRes.success) {
+        setQuestions(questionsRes.data);
+      }
+
+      await signalRService.startConnection();
       signalRService.onAnalyticsUpdate((response) => {
-        
         const data = response.data;
         setLastUpdate(response.timestamp);
-        console.log('🔍 Backend fields:', {
-    totalEmployees: data.totalEmployees,
-    totalRooms: data.totalRooms,
-    monthlyRevenue: data.monthlyRevenue,
-    monthlyRevenueGrowthPercent: data.revenueGrowthPercent,
-    currentOccupancyRate: data.currentOccupancyRate,
-    occupancyGrowthPercent: data.occupancyGrowthPercent,
-    newBookingsThisMonth: data.newBookingsThisMonth, 
-    bookingGrowthPercent: data.bookingGrowthPercent,
-    totalCustomers: data.totalCustomers
-  });
-        // ✅ Cập nhật Stats Cards
+
         setStatsData({
           totalEmployees: data.totalEmployees || 0,
           totalRooms: data.totalRooms || 0,
@@ -113,12 +72,11 @@ const DashboardPage = () => {
           occupancyRate: data.currentOccupancyRate || 0,
           newBookings: data.newBookingsThisMonth || 0,
           totalCustomers: data.totalCustomers || 0,
-          revenueGrowthPercent: data.revenueGrowthPercent ?? 0, // ✅ Đúng field
+          revenueGrowthPercent: data.revenueGrowthPercent ?? 0,
           occupancyGrowthPercent: data.occupancyGrowthPercent ?? 0,
           bookingGrowthPercent: data.bookingGrowthPercent ?? 0
         });
 
-        // ✅ Cập nhật revenue data
         setRevenueData([
           { month: getMonthLabel(-5), value: data.revenueMonth1 || 0 },
           { month: getMonthLabel(-4), value: data.revenueMonth2 || 0 },
@@ -128,7 +86,6 @@ const DashboardPage = () => {
           { month: getMonthLabel(0), value: data.revenueMonth6 || 0 }
         ]);
 
-        // ✅ Cập nhật occupancy data
         setOccupancyData([
           { day: 'T2', value: data.occupancyWeek2 || 0 },
           { day: 'T3', value: data.occupancyWeek3 || 0 },
@@ -139,7 +96,6 @@ const DashboardPage = () => {
           { day: 'CN', value: data.occupancyWeekCN || 0 }
         ]);
 
-        // ✅ Cập nhật booking data
         setBookingData([
           { month: 'Jan', value: data.bookingJan || 0 },
           { month: 'Feb', value: data.bookingFeb || 0 },
@@ -154,21 +110,25 @@ const DashboardPage = () => {
           { month: 'Nov', value: data.bookingNov || 0 },
           { month: 'Dec', value: data.bookingDec || 0 }
         ]);
-
-        if (response.message) {
-          console.log('📢 Notification:', response.message);
-        }
       });
     };
 
-    connectSignalR();
+    fetchData();
 
     return () => {
       signalRService.stopConnection();
     };
   }, []);
 
-  // ✅ Stats Cards dùng state
+  const handleGenerateInsight = async (questionId) => {
+    const response = await generateInsight(questionId);
+    if (response && response.success) {
+      return response.data.insights;
+    } else {
+      throw new Error("Failed to generate insight");
+    }
+  };
+
   const statsCards = [
     {
       id: 1,
@@ -191,7 +151,7 @@ const DashboardPage = () => {
       title: `Doanh thu ${currentMonth}`,
       value: `${statsData.monthlyRevenue}M VNĐ`,
       change: `${statsData.revenueGrowthPercent.toFixed(1)}%`,
-      changeType: statsData.revenueGrowthPercent.toFixed(1) >= 0 ? 'positive' : 'neutral',
+      changeType: statsData.revenueGrowthPercent >= 0 ? 'positive' : 'neutral',
       icon: MoneyIcon,
       iconClass: 'icon-money'
     },
@@ -200,7 +160,7 @@ const DashboardPage = () => {
       title: 'Tỷ lệ lấp đầy',
       value: `${statsData.occupancyRate}%`,
       change: `${statsData.occupancyGrowthPercent.toFixed(1)}%`,
-      changeType: statsData.occupancyGrowthPercent.toFixed(1) >= 0 ? 'positive' : 'neutral',
+      changeType: statsData.occupancyGrowthPercent >= 0 ? 'positive' : 'neutral',
       icon: ReservationIcon,
       iconClass: 'icon-reservation'
     },
@@ -209,7 +169,7 @@ const DashboardPage = () => {
       title: 'Đặt phòng mới',
       value: statsData.newBookings,
       change: `${statsData.bookingGrowthPercent.toFixed(1)}%`,
-      changeType: statsData.bookingGrowthPercent.toFixed(1) >= 0 ? 'positive' : 'neutral',
+      changeType: statsData.bookingGrowthPercent >= 0 ? 'positive' : 'neutral',
       icon: CalendarIcon,
       iconClass: 'icon-calendar'
     },
@@ -239,7 +199,6 @@ const DashboardPage = () => {
             </p>
           </div>
 
-          {/* Stats Cards */}
           <div className="admin-stats-grid">
             {statsCards.map((card) => (
               <div key={card.id} className="admin-stat-card">
@@ -257,7 +216,6 @@ const DashboardPage = () => {
             ))}
           </div>
 
-          {/* Charts Section */}
           <div className="admin-charts-row">
             <div className="admin-chart-card">
               <h3 className="admin-chart-title">Doanh thu 6 tháng gần đây (triệu đồng)</h3>
@@ -280,10 +238,10 @@ const DashboardPage = () => {
                   <XAxis dataKey="day" stroke="#608BC1" style={{ fontSize: '12px' }} />
                   <YAxis stroke="#608BC1" style={{ fontSize: '12px' }} />
                   <Tooltip />
-                  <Line 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke="#133E87" 
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#133E87"
                     strokeWidth={3}
                     dot={{ fill: '#133E87', r: 5 }}
                   />
@@ -292,39 +250,19 @@ const DashboardPage = () => {
             </div>
           </div>
 
-          {/* Bottom Section */}
           <div className="admin-bottom-section">
-            <div className="admin-suggestion-card">
-              <div className="admin-suggestion-header">
-                <h3 className="admin-section-title">Gợi ý</h3>
-                <button className="admin-more-btn">
-                  <span>⋮</span>
-                </button>
-              </div>
-              <div className="admin-suggestion-content">
-                <div className="admin-suggestion-input">
-                  <input 
-                    type="text" 
-                    placeholder="Tôi cần phải làm gì để khách sạn thu hút hơn?"
-                    className="admin-suggestion-textbox"
-                  />
-                  <button className="admin-suggestion-submit">
-                    <span>▼</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+            {/* ✅ Thay Card thành Button đơn giản */}
+            <button 
+              className="admin-ai-insight-button"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <span className="ai-button-text">Gợi ý & Phân tích</span>
+            </button>
 
             <div className="admin-booking-stats-card">
               <div className="admin-booking-header">
                 <h3 className="admin-section-title">Thống kê lượng đặt phòng (%)</h3>
-                <button className="admin-filter-btn">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M6.67 1.67H13.33V5H6.67V1.67Z" stroke="#667085" strokeWidth="1.67"/>
-                    <path d="M3.33 4H16.67V18.33H3.33V4Z" stroke="#667085" strokeWidth="1.67"/>
-                  </svg>
-                  Monthly
-                </button>
+                <button className="admin-filter-btn">Monthly</button>
               </div>
               <div className="admin-booking-chart">
                 <ResponsiveContainer width="100%" height={240}>
@@ -341,6 +279,13 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
+
+      <AIInsightModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        questions={questions}
+        onGenerate={handleGenerateInsight}
+      />
     </div>
   );
 };
