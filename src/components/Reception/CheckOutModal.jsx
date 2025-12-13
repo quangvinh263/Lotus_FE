@@ -235,7 +235,7 @@ const CheckOutModal = ({
               </p>
               <p className="checkout-modal-total-rooms">
                 {isLastCheckout() 
-                  ? `Toàn bộ đơn đặt phòng (${rooms.length + selectedRooms.length} phòng)`
+                  ? `Toàn bộ đơn đặt phòng (${rooms.length} phòng)`
                   : `${selectedRooms.length} phòng • Không thanh toán`
                 }
               </p>
