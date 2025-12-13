@@ -2,6 +2,7 @@ import React from 'react';
 import './BookingDetailsModal.css';
 import CalenderIcon from '../../assets/icons/CalenderIcon.svg';
 import PeopleIcon from '../../assets/icons/PeopleIcon.svg';
+import { cancelBooking } from '../../api/bookingApi';
 
 const BookingDetailsModal = ({ booking, isOpen, onClose, onCancelBooking, showCancelButton }) => {
   if (!isOpen || !booking) return null;
@@ -9,10 +10,15 @@ const BookingDetailsModal = ({ booking, isOpen, onClose, onCancelBooking, showCa
   const { hotelName, location, image, checkIn, checkOut, guests, rooms, status, isPast } = booking;
 
   const handleCancelBooking = () => {
-    if (window.confirm('Are you sure you want to cancel this booking?')) {
-      onCancelBooking(booking.id);
-      onClose();
-    }
+    cancelBooking(booking.id).then(response => {
+      if (response.success) {
+        onCancelBooking(booking.id);
+        onClose();
+        window.location.reload();
+      } else {
+        console.log("Failed to cancel booking: " + response.message);
+      }
+    });
   };
 
   return (

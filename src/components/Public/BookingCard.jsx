@@ -4,6 +4,7 @@ import CalenderIcon from '../../assets/icons/CalenderIcon.svg';
 import PeopleIcon from '../../assets/icons/PeopleIcon.svg';
 import BookingDetailsModal from './BookingDetailsModal';
 
+
 const BookingCard = ({ booking, onCancelBooking }) => {
   const { hotelName, location, image, checkIn, checkOut, guests, rooms, status, isPast } = booking;
   const [isModalOpen, setIsModalOpen] = useState(false);

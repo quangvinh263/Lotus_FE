@@ -84,7 +84,6 @@ const ProfilePage = () => {
 
   const handleCancelBooking = (bookingId) => {
     console.log('Cancelling booking:', bookingId);
-    alert('Booking cancelled successfully!');
   };
 
   return (
