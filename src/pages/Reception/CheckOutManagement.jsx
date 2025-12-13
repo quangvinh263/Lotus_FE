@@ -4,6 +4,9 @@ import Sidebar from '../../components/Reception/Sidebar';
 import TopBar from '../../components/Reception/TopBar';
 import CheckOutCard from '../../components/Reception/CheckOutCard';
 import CheckOutModal from '../../components/Reception/CheckOutModal';
+import InvoicePaymentModal from '../../components/Reception/InvoicePaymentModal';
+import { getBookingsList, getBookingDetail, checkOutBooking } from '../../api/bookingApi';
+import { processManualPayment, processZaloPayPayment } from '../../api/paymentApi';
 import SearchIcon from '../../assets/icons/SearchIcon.svg';
 
 const CheckOutManagement = () => {
@@ -12,129 +15,107 @@ const CheckOutManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [preselectedRoomIndices, setPreselectedRoomIndices] = useState([]);
+  const [checkouts, setCheckouts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+  const [currentInvoice, setCurrentInvoice] = useState(null);
 
-  // Sample checkout data - match with DB schema
-  const initialCheckouts = [
-    {
-      reservationId: 1, // ID từ bảng Reservations
-      reservationCode: 'BK001',
-      customerId: 1,
-      customerName: 'Nguyễn Văn An',
-      phone: '0901234567',
-      checkInDate: '31/10/2025',
-      checkOutDate: '3/11/2025',
-      status: 'CheckedIn', // CheckedIn, CheckedOut, PartialCheckout
-      totalAmount: 15250000, // Tổng tiền toàn bộ reservation
-      isPaid: false, // Đã thanh toán chưa
-      reservationDetails: [ // Từ bảng ReservationDetails
-        {
-          reservationDetailId: 1,
-          roomId: 201,
-          roomNumber: '201',
-          roomType: 'Deluxe Room',
-          pricePerNight: 1800000,
-          nights: 3,
-          checkInDate: '31/10/2025',
-          checkOutDate: '3/11/2025',
-          actualCheckOutDate: null, // Ngày check-out thực tế (null = chưa check-out)
-          services: [
-            { serviceId: 1, name: 'Giặt ủi', price: 150000, quantity: 1 },
-            { serviceId: 2, name: 'Hồ bơi', price: 200000, quantity: 1 }
-          ],
-          subtotal: 5750000 // Tiền phòng + dịch vụ
-        },
-        {
-          reservationDetailId: 2,
-          roomId: 202,
-          roomNumber: '202',
-          roomType: 'Deluxe Room',
-          pricePerNight: 1800000,
-          nights: 3,
-          checkInDate: '31/10/2025',
-          checkOutDate: '3/11/2025',
-          actualCheckOutDate: null,
-          services: [
-            { serviceId: 3, name: 'Spa', price: 500000, quantity: 1 }
-          ],
-          subtotal: 5900000
-        },
-        {
-          reservationDetailId: 3,
-          roomId: 101,
-          roomNumber: '101',
-          roomType: 'Superior Room',
-          pricePerNight: 1200000,
-          nights: 3,
-          checkInDate: '31/10/2025',
-          checkOutDate: '3/11/2025',
-          actualCheckOutDate: null,
-          services: [],
-          subtotal: 3600000
-        }
-      ]
-    },
-    {
-      reservationId: 2,
-      reservationCode: 'BK002',
-      customerId: 2,
-      customerName: 'Trần Thị Bình',
-      phone: '0912345678',
-      checkInDate: '1/11/2025',
-      checkOutDate: '2/11/2025',
-      status: 'CheckedIn',
-      totalAmount: 2400000,
-      isPaid: false,
-      reservationDetails: [
-        {
-          reservationDetailId: 4,
-          roomId: 301,
-          roomNumber: '301',
-          roomType: 'Executive Room',
-          pricePerNight: 2400000,
-          nights: 1,
-          checkInDate: '1/11/2025',
-          checkOutDate: '2/11/2025',
-          actualCheckOutDate: null,
-          services: [],
-          subtotal: 2400000
-        }
-      ]
-    },
-    {
-      reservationId: 3,
-      reservationCode: 'BK003',
-      customerId: 3,
-      customerName: 'Lê Hoàng Nam',
-      phone: '0923456789',
-      checkInDate: '1/11/2025',
-      checkOutDate: '4/11/2025',
-      status: 'CheckedIn',
-      totalAmount: 11600000,
-      isPaid: false,
-      reservationDetails: [
-        {
-          reservationDetailId: 5,
-          roomId: 401,
-          roomNumber: '401',
-          roomType: 'Grand Suite',
-          pricePerNight: 3500000,
-          nights: 3,
-          checkInDate: '1/11/2025',
-          checkOutDate: '4/11/2025',
-          actualCheckOutDate: null,
-          services: [
-            { serviceId: 3, name: 'Spa', price: 600000, quantity: 1 },
-            { serviceId: 1, name: 'Giặt ủi', price: 300000, quantity: 1 },
-            { serviceId: 2, name: 'Hồ bơi', price: 200000, quantity: 1 }
-          ],
-          subtotal: 11600000
-        }
-      ]
+  // Fetch InHouse reservations on mount
+  useEffect(() => {
+    fetchInHouseReservations();
+  }, []);
+
+  const fetchInHouseReservations = async () => {
+    setLoading(true);
+    console.log('📤 Fetching InHouse reservations...');
+    
+    try {
+      // Get list of InHouse reservations
+      const listResult = await getBookingsList('InHouse', null);
+      
+      if (!listResult.success) {
+        console.error('❌ Failed to fetch reservations:', listResult.message);
+        alert(listResult.message);
+        setLoading(false);
+        return;
+      }
+
+      console.log('📥 InHouse reservations list:', listResult.data);
+
+      // Fetch details for each reservation
+      const detailPromises = listResult.data.map(reservation => 
+        getBookingDetail(reservation.reservationId)
+      );
+
+      const detailResults = await Promise.all(detailPromises);
+      
+      // Map API response to component format
+      const mappedCheckouts = detailResults
+        .filter(result => result.success)
+        .map(result => {
+          const detail = result.data;
+          
+          return {
+            reservationId: detail.reservationId,
+            reservationCode: detail.reservationId,
+            customerId: detail.fullName,
+            customerName: detail.fullName,
+            phone: detail.phone || 'N/A',
+            checkInDate: formatDate(detail.checkInDate),
+            checkOutDate: formatDate(detail.checkOutDate),
+            status: detail.statusReservation,
+            totalAmount: detail.totalAmount,
+            isPaid: detail.totalDue === 0,
+            reservationDetails: detail.rooms.flatMap(room => 
+              room.reservationDetails
+                .filter(rd => rd.status === 'CheckedIn')
+                .map(rd => {
+                  // Get services for this reservation detail
+                  const services = detail.serviceDetails
+                    .filter(svc => svc.reservationDetailId === rd.reservationDetailId)
+                    .map(svc => ({
+                      serviceId: svc.serviceId,
+                      name: svc.service?.serviceName || svc.serviceId,
+                      price: svc.total,
+                      quantity: svc.quantity
+                    }));
+                  
+                  // Calculate service total for this room
+                  const serviceTotal = services.reduce((sum, svc) => sum + svc.price, 0);
+                  
+                  return {
+                    reservationDetailId: rd.reservationDetailId,
+                    roomNumber: room.roomNumber,
+                    roomType: rd.type?.typeName || 'N/A',
+                    pricePerNight: rd.priceAtBooking / detail.durationNights,
+                    nights: detail.durationNights,
+                    checkInDate: formatDate(rd.checkInDate),
+                    checkOutDate: formatDate(rd.checkOutDate),
+                    actualCheckOutDate: rd.actualCheckOut ? formatDate(rd.actualCheckOut) : null,
+                    services: services,
+                    subtotal: rd.priceAtBooking + serviceTotal
+                  };
+                })
+            )
+          };
+        });
+
+      console.log('📥 Mapped checkouts:', mappedCheckouts);
+      setCheckouts(mappedCheckouts);
+      
+    } catch (error) {
+      console.error('❌ Error fetching InHouse reservations:', error);
+      alert('Có lỗi xảy ra khi tải danh sách check-out');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  // State to manage checkouts - initialized with sample data
-  const [checkouts, setCheckouts] = useState(initialCheckouts);
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('vi-VN');
+  };
 
   const handleCheckOutAll = (reservation) => {
     setSelectedBooking(reservation);
@@ -155,69 +136,162 @@ const CheckOutManagement = () => {
       
       console.log('📤 Calling API to check-out rooms:', {
         reservationId: selectedBooking.reservationId,
-        reservationDetailIds: detailIds
+        reservationDetailIds: detailIds,
+        count: detailIds.length
       });
       
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/reservations/checkout', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     reservationId: selectedBooking.reservationId,
-      //     reservationDetailIds: detailIds,
-      //     checkOutDate: new Date().toISOString()
-      //   })
-      // });
-      // 
-      // const result = await response.json();
-      // 
-      // if (result.isFullyCheckedOut) {
-      //   console.log('✅ All rooms checked out - Payment created:', result.payment);
-      // } else {
-      //   console.log('⚠️ Partial checkout - Remaining rooms:', result.remainingRooms);
-      // }
+      // Call check-out API for each room individually
+      let successCount = 0;
+      let lastInvoice = null;
+      let hasError = false;
       
-      // MOCK: Simulate API response
+      for (const detailId of detailIds) {
+        const result = await checkOutBooking(detailId);
+        
+        if (!result.success) {
+          console.error('❌ Check-out failed for detail:', detailId, result.message);
+          alert(`Không thể check-out phòng ${detailId}: ${result.message}`);
+          hasError = true;
+          break;
+        }
+        
+        successCount++;
+        console.log(`✅ Check-out successful for detail ${detailId}:`, result.data);
+        
+        // Store invoice if created (last guest checkout)
+        if (result.data?.generatedInvoice) {
+          lastInvoice = result.data.generatedInvoice;
+        }
+      }
+      
+      if (hasError) {
+        // If error occurred, refresh data to get current state
+        await fetchInHouseReservations();
+        setIsModalOpen(false);
+        return;
+      }
+      
+      // Check if fully checked out (all rooms)
       const remainingDetails = selectedBooking.reservationDetails.filter(
         detail => !detailIds.includes(detail.reservationDetailId)
       );
       
       if (remainingDetails.length === 0) {
-        console.log('✅ Backend will: Update all ReservationDetails, Create Payment, Update Reservation status to CheckedOut');
+        console.log('✅ Full check-out completed - Invoice created');
+        
+        // Show invoice modal if invoice was generated
+        if (lastInvoice) {
+          setCurrentInvoice(lastInvoice);
+          setIsInvoiceModalOpen(true);
+          // Close checkout modal, keep invoice modal open
+          setIsModalOpen(false);
+        } else {
+          alert('Check-out thành công!');
+          setIsModalOpen(false);
+          setSelectedBooking(null);
+          setPreselectedRoomIndices([]);
+        }
       } else {
-        console.log('⚠️ Backend will: Update checked-out ReservationDetails, Update Reservation status to PartialCheckout');
+        console.log('⚠️ Partial check-out - Remaining rooms:', remainingDetails.length);
+        alert(`Check-out ${successCount} phòng thành công! Còn ${remainingDetails.length} phòng chưa check-out.`);
+        
+        // Update UI for partial checkout
+        setCheckouts(prevCheckouts => {
+          return prevCheckouts.map(reservation => {
+            if (reservation.reservationId === selectedBooking.reservationId) {
+              return {
+                ...reservation,
+                reservationDetails: remainingDetails,
+                status: 'PartialCheckout'
+              };
+            }
+            return reservation;
+          });
+        });
+        
+        setIsModalOpen(false);
+        setSelectedBooking(null);
+        setPreselectedRoomIndices([]);
       }
       
-      // Sau khi API success, cập nhật UI
-      setCheckouts(prevCheckouts => {
-        return prevCheckouts.map(reservation => {
-          if (reservation.reservationId === selectedBooking.reservationId) {
-            // Nếu check-out hết → xóa khỏi danh sách
-            if (remainingDetails.length === 0) {
-              return null;
-            }
-            // Nếu còn phòng → giữ lại những phòng chưa check-out
-            return {
-              ...reservation,
-              reservationDetails: remainingDetails,
-              status: 'PartialCheckout'
-            };
-          }
-          return reservation;
-        }).filter(Boolean);
-      });
-      
-      setIsModalOpen(false);
-      setSelectedBooking(null);
-      setPreselectedRoomIndices([]);
-      
-      // TODO: Có thể fetch lại data từ server để đảm bảo đồng bộ
-      // await fetchCheckoutReservations();
+      // Optionally refresh data from server
+      // await fetchInHouseReservations();
       
     } catch (error) {
       console.error('❌ Error during checkout:', error);
       alert('Có lỗi xảy ra khi check-out. Vui lòng thử lại.');
     }
+  };
+
+  const handlePayment = async (invoiceId, paymentMethod) => {
+    try {
+      console.log('💳 Processing payment:', { invoiceId, paymentMethod });
+      
+      let result;
+      
+      if (paymentMethod === 'cash') {
+        // Manual payment (cash)
+        const amount = currentInvoice.amountDue;
+        result = await processManualPayment(invoiceId, amount, {
+          method: 'Cash',
+          transactionRef: null,
+          payerName: null,
+          payerPhone: null,
+          note: null,
+          bankCode: null
+        });
+        
+        if (!result.success) {
+          alert(`Lỗi thanh toán: ${result.message}`);
+          return;
+        }
+        
+        alert('Thanh toán tiền mặt thành công!');
+        
+      } else if (paymentMethod === 'zalopay') {
+        // ZaloPay payment
+        result = await processZaloPayPayment(invoiceId);
+        
+        if (!result.success) {
+          alert(`Lỗi tạo link ZaloPay: ${result.message}`);
+          return;
+        }
+        
+        // Open ZaloPay payment URL if available
+        if (result.data?.paymentUrl || result.data?.orderUrl) {
+          const paymentUrl = result.data.paymentUrl || result.data.orderUrl;
+          window.open(paymentUrl, '_blank');
+          alert('Đã mở link thanh toán ZaloPay. Vui lòng hoàn tất thanh toán trên trang ZaloPay.');
+        } else {
+          alert('Đã tạo yêu cầu thanh toán ZaloPay thành công!');
+        }
+      }
+      
+      // Close both modals
+      setIsInvoiceModalOpen(false);
+      setIsModalOpen(false);
+      setCurrentInvoice(null);
+      setSelectedBooking(null);
+      setPreselectedRoomIndices([]);
+      
+      // Refresh data to update status
+      await fetchInHouseReservations();
+      
+    } catch (error) {
+      console.error('❌ Payment error:', error);
+      alert('Có lỗi xảy ra khi thanh toán. Vui lòng thử lại.');
+    }
+  };
+
+  const handleCloseInvoiceModal = () => {
+    setIsInvoiceModalOpen(false);
+    setIsModalOpen(false);
+    setCurrentInvoice(null);
+    setSelectedBooking(null);
+    setPreselectedRoomIndices([]);
+    
+    // Refresh data after closing invoice
+    fetchInHouseReservations();
   };
 
   const filteredCheckouts = checkouts.filter(reservation => {
@@ -289,7 +363,8 @@ const CheckOutManagement = () => {
                   phone={reservation.phone}
                   checkInDate={reservation.checkInDate}
                   checkOutDate={reservation.checkOutDate}
-                  nights={reservation.reservationDetails[0]?.nights || 0}
+                  nigh
+                  ts={reservation.reservationDetails[0]?.nights || 0}
                   rooms={reservation.reservationDetails}
                   onCheckOutAll={() => handleCheckOutAll(reservation)}
                   onRoomClick={(roomIndex) => handleRoomClick(reservation, roomIndex)}
@@ -317,6 +392,14 @@ const CheckOutManagement = () => {
         bookingData={selectedBooking}
         preselectedRooms={preselectedRoomIndices}
         onConfirm={handleConfirmCheckOut}
+      />
+
+      {/* Invoice Payment Modal */}
+      <InvoicePaymentModal
+        isOpen={isInvoiceModalOpen}
+        onClose={handleCloseInvoiceModal}
+        invoice={currentInvoice}
+        onPayment={handlePayment}
       />
     </div>
   );

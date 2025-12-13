@@ -1,49 +1,84 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ArrowIcon from '../../assets/icons/ArrowIcon.svg';
 import DeleteIcon from '../../assets/icons/DeleteIcon.svg';
+import { getAllServices, getServicesByReservationDetail, addServiceOrder, deleteServiceOrder } from '../../api/serviceApi';
 import './ServiceModal.css';
 
 function ServiceModal({ room, onClose, onSave }) {
   const [selectedService, setSelectedService] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [services, setServices] = useState(room?.services || []);
+  const [services, setServices] = useState([]);
+  const [availableServices, setAvailableServices] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Available services list
-  const availableServices = [
-    { id: 'laundry', name: 'Giặt ủi', price: 50000 },
-    { id: 'minibar', name: 'Minibar', price: 100000 },
-    { id: 'room_breakfast', name: 'Ăn sáng phòng', price: 250000 },
-    { id: 'room_dinner', name: 'Ăn tối phòng', price: 400000 },
-    { id: 'massage_relax', name: 'Massage thư giãn', price: 500000 },
-    { id: 'massage_full', name: 'Massage toàn thân', price: 700000 }
-  ];
+  // Load available services and used services on mount
+  useEffect(() => {
+    if (room?.reservationDetailId) {
+      loadData();
+    }
+  }, [room?.reservationDetailId]);
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      // Load available services
+      const servicesResult = await getAllServices();
+      if (servicesResult.success) {
+        console.log('📥 Available services:', servicesResult.services);
+        setAvailableServices(servicesResult.services.map(s => ({
+          id: s.serviceId,
+          name: s.serviceName,
+          price: s.price
+        })));
+      }
+
+      // Load used services for this room
+      const usedServicesResult = await getServicesByReservationDetail(room.reservationDetailId);
+      if (usedServicesResult.success) {
+        console.log('📥 Used services:', usedServicesResult.services);
+        setServices(usedServicesResult.services.map(s => ({
+          serviceOrderId: s.serviceOrderId,
+          name: s.serviceName,
+          price: s.price,
+          quantity: s.quantity
+        })));
+      }
+    } catch (error) {
+      console.error('❌ Error loading services:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('vi-VN').format(amount) + ' VNĐ';
   };
 
-  const handleAddService = () => {
+  const handleAddService = async () => {
     if (!selectedService) return;
 
     const service = availableServices.find(s => s.id === selectedService);
     if (!service) return;
 
-    const existingService = services.find(s => s.name === service.name);
-    
-    if (existingService) {
-      // Update quantity if service already exists
-      setServices(services.map(s => 
-        s.name === service.name 
-          ? { ...s, quantity: s.quantity + quantity }
-          : s
-      ));
-    } else {
-      // Add new service
-      setServices([...services, { 
-        name: service.name, 
-        price: service.price, 
-        quantity: quantity 
-      }]);
+    setLoading(true);
+    try {
+      // Call API to add service order
+      const result = await addServiceOrder(room.reservationDetailId, service.id, quantity);
+      
+      if (result.success) {
+        console.log('✅ Service added successfully');
+        // Reload services list
+        await loadData();
+        alert('Thêm dịch vụ thành công!');
+      } else {
+        console.error('❌ Failed to add service:', result.message);
+        alert(result.message || 'Không thể thêm dịch vụ');
+      }
+    } catch (error) {
+      console.error('❌ Error adding service:', error);
+      alert('Có lỗi xảy ra khi thêm dịch vụ');
+    } finally {
+      setLoading(false);
     }
 
     // Reset form
@@ -51,8 +86,35 @@ function ServiceModal({ room, onClose, onSave }) {
     setQuantity(1);
   };
 
-  const handleRemoveService = (serviceName) => {
-    setServices(services.filter(s => s.name !== serviceName));
+  const handleRemoveService = async (service) => {
+    if (!service.serviceOrderId) {
+      alert('Không thể xóa dịch vụ này');
+      return;
+    }
+
+    if (!confirm(`Bạn có chắc muốn xóa dịch vụ "${service.name}"?`)) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const result = await deleteServiceOrder(service.serviceOrderId);
+      
+      if (result.success) {
+        console.log('✅ Service deleted successfully');
+        // Reload services list
+        await loadData();
+        alert('Xóa dịch vụ thành công!');
+      } else {
+        console.error('❌ Failed to delete service:', result.message);
+        alert(result.message || 'Không thể xóa dịch vụ');
+      }
+    } catch (error) {
+      console.error('❌ Error deleting service:', error);
+      alert('Có lỗi xảy ra khi xóa dịch vụ');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getTotalAmount = () => {
@@ -63,7 +125,7 @@ function ServiceModal({ room, onClose, onSave }) {
   };
 
   const handleSave = () => {
-    onSave(room.id, services);
+    // Services are saved immediately when added/removed, just close modal
     onClose();
   };
 
@@ -122,11 +184,11 @@ function ServiceModal({ room, onClose, onSave }) {
               </div>
             </div>
 
-            <button className="sm-add-btn" onClick={handleAddService}>
+            <button className="sm-add-btn" onClick={handleAddService} disabled={loading}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M3.33 8H12.67M8 3.33V12.67" stroke="white" strokeWidth="1.33" strokeLinecap="round"/>
               </svg>
-              Thêm dịch vụ
+              {loading ? 'Đang xử lý...' : 'Thêm dịch vụ'}
             </button>
           </div>
 
@@ -167,7 +229,8 @@ function ServiceModal({ room, onClose, onSave }) {
                             <td className="sm-td sm-td-action">
                               <button 
                                 className="sm-delete-btn"
-                                onClick={() => handleRemoveService(service.name)}
+                                onClick={() => handleRemoveService(service)}
+                                disabled={loading}
                               >
                                 <img src={DeleteIcon} alt="Delete" className="sm-delete-icon" />
                               </button>

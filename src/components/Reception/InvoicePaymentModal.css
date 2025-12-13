@@ -1,0 +1,336 @@
+.invoice-payment-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.invoice-payment-modal {
+  background: #F3F3E0;
+  border: 0.8px solid rgba(19, 62, 135, 0.1);
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.invoice-payment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 28px;
+  border-bottom: 1px solid #133E87;
+  background: #133E87;
+  color: white;
+}
+
+.invoice-payment-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  font-family: Arial, sans-serif;
+}
+
+.invoice-close-btn {
+  background: transparent;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  opacity: 0.7;
+}
+
+.invoice-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 1;
+}
+
+.invoice-payment-content {
+  padding: 28px;
+  overflow-y: auto;
+}
+
+/* Invoice Info Section */
+.invoice-info-section {
+  background: white;
+  border: 1px solid rgba(19, 62, 135, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.invoice-id-row,
+.invoice-date-row,
+.invoice-reservation-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.invoice-label {
+  color: #133E87;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: Arial, sans-serif;
+}
+
+.invoice-value {
+  color: #133E87;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: Arial, sans-serif;
+}
+
+.invoice-id {
+  color: #133E87;
+  font-family: Arial, sans-serif;
+}
+
+/* Breakdown Section */
+.invoice-breakdown-section {
+  margin-bottom: 24px;
+}
+
+.invoice-breakdown-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #133E87;
+  margin: 0 0 16px 0;
+  font-family: Arial, sans-serif;
+}
+
+.invoice-breakdown-list {
+  background: white;
+  border: 1px solid rgba(19, 62, 135, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.invoice-breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 15px;
+  font-family: Arial, sans-serif;
+}
+
+.invoice-breakdown-item span:first-child {
+  color: #133E87;
+}
+
+.invoice-amount {
+  color: #133E87;
+  font-weight: 600;
+  font-family: Arial, sans-serif;
+}
+
+.invoice-paid {
+  color: #608BC1;
+}
+
+.invoice-breakdown-divider {
+  height: 1px;
+  background: rgba(19, 62, 135, 0.2);
+  margin: 8px 0;
+}
+
+.invoice-total {
+  font-weight: 600;
+}
+
+.invoice-amount-total {
+  color: #133E87;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+}
+
+.invoice-due {
+  font-size: 16px;
+  font-weight: 700;
+  color: #133E87;
+}
+
+.invoice-amount-due {
+  color: #133E87;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+}
+
+/* Payment Method Section */
+.payment-method-section {
+  margin-bottom: 24px;
+}
+
+.payment-method-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #133E87;
+  margin: 0 0 16px 0;
+  font-family: Arial, sans-serif;
+}
+
+.payment-methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.payment-method-btn {
+  background: white;
+  border: 2px solid rgba(19, 62, 135, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: Arial, sans-serif;
+}
+
+.payment-method-btn:hover {
+  border-color: #133E87;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(19, 62, 135, 0.15);
+}
+
+.payment-method-btn.active {
+  border-color: #133E87;
+  background: #CBDCEB;
+  box-shadow: 0 4px 12px rgba(19, 62, 135, 0.2);
+}
+
+.payment-method-icon {
+  font-size: 36px;
+  display: none;
+}
+
+.payment-method-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #133E87;
+  font-family: Arial, sans-serif;
+}
+
+/* Action Buttons */
+.invoice-payment-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.invoice-print-btn,
+.invoice-pay-btn,
+.invoice-done-btn {
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-family: Arial, sans-serif;
+}
+
+.invoice-print-btn {
+  background: white;
+  border: 2px solid #133E87;
+  color: #133E87;
+}
+
+.invoice-print-btn:hover {
+  background: #CBDCEB;
+}
+
+.invoice-pay-btn {
+  background: #133E87;
+  color: white;
+}
+
+.invoice-pay-btn:hover:not(:disabled) {
+  background: #608BC1;
+  transform: translateY(-2px);
+}
+
+.invoice-pay-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.invoice-done-btn {
+  background: #133E87;
+  color: white;
+  grid-column: 1 / -1;
+}
+
+.invoice-done-btn:hover {
+  background: #608BC1;
+  transform: translateY(-2px);
+}
+
+/* Print Styles */
+@media print {
+  .invoice-payment-overlay {
+    background: white;
+    position: static;
+  }
+
+  .invoice-payment-modal {
+    box-shadow: none;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .invoice-close-btn,
+  .payment-method-section,
+  .invoice-payment-actions {
+    display: none !important;
+  }
+
+  .invoice-payment-header {
+    background: white;
+    color: black;
+    border-bottom: 2px solid #111827;
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .invoice-payment-modal {
+    max-width: 100%;
+    border-radius: 0;
+  }
+
+  .payment-methods {
+    grid-template-columns: 1fr;
+  }
+
+  .invoice-payment-actions {
+    grid-template-columns: 1fr;
+  }
+}

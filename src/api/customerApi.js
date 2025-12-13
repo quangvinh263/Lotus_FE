@@ -1,4 +1,5 @@
 import axios from "./axiosInstance";
+
 const API_URL = `${import.meta.env.VITE_API_BASE_URL}`;
 
 export const createPersonalInfo = async (accountId, data) => {
@@ -65,9 +66,10 @@ export const updatePersonalInfo = async (accountId, data) => {
     return {
       success: false,
       message: error.response?.data?.message || "Không thể kết nối tới máy chủ.",
-    }
-}
+    };
+  }
 };
+
 // Tạo customer mới (cho Reception tạo đơn walk-in)
 export const createCustomer = async (customerData) => {
   try {

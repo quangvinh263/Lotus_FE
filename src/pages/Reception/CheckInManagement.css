@@ -41,7 +41,7 @@
 
 .checkin-container {
   display: grid;
-  grid-template-columns: 713px 381px;
+  grid-template-columns: 750px 400px;
   gap: 27px;
 }
 
@@ -54,9 +54,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  min-height: 659px;
   max-height: 659px;
-  width: 713px;
 }
 
 .section-header h3 {
@@ -126,8 +124,6 @@
   flex-direction: column;
   gap: 40px;
   min-height: 659px;
-  max-height: 659px;
-  width: 381px;
   overflow: hidden;
 }
 
