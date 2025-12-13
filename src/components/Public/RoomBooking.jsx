@@ -58,7 +58,7 @@ const RoomBooking = ({
   return (
     <div className={`room-booking ${variant} ${isSelected ? 'selected' : ''}`}>
       <div className="room-image-container">
-        <img src={ImageRoom} alt="Superior Room" className="room-image" />
+        <img src={ImageRoomroom && room.image ? room.image : ImageRoom} alt="Superior Room" className="room-image" />
       </div>
       
       <div className="room-content">
