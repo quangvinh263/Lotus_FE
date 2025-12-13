@@ -5,7 +5,7 @@ import ImageRoom from '../../assets/images/ImageRoom.jpg';
 const RoomCard = ({ 
   title = "Superior Room", 
   description = "A cozy retreat designed for comfort and simplicity, offering a peaceful space to unwind after a day of exploration.",
-  imageUrl = ImageRoom,
+  image = ImageRoom,
   onExplore
 }) => {
   return (
@@ -24,8 +24,8 @@ const RoomCard = ({
 
       {/* Image Section */}
       <div className="roomcard-image">
-        {imageUrl ? (
-          <img src={imageUrl} alt={title} />
+        {image ? (
+          <img src={image} alt={title} />
         ) : (
           <div className="room-image-placeholder">
             <span>Room Image</span>

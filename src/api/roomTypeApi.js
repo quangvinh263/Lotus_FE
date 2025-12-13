@@ -194,3 +194,59 @@ export const getRoomOverview = async () => {
         };
     }
 };
+
+export const getRoomTypeById = async (roomTypeId) => {
+    try {
+        const response = await axios.get(`${API_URL}/RoomTypes/${roomTypeId}`);
+        if (response.status === 200 && response.data) {
+            return {
+                success: true,
+                roomType: response.data,
+            };
+        }
+        return {
+            success: false,
+            message: "Response không hợp lệ",
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.response?.data?.message || "Không thể kết nối tới máy chủ.",
+        };
+    }
+};
+
+export const getAvailableRoomTypesByFilter = async (filterData) => {
+  try {
+    // Format date to YYYY-MM-DD
+    const formatDate = (date) => {
+      if (!date) return '';
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = (`0${d.getMonth() + 1}`).slice(-2);
+      const day = (`0${d.getDate()}`).slice(-2);
+      return `${year}-${month}-${day}`;
+    };
+
+    const requestBody = {
+      typeName: "", // Mặc định rỗng để lấy tất cả
+      capacity: Math.ceil(filterData.guests / filterData.rooms), // Số khách chia đều cho số phòng
+      from: formatDate(filterData.checkInDate),
+      to: formatDate(filterData.checkOutDate)
+    };
+
+    console.log('🔍 Searching rooms with body:', requestBody);
+
+    const response = await axios.post(`${API_URL}/RoomTypes/GetTypes`, requestBody); 
+    // Lưu ý: Endpoint có thể khác tùy backend của bạn, ở đây tôi giả định là /room-types/search hoặc tương tự dựa trên context cũ
+    // Nếu endpoint là getAvailableRoomTypesByFilter thì thay thế vào.
+    
+    // Giả sử endpoint thực tế bạn đang dùng để search
+    // const response = await axiosInstance.post('/RoomTypes/available-rooms', requestBody); 
+
+    return response.data;
+  } catch (error) {
+    console.error('❌ Error searching rooms:', error);
+    throw error;
+  }
+};

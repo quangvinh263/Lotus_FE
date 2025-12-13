@@ -220,9 +220,9 @@ const SignIn = () => {
             <div className="form-fields">
               {/* Email Field */}
               <div className="signin-form-field">
-                <label className="signin-field-label">Email</label>
+                <label className="signin-field-label">Email/Username</label>
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   className="signin-text-input"
                   value={formData.email}

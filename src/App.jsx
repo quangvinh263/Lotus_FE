@@ -41,7 +41,7 @@ function App() {
         <Route path="/complete-profile" element={<FirstTimePersonalInfoPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/rooms" element={<RoomsPage />} />
-        <Route path="/room-details/:roomId" element={<RoomDetailsPage />} />
+        <Route path="/room-details/:id" element={<RoomDetailsPage />} />
         <Route path="/facilities" element={<FacilitiesPage />} />
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/booking" element={<BookingPage />} />
