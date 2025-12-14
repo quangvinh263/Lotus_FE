@@ -181,10 +181,17 @@ function GuestInfoPage() {
 
       // Step 2: Create booking with customerId
       const payload = {
-        ...bookingData,
-        guestInfo: formData,
-        customerId: customerId
-      };
+      customerId: customerId,
+      checkIn: bookingData.checkIn,
+      checkOut: bookingData.checkOut,
+      rooms: (bookingData.selectedRooms || bookingData.rooms || []).map(room => ({
+        roomTypeId: room.roomTypeId || room.id,
+        numberOfRooms: room.numberOfRooms || room.quantity || 1,
+        guestsPerRoom: room.guestsPerRoom || room.capacity || 2
+      }))
+    };
+
+    console.log('📦 Booking payload:', payload);
 
       const res = await createOnlineBooking(payload);
       if (!res.success) {
@@ -195,7 +202,13 @@ function GuestInfoPage() {
 
       // Extract reservation ID from response
       const respData = res.data || {};
-      const reservationId = respData.reservationId || respData.reservation?.id || respData.id;
+    const reservationId = 
+      respData.newReservation?.reservationId ||  // ✅ Đúng vị trí theo response
+      respData.reservationId || 
+      respData.reservation?.id || 
+      respData.id;
+
+    console.log('🔍 Extracted reservationId:', reservationId);
 
       if (!reservationId) {
         toast.error('Booking created but reservation ID not found');

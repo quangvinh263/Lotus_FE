@@ -246,7 +246,6 @@ export const createOnlineBooking = async (bookingData) => {
             message: "Response không hợp lệ",
         };
     } catch (error) {
-        console.error('Error creating online booking:', error);
         return {
             success: false,
             message: error.response?.data?.message || error.response?.data?.title || "Không thể tạo đơn đặt phòng.",
