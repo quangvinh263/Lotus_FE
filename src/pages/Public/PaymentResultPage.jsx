@@ -14,7 +14,7 @@ function PaymentResultPage() {
     // Parse query params Zalopay may send back (adjust names if your backend uses others)
     const qp = new URLSearchParams(location.search);
     const name = qp.get('buyer_name') || qp.get('fullName') || qp.get('customerName') || '';
-    const ref = qp.get('orderId') || qp.get('transactionId') || qp.get('zptranid') || qp.get('apptransid') || qp.get('reference') || '';
+    const ref = qp.get('reservationId') || qp.get('orderId') || qp.get('transactionId') || qp.get('zptranid') || qp.get('apptransid') || qp.get('reference') || '';
     setGuestName(name);
     setBookingRef(ref);
   }, [location.search]);

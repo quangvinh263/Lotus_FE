@@ -3,9 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import NavBar from '../../components//Public/NavBar';
 import '../../styles/GuestInfoPage.css';
 import { AuthContext } from '../../context/AuthContext';
-import { getPersonalInfo } from '../../api/customerApi';
-import { createBooking } from '../../api/bookingApi';
-import { processZaloPayPayment } from '../../api/paymentApi';
+import { getPersonalInfo, createCustomer, findCustomerByPhone } from '../../api/customerApi';
+import { createOnlineBooking } from '../../api/bookingApi';
+import { processDepositZaloPayPayment } from '../../api/paymentApi';
 import { toast } from 'react-toastify';
 
 function GuestInfoPage() {
@@ -144,50 +144,89 @@ function GuestInfoPage() {
 
     setIsProcessing(true);
     try {
+      // Step 1: Find or create customer
+      let customerId = null;
+
+      // Try to find existing customer by phone
+      const findRes = await findCustomerByPhone(formData.phone);
+      if (findRes.success && findRes.customerId) {
+        customerId = findRes.customerId;
+        console.log('✅ Found existing customer:', customerId);
+      } else {
+        // Create new customer
+        const customerData = {
+          fullName: formData.fullName,
+          phoneNumber: formData.phone,
+          address: formData.address,
+          gender: formData.gender === 'male' ? true : formData.gender === 'female' ? false : null,
+          dateOfBirth: null // Optional, can be added to form later
+        };
+
+        const createRes = await createCustomer(customerData);
+        if (!createRes.success) {
+          toast.error(createRes.message || 'Failed to create customer');
+          setIsProcessing(false);
+          return;
+        }
+
+        customerId = createRes.customerId;
+        console.log('✅ Created new customer:', customerId);
+      }
+
+      if (!customerId) {
+        toast.error('Failed to get customer ID');
+        setIsProcessing(false);
+        return;
+      }
+
+      // Step 2: Create booking with customerId
       const payload = {
         ...bookingData,
         guestInfo: formData,
-        customerId: auth?.accountId || bookingData.customerId || null
+        customerId: customerId
       };
 
-      const res = await createBooking(payload);
+      const res = await createOnlineBooking(payload);
       if (!res.success) {
         toast.error(res.message || 'Failed to create booking');
         setIsProcessing(false);
         return;
       }
 
-      // Try to find an invoice or reservation id from response to request ZaloPay
+      // Extract reservation ID from response
       const respData = res.data || {};
-      const invoiceId = respData.invoiceId || respData.invoice?.id || respData.payment?.invoiceId || respData.reservationId || respData.reservation?.id || respData.id;
+      const reservationId = respData.reservationId || respData.reservation?.id || respData.id;
 
-      if (!invoiceId) {
-        // If backend doesn't return invoice id, but returns a reservation id, try using that
-        toast.info('Booking created. Redirecting to booking list...');
-        navigate('/booking');
-        return;
-      }
-
-      const payRes = await processZaloPayPayment(invoiceId);
-      if (!payRes.success) {
-        toast.error(payRes.message || 'Failed to create ZaloPay link');
+      if (!reservationId) {
+        toast.error('Booking created but reservation ID not found');
         setIsProcessing(false);
         return;
       }
 
-      // Expect backend to return a URL to redirect user to ZaloPay
-      const paymentUrl = payRes.data?.paymentUrl || payRes.data?.url || payRes.data?.redirectUrl || payRes.data?.payment_link;
+      // Calculate deposit amount (30% of total)
+      const depositAmount = depositNumeric;
+
+      // Call ZaloPay deposit payment API
+      const payRes = await processDepositZaloPayPayment(reservationId, depositAmount);
+      if (!payRes.success) {
+        toast.error(payRes.message || 'Failed to create ZaloPay deposit link');
+        setIsProcessing(false);
+        return;
+      }
+
+      // Redirect to ZaloPay payment URL
+      const paymentUrl = payRes.paymentUrl || payRes.data?.paymentUrl;
       if (paymentUrl) {
+        console.log('✅ Redirecting to ZaloPay:', paymentUrl);
         window.location.href = paymentUrl;
         return;
       }
 
-      toast.success('Payment initiated. Please follow instructions.');
-      navigate('/booking');
+      toast.error('Payment URL not found in response');
+      setIsProcessing(false);
     } catch (err) {
       console.error(err);
       toast.error('An error occurred while creating booking/payment');
-    } finally {
       setIsProcessing(false);
     }
   };
@@ -206,7 +245,8 @@ function GuestInfoPage() {
       // Remove thousand separators (dots and commas not at the end)
       // Keep only the last dot or comma as decimal point
       s = s.replace(/[.,](?=\d{3})/g, ''); // Remove dots/commas followed by exactly 3 digits (thousand sep)
-      s = s.replace(/,/g, '.'); // Convert remaining comma to dot (decimal point)
+      s = s.repla
+      ce(/,/g, '.'); // Convert remaining comma to dot (decimal point)
       const n = Number(s);
       return Number.isFinite(n) ? n : 0;
     } catch (e) {

@@ -168,6 +168,7 @@ const SignIn = () => {
         result.accountId = result.accountID || result.accountId;
         result.role = userRole;
         login(result);
+        console.log("Logged in user:", result);
 
         const redirectByRole = (role, res) => {
           const r = (role || '').toString().toLowerCase();

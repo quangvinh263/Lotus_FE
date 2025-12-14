@@ -99,3 +99,54 @@ export const processZaloPayPayment = async (invoiceId) => {
         };
     }
 };
+
+// ZaloPay deposit payment (cọc)
+export const processDepositZaloPayPayment = async (reservationId, amount) => {
+    try {
+        console.log('📤 Processing ZaloPay deposit payment:', { reservationId, amount });
+        
+        const requestBody = {
+            reservationId: reservationId,
+            amount: amount
+        };
+        
+        const response = await axios.post(`${API_URL}/Payments/deposits/zalopay`, requestBody);
+        
+        console.log('✅ ZaloPay deposit payment response:', response.data);
+        
+        if (response.status === 200 && response.data?.isSuccess) {
+            return {
+                success: true,
+                data: response.data,
+                paymentUrl: response.data.paymentUrl,
+                paymentId: response.data.paymentId,
+                message: response.data?.message || "Tạo link thanh toán cọc ZaloPay thành công"
+            };
+        }
+        
+        return {
+            success: false,
+            message: response.data?.message || "Response không hợp lệ",
+        };
+    } catch (error) {
+        console.error('❌ ZaloPay deposit payment error:', error);
+        console.error('Error response:', error.response?.data);
+        
+        let errorMessage = "Không thể tạo link thanh toán cọc ZaloPay.";
+        
+        if (error.response?.data) {
+            if (typeof error.response.data === 'string') {
+                errorMessage = error.response.data;
+            } else if (error.response.data.message) {
+                errorMessage = error.response.data.message;
+            } else if (error.response.data.title) {
+                errorMessage = error.response.data.title;
+            }
+        }
+        
+        return {
+            success: false,
+            message: errorMessage,
+        };
+    }
+};
