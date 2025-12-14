@@ -75,7 +75,7 @@ export const createCustomer = async (customerData) => {
   try {
     const requestData = {
       fullName: customerData.fullName,
-      phone: customerData.phoneNumber,
+      phone: customerData.phone,
       address: customerData.address || '',
       gender: customerData.gender,
       dateOfBirth: customerData.dateOfBirth ? 
