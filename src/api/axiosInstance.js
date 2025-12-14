@@ -66,7 +66,21 @@ api.interceptors.request.use(async (config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    // Danh sách các trang public không cần redirect về signin
+    const publicPaths = ['/guest-info', '/payment-result', '/rooms', '/room-details', '/facilities', '/about', '/'];
+    const currentPath = window.location.pathname;
+    const isPublicPage = publicPaths.some(path => currentPath.startsWith(path));
+
+    console.log('❌ API Error:', { 
+      status: error.response?.status, 
+      path: currentPath,
+      isPublicPage,
+      url: error.config?.url 
+    });
+
+    // Chỉ redirect về signin nếu KHÔNG phải trang public
+    if ((error.response?.status === 401 || error.response?.status === 403) && !isPublicPage) {
+      console.log('🔒 Unauthorized access, redirecting to signin');
       localStorage.clear();
       window.location.href = "/signin";
     }
