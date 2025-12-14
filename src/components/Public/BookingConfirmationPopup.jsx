@@ -53,7 +53,7 @@ function BookingConfirmationPopup({ isOpen, onClose, guestName, bookingReference
 
         {/* Message */}
         <p className="popup-message">
-          Thank you for your reservation, {guestName || 'Guest'}
+          Thank you for your reservation
         </p>
 
         {/* Booking Reference */}

@@ -3,7 +3,7 @@ import Sidebar from '../../components/Reception/Sidebar';
 import TopBar from '../../components/Reception/TopBar';
 import CreateBookingForm from '../../components/Reception/CreateBookingForm';
 import BookingSummaryCard from '../../components/Reception/BookingSummaryCard';
-import '../../styles/CreateBookingPage.css';
+import './CreateBookingPage.css';
 
 function CreateBookingPage() {
   const [selectedRooms, setSelectedRooms] = useState([]);

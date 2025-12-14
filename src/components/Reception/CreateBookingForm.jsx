@@ -13,7 +13,7 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
   // Thông tin khách hàng đại diện
   const [guestInfo, setGuestInfo] = useState({
     fullName: '',
-    phoneNumber: '',
+    phone: '',
     address: '',
     gender: 'male',
     dateOfBirth: ''
@@ -112,7 +112,7 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
   };
 
   const handleSubmit = async () => {
-    if (!guestInfo.fullName || !guestInfo.phoneNumber) {
+    if (!guestInfo.fullName || !guestInfo.phone) {
       alert('Vui lòng điền đầy đủ thông tin bắt buộc (Họ và tên, Số điện thoại)');
       return;
     }
@@ -135,8 +135,8 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
 
     try {
       // Bước 1: Tìm hoặc tạo customer
-      console.log('Bước 1: Tìm khách hàng theo SĐT:', guestInfo.phoneNumber);
-      let customerResult = await findCustomerByPhone(guestInfo.phoneNumber);
+      console.log('Bước 1: Tìm khách hàng theo SĐT:', guestInfo.phone);
+      let customerResult = await findCustomerByPhone(guestInfo.phone);
       
       let customerId;
       let isNewCustomer = false; // Track if we created a new customer
@@ -147,6 +147,7 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
       } else {
         // Không tìm thấy -> tạo mới
         console.log('Không tìm thấy → Tạo khách hàng mới');
+        
         const createResult = await createCustomer(guestInfo);
         
         if (!createResult.success) {
@@ -179,7 +180,7 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
         // Reset form after successful creation
         setGuestInfo({
           fullName: '',
-          phoneNumber: '',
+          phone: '',
           address: '',
           gender: 'male',
           dateOfBirth: ''
@@ -233,8 +234,8 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
               <input
                 type="tel"
                 className="cbf-input"
-                value={guestInfo.phoneNumber}
-                onChange={(e) => setGuestInfo({...guestInfo, phoneNumber: e.target.value})}
+                value={guestInfo.phone}
+                onChange={(e) => setGuestInfo({...guestInfo, phone: e.target.value})}
                 placeholder="Nhập số điện thoại"
               />
             </div>
