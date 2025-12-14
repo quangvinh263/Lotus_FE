@@ -1,19 +1,76 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import NavBar from '../../components//Public/NavBar';
 import '../../styles/GuestInfoPage.css';
+import { AuthContext } from '../../context/AuthContext';
+import { getPersonalInfo } from '../../api/customerApi';
 
 function GuestInfoPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const bookingData = location.state || {};
 
+  // Build a friendly room summary string (handles multiple rooms)
+  const roomSummary = (() => {
+    const rooms = bookingData.rooms;
+    if (!rooms || !Array.isArray(rooms) || rooms.length === 0) {
+      return bookingData.roomType || 'Superior Room';
+    }
+
+    // Count by room name (selectedRoomsData contains multiple entries per quantity)
+    const counts = {};
+    rooms.forEach(r => {
+      const name = r?.name || r?.roomType || 'Room';
+      counts[name] = (counts[name] || 0) + 1;
+    });
+
+    return Object.entries(counts)
+      .map(([name, cnt]) => (cnt > 1 ? `${name} x${cnt}` : name))
+      .join(', ');
+  })();
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     phone: '',
-    specialRequests: ''
+    gender: '',
+    address: ''
   });
+
+  const { auth } = useContext(AuthContext);
+
+  // If user is logged in, try to fetch their personal info and prefill the form
+  useEffect(() => {
+    const loadPersonalInfo = async () => {
+      try {
+        if (bookingData?.guestInfo) {
+          // If bookingData already contains guestInfo (from previous step), use it
+          setFormData(prev => ({ ...prev, ...bookingData.guestInfo }));
+          return;
+        }
+
+        const accountId = auth?.accountId;
+        if (!accountId) return;
+
+        const res = await getPersonalInfo(accountId);
+        if (res.success && res.data) {
+          const customer = res.data;
+          setFormData(prev => ({
+            ...prev,
+            fullName: customer.fullName || customer.name || prev.fullName,
+            email: customer.email || prev.email,
+            phone: customer.phoneNumber || customer.phone || prev.phone,
+            gender: customer.gender || prev.gender,
+            address: customer.address || prev.address
+          }));
+        }
+      } catch (err) {
+        // ignore
+      }
+    };
+
+    loadPersonalInfo();
+  }, [auth, bookingData]);
 
   const [errors, setErrors] = useState({});
 
@@ -51,6 +108,15 @@ function GuestInfoPage() {
       newErrors.phone = 'Phone number is invalid';
     }
 
+    // Require gender and address
+    if (!formData.gender || !['male', 'female', 'other'].includes(formData.gender)) {
+      newErrors.gender = 'Please select a gender';
+    }
+
+    if (!formData.address || !formData.address.trim()) {
+      newErrors.address = 'Address is required';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -70,6 +136,37 @@ function GuestInfoPage() {
   const handleBack = () => {
     navigate(-1);
   };
+
+  // Compute numeric total and deposit (30%) for display
+  const parseNumber = (val) => {
+    if (typeof val === 'number') return val;
+    if (!val) return 0;
+    try {
+      const s = String(val).replace(/[^0-9.-]+/g, '');
+      const n = Number(s);
+      return Number.isFinite(n) ? n : 0;
+    } catch (e) {
+      return 0;
+    }
+  };
+
+  const totalNumeric = parseNumber(bookingData.total);
+  const totalFromRooms = (() => {
+    const rooms = bookingData.rooms || [];
+    const nights = bookingData.nights || 1;
+    let sum = 0;
+    rooms.forEach(r => {
+      const price = parseNumber(r?.rawPrice ?? r?.price ?? r?.unitPrice ?? r?.unitRaw);
+      if (price && Number.isFinite(price)) {
+        sum += price * nights;
+      }
+    });
+    return sum;
+  })();
+
+  const finalTotal = totalNumeric > 0 ? totalNumeric : (totalFromRooms > 0 ? totalFromRooms : 0);
+  const depositNumeric = Math.round(finalTotal * 0.3);
+  const formatVND = (num) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num);
 
   return (
     <div className="guest-info-page">
@@ -107,7 +204,7 @@ function GuestInfoPage() {
 
               <div className="guest-form-row">
                 <div className="guest-form-group">
-                  <label htmlFor="email">Email Address *</label>
+                  <label htmlFor="email">Email Address</label>
                   <input
                     type="email"
                     id="email"
@@ -136,15 +233,34 @@ function GuestInfoPage() {
               </div>
 
               <div className="guest-form-group">
-                <label htmlFor="specialRequests">Special Requests (Optional)</label>
-                <textarea
-                  id="specialRequests"
-                  name="specialRequests"
-                  value={formData.specialRequests}
+                <label htmlFor="gender">Gender *</label>
+                <select
+                  id="gender"
+                  name="gender"
+                  value={formData.gender}
                   onChange={handleChange}
-                  placeholder="Any special requests for your stay?"
-                  rows="5"
+                  className={errors.gender ? 'error' : ''}
+                >
+                  <option value="">-- Select gender --</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+                {errors.gender && <span className="guest-error-message">{errors.gender}</span>}
+              </div>
+
+              <div className="guest-form-group">
+                <label htmlFor="address">Address *</label>
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  placeholder="Enter address"
+                  className={errors.address ? 'error' : ''}
                 />
+                {errors.address && <span className="guest-error-message">{errors.address}</span>}
               </div>
             </div>
 
@@ -161,24 +277,67 @@ function GuestInfoPage() {
             <h2>Booking Summary</h2>
             <div className="guest-summary-details">
               <div className="guest-summary-item">
-                <span className="label">Room:</span>
-                <span className="value">{bookingData.roomType || 'Superior Room'}</span>
-              </div>
-              <div className="guest-summary-item">
-                <span className="label">Check-in:</span>
+                <span className="label">Check-in</span>
                 <span className="value">{bookingData.checkIn || 'Sat, 18 Oct 2025'}</span>
               </div>
               <div className="guest-summary-item">
-                <span className="label">Check-out:</span>
+                <span className="label">Check-out</span>
                 <span className="value">{bookingData.checkOut || 'Sun, 19 Oct 2025'}</span>
               </div>
               <div className="guest-summary-item">
-                <span className="label">Guests:</span>
+                <span className="label">Guests</span>
                 <span className="value">{bookingData.guests || '2 adults'}</span>
               </div>
+
+              {/* Room list grouped by name with quantity, nights and subtotal */}
+              <div style={{ marginTop: 12, marginBottom: 8, fontWeight: 700, color: '#133E87' }}>Rooms</div>
+              {(() => {
+                const rooms = bookingData.rooms || [];
+                if (rooms.length === 0) {
+                  return (
+                    <div className="guest-summary-item">
+                      <span className="label">Room</span>
+                      <span className="value">{bookingData.roomType || 'Superior Room'}</span>
+                    </div>
+                  );
+                }
+
+                // group by room name
+                const groups = {};
+                rooms.forEach(r => {
+                  const name = r?.name || r?.roomType || 'Room';
+                  if (!groups[name]) {
+                    groups[name] = { name, qty: 0, unitRaw: r?.rawPrice ?? null, unitFormatted: r?.price ?? '' };
+                  }
+                  groups[name].qty += 1;
+                });
+
+                const nights = bookingData.nights || 1;
+
+                return Object.values(groups).map(g => {
+                  const subtotal = (g.unitRaw || 0) * nights * g.qty;
+                  const subtotalFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(subtotal);
+                  const unitPriceFormatted = g.unitFormatted || (g.unitRaw ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(g.unitRaw) : '');
+                  return (
+                    <div key={g.name} className="guest-summary-item" style={{ alignItems: 'center' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span className="label" style={{ fontWeight: 700 }}>{g.name}{g.qty > 1 ? ` x${g.qty}` : ''}</span>
+                        <span style={{ fontSize: 13, color: '#608BC1' }}>{nights} night{nights > 1 ? 's' : ''} • {unitPriceFormatted} / night</span>
+                      </div>
+                      <span className="value">{subtotalFormatted}</span>
+                    </div>
+                  );
+                });
+              })()}
+
+              <div style={{ height: 8 }}></div>
               <div className="guest-summary-item">
-                <span className="label">Total:</span>
-                <span className="value">{bookingData.total || 'VND 5,000,000'}</span>
+                <span className="label">Total</span>
+                <span className="value">{finalTotal > 0 ? formatVND(finalTotal) : (bookingData.total || 'VND 5,000,000')}</span>
+              </div>
+              <div className="guest-summary-item">
+                <span className="label">Deposit (30%)</span>
+                <span className="value">{finalTotal > 0 ? formatVND(depositNumeric) : (bookingData.total ? bookingData.total : 'VND 5,000,000')}</span>
               </div>
             </div>
           </div>

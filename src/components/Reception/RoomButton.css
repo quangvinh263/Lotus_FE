@@ -41,12 +41,12 @@
   gap: 8px;
 }
 
-.room-icon {
+.room-button-icon {
   width: 16px;
   height: 16px;
 }
 
-.room-number {
+.room-button-number {
   font-family: Arial;
   font-size: 16px;
   font-weight: 400;
@@ -68,7 +68,7 @@
   white-space: nowrap;
 }
 
-.room-price {
+.room-button-price {
   font-family: Arial;
   font-size: 14px;
   font-weight: 400;
