@@ -111,9 +111,8 @@ function GuestInfoPage() {
       newErrors.fullName = 'Full name is required';
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email address is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    // Email is optional, but if provided, must be valid
+    if (formData.email.trim() && !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email address is invalid';
     }
 
