@@ -56,14 +56,6 @@ const Sidebar = ({ variant = 'default' }) => {
             </button>
           ))}
         </nav>
-        <div className="sidebar-footer">
-          <button
-            className="sidebar-signout"
-            onClick={() => { logout(); navigate('/signin'); }}
-          >
-            Đăng xuất
-          </button>
-        </div>
       </div>
     </aside>
   );

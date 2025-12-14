@@ -4,6 +4,9 @@ import NavBar from '../../components//Public/NavBar';
 import '../../styles/GuestInfoPage.css';
 import { AuthContext } from '../../context/AuthContext';
 import { getPersonalInfo } from '../../api/customerApi';
+import { createBooking } from '../../api/bookingApi';
+import { processZaloPayPayment } from '../../api/paymentApi';
+import { toast } from 'react-toastify';
 
 function GuestInfoPage() {
   const navigate = useNavigate();
@@ -121,15 +124,59 @@ function GuestInfoPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      navigate('/payment', {
-        state: {
-          ...bookingData,
-          guestInfo: formData
-        }
-      });
+    if (!validateForm()) return;
+
+    setIsProcessing(true);
+    try {
+      const payload = {
+        ...bookingData,
+        guestInfo: formData,
+        customerId: auth?.accountId || bookingData.customerId || null
+      };
+
+      const res = await createBooking(payload);
+      if (!res.success) {
+        toast.error(res.message || 'Failed to create booking');
+        setIsProcessing(false);
+        return;
+      }
+
+      // Try to find an invoice or reservation id from response to request ZaloPay
+      const respData = res.data || {};
+      const invoiceId = respData.invoiceId || respData.invoice?.id || respData.payment?.invoiceId || respData.reservationId || respData.reservation?.id || respData.id;
+
+      if (!invoiceId) {
+        // If backend doesn't return invoice id, but returns a reservation id, try using that
+        toast.info('Booking created. Redirecting to booking list...');
+        navigate('/booking');
+        return;
+      }
+
+      const payRes = await processZaloPayPayment(invoiceId);
+      if (!payRes.success) {
+        toast.error(payRes.message || 'Failed to create ZaloPay link');
+        setIsProcessing(false);
+        return;
+      }
+
+      // Expect backend to return a URL to redirect user to ZaloPay
+      const paymentUrl = payRes.data?.paymentUrl || payRes.data?.url || payRes.data?.redirectUrl || payRes.data?.payment_link;
+      if (paymentUrl) {
+        window.location.href = paymentUrl;
+        return;
+      }
+
+      toast.success('Payment initiated. Please follow instructions.');
+      navigate('/booking');
+    } catch (err) {
+      console.error(err);
+      toast.error('An error occurred while creating booking/payment');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -268,8 +315,8 @@ function GuestInfoPage() {
               <button type="button" className="guest-btn-back" onClick={handleBack}>
                 Back
               </button>
-              <button type="submit" className="guest-btn-continue">
-                Continue to Payment
+              <button type="submit" className="guest-btn-continue" disabled={isProcessing}>
+                {isProcessing ? 'Processing...' : 'Continue to Payment'}
               </button>
             </div>
           </form>
