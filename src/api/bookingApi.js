@@ -171,7 +171,7 @@ export const createBooking = async (bookingData) => {
                 roomCount: room.numberOfRooms,
                 peopleNumber: room.guestsPerRoom
             })),
-            requireDeposit: false
+            requiresDeposit: false
         };
 
         console.log('Creating booking with data:', requestData);
@@ -224,7 +224,7 @@ export const createOnlineBooking = async (bookingData) => {
                 roomCount: room.numberOfRooms,
                 peopleNumber: room.guestsPerRoom
             })),
-            requireDeposit: true
+            requiresDeposit: true
         };
 
         console.log('Creating online booking with data:', requestData);
