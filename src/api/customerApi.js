@@ -145,3 +145,29 @@ export const findCustomerByPhone = async (phoneNumber) => {
     };
   }
 };
+
+// Xóa customer (dùng để rollback khi tạo booking thất bại)
+export const deleteCustomer = async (customerId) => {
+  try {
+    console.log('Deleting customer:', customerId);
+    const response = await axios.delete(`${API_URL}/Customer/${customerId}`);
+    
+    if (response.status === 200 || response.status === 204) {
+      return {
+        success: true,
+        message: "Đã xóa khách hàng thành công"
+      };
+    }
+    
+    return {
+      success: false,
+      message: "Response không hợp lệ",
+    };
+  } catch (error) {
+    console.error('Error deleting customer:', error);
+    return {
+      success: false,
+      message: error.response?.data?.message || error.response?.data?.title || "Không thể xóa khách hàng.",
+    };
+  }
+};

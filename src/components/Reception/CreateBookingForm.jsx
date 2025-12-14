@@ -5,7 +5,7 @@ import RoomTypeDropdown from './RoomTypeDropdown';
 import DateTimePicker from './DateTimePicker';
 import GuestInfoForm from './GuestInfoForm';
 import { createBooking } from '../../api/bookingApi';
-import { createCustomer, findCustomerByPhone } from '../../api/customerApi';
+import { createCustomer, findCustomerByPhone, deleteCustomer } from '../../api/customerApi';
 import { getAllRoomTypes } from '../../api/roomTypeApi';
 import './CreateBookingForm.css';
 
@@ -139,12 +139,14 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
       let customerResult = await findCustomerByPhone(guestInfo.phoneNumber);
       
       let customerId;
+      let isNewCustomer = false; // Track if we created a new customer
+      
       if (customerResult.success) {
         console.log('Tìm thấy khách hàng cũ, customerID:', customerResult.customerId);
         customerId = customerResult.customerId;
       } else {
         // Không tìm thấy -> tạo mới
-        console.log('Không tìm thấy -> Tạo khách hàng mới');
+        console.log('Không tìm thấy → Tạo khách hàng mới');
         const createResult = await createCustomer(guestInfo);
         
         if (!createResult.success) {
@@ -154,6 +156,7 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
         
         console.log('Tạo khách hàng thành công, customerID:', createResult.customerId);
         customerId = createResult.customerId;
+        isNewCustomer = true; // Mark that we created this customer
       }
 
       // Bước 2: Tạo reservation với customerID
@@ -186,6 +189,17 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
         // Clear selected rooms (handled by parent component)
         selectedRooms.forEach((_, index) => onRemoveRoom(0));
       } else {
+        // ⚠️ ROLLBACK: If we created a new customer but booking failed, delete the customer
+        if (isNewCustomer && customerId) {
+          console.warn('⚠️ Booking failed, rolling back new customer:', customerId);
+          const rollbackResult = await deleteCustomer(customerId);
+          if (rollbackResult.success) {
+            console.log('✅ Rollback successful: Customer deleted');
+          } else {
+            console.error('❌ Rollback failed:', rollbackResult.message);
+          }
+        }
+        
         alert(`Lỗi tạo đơn: ${result.message}`);
       }
     } catch (error) {

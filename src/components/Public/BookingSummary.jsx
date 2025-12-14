@@ -16,15 +16,14 @@ const BookingSummary = ({
     selectedRooms: []
   },
   onBook = () => {},
-  onDelete = () => {},
   onDeleteRoom = () => {}
 }) => {
 
   const renderDefaultVariant = () => (
     <>
       {/* Price Section */}
-      <div className="price-section">
-        <div className="price-text">{bookingData.totalPrice}</div>
+      <div className="order-section">
+        <div className="order-text">Booking Summary</div>
       </div>
 
       {/* Booking Details Section */}
