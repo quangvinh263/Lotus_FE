@@ -82,3 +82,17 @@
   line-height: 1.43em;
   color: #133E87;
 }
+
+.topbar-signout {
+  margin-left: 12px;
+  background: transparent;
+  border: none;
+  color: #133E87;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.topbar-signout:hover {
+  text-decoration: underline;
+}

@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AdminHeader.css';
 import SearchIcon from '../../assets/icons/SearchIcon.svg';
 import PersonIcon from '../../assets/icons/PersonIcon.svg';
+import { AuthContext } from '../../context/AuthContext';
 
 const AdminHeader = () => {
+  const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+
+  const handleSignOut = () => {
+    logout();
+    navigate('/signin');
+  };
+
   return (
     <div className="admin-header">
       <div className="admin-header-container">
@@ -31,6 +41,7 @@ const AdminHeader = () => {
             </div>
             <span className="admin-user-role">Quản trị viên</span>
           </div>
+          <button className="admin-signout-button" onClick={handleSignOut}>Đăng xuất</button>
         </div>
       </div>
     </div>
