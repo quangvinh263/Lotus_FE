@@ -266,7 +266,7 @@ export const resetPassword = async (data) => {
 export const signOut = async (refreshToken) => {
   try {
     if (!refreshToken) return { success: false, message: 'No refresh token provided' };
-    const response = await axios.post(`${API_URL}/Auth/signout/${encodeURIComponent(refreshToken)}`);
+    const response = await axios.post(`${API_URL}/Auth/signout?refreshTokenValue=${encodeURIComponent(refreshToken)}`);
     if (response.status === 200 || response.data.success) {
       return { success: true, message: response.data?.message || 'Signed out' };
     }
