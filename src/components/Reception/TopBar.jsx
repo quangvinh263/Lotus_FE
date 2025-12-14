@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './TopBar.css';
 import Logo from '../../assets/images/Logo.png';
 import PersonIcon from '../../assets/icons/PersonIcon.svg';
+import { AuthContext } from '../../context/AuthContext';
 
 const TopBar = () => {
+  const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+
+  const handleSignOut = () => {
+    logout();
+    navigate('/signin');
+  };
+
   return (
     <header className="reception-topbar">
       <div className="topbar-container">
@@ -26,6 +36,7 @@ const TopBar = () => {
             </div>
             <span className="user-name">Nhân viên</span>
           </div>
+          <button className="topbar-signout" onClick={handleSignOut}>Đăng xuất</button>
         </div>
       </div>
     </header>

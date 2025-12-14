@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import { signOut as apiSignOut } from '../api/authApi';
 
 export const AuthContext = createContext();
 
@@ -23,7 +24,13 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    // Try to notify backend (fire-and-forget). Don't block UI.
+    if (refreshToken) {
+      apiSignOut(refreshToken).catch(() => { /* ignore errors */ });
+    }
+
     localStorage.clear();
     setAuth({ token: null, refreshToken: null, accountId: null, role: null });
   };
