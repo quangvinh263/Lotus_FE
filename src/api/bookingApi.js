@@ -171,7 +171,7 @@ export const createBooking = async (bookingData) => {
                 roomCount: room.numberOfRooms,
                 peopleNumber: room.guestsPerRoom
             })),
-            requireDeposit: false
+            requiresDeposit: false
         };
 
         console.log('Creating booking with data:', requestData);
@@ -194,6 +194,58 @@ export const createBooking = async (bookingData) => {
         };
     } catch (error) {
         console.error('Error creating booking:', error);
+        return {
+            success: false,
+            message: error.response?.data?.message || error.response?.data?.title || "Không thể tạo đơn đặt phòng.",
+        };
+    }
+}
+
+// Create online booking (requires deposit payment)
+export const createOnlineBooking = async (bookingData) => {
+    try {
+        // Helper function to format date without timezone issues
+        const formatDateYYYYMMDD = (date) => {
+            if (!date) return '';
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        // Map frontend data to backend format
+        const requestData = {
+            customerID: bookingData.customerId,
+            checkInDate: formatDateYYYYMMDD(bookingData.checkIn),
+            checkOutDate: formatDateYYYYMMDD(bookingData.checkOut),
+            details: bookingData.rooms.map(room => ({
+                typeID: room.roomTypeId,
+                roomCount: room.numberOfRooms,
+                peopleNumber: room.guestsPerRoom
+            })),
+            requiresDeposit: true
+        };
+
+        console.log('Creating online booking with data:', requestData);
+
+        const response = await axios.post(`${API_URL}/Reservations/create`, requestData);
+        
+        console.log('Create Online Booking Response:', response.data);
+        
+        if (response.status === 200 || response.status === 201) {
+            return {
+                success: true,
+                data: response.data,
+                message: "Tạo đơn đặt phòng thành công!"
+            };
+        }
+        
+        return {
+            success: false,
+            message: "Response không hợp lệ",
+        };
+    } catch (error) {
         return {
             success: false,
             message: error.response?.data?.message || error.response?.data?.title || "Không thể tạo đơn đặt phòng.",

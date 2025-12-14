@@ -64,23 +64,22 @@ const SignIn = () => {
     if (result?.success) {
       toast.success(result.message);
       const decodedToken = jwtDecode(result.token);
-      const userRole = decodedToken.role;
-      
+      const userRole = decodedToken?.role || result.role;
+
       result.accountId = result.accountID || result.accountId;
       console.log("User id from token:", result.accountId);
       result.role = userRole; // Thêm role vào đối tượng result
       login(result);
-      // Save user data to context or state
-      if (userRole == 'Receptionist') {
-        navigate('/about');
-        return;
-      }
-      else if (result.isNewUser) {
-        navigate('/complete-profile');
-      }
-      else{
-      navigate('/profile');
-      }
+
+      const redirectByRole = (role, res) => {
+        const r = (role || '').toString().toLowerCase();
+        if (r.includes('admin')) return '/admin/dashboard';
+        if (r.includes('reception')) return '/reception/dashboard';
+        if (res?.isNewUser) return '/complete-profile';
+        return '/profile';
+      };
+
+      navigate(redirectByRole(userRole, result));
     } else {
       toast.error(result.message);
       // Handle login error
@@ -108,21 +107,21 @@ const SignIn = () => {
       if (result?.success) {
         toast.success(result.message);
         const decodedToken = jwtDecode(result.token);
-        const userRole = decodedToken.role;
+        const userRole = decodedToken?.role || result.role;
         console.log("User role from token:", userRole);
         result.accountId = result.accountID || result.accountId;
         result.role = userRole;
         login(result);
 
-        if (userRole === 'Receptionist') {
-          navigate('/about');
-        }
-         else if (result.isNewUser) {
-          navigate('/complete-profile');
-        }
-         else {
-          navigate('/profile');
-        }
+        const redirectByRole = (role, res) => {
+          const r = (role || '').toString().toLowerCase();
+          if (r.includes('admin')) return '/admin/dashboard';
+          if (r.includes('reception')) return '/reception/dashboard';
+          if (res?.isNewUser) return '/complete-profile';
+          return '/profile';
+        };
+
+        navigate(redirectByRole(userRole, result));
       } else {
         toast.error(result.message);
         console.error('❌ Login failed:', result.message);
@@ -164,19 +163,22 @@ const SignIn = () => {
       if (result?.success) {
         toast.success(result.message);
         const decodedToken = jwtDecode(result.token);
-        const userRole = decodedToken.role;
+        const userRole = decodedToken?.role || result.role;
         console.log("User role from token:", userRole);
         result.accountId = result.accountID || result.accountId;
         result.role = userRole;
         login(result);
-        if (userRole === 'Receptionist') {
-          navigate('/about');
-        } else if (result.isNewUser) {
-          navigate('/complete-profile');
-        }
-         else {
-          navigate('/profile');
-        }
+        console.log("Logged in user:", result);
+
+        const redirectByRole = (role, res) => {
+          const r = (role || '').toString().toLowerCase();
+          if (r.includes('admin')) return '/admin/dashboard';
+          if (r.includes('reception')) return '/reception/dashboard';
+          if (res?.isNewUser) return '/complete-profile';
+          return '/profile';
+        };
+
+        navigate(redirectByRole(userRole, result));
       } else {
         toast.error(result.message);
         console.error('❌ Login failed:', result.message);

@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 import './Filter.css';
 import CalendarIcon from '../../assets/icons/CalendarIcon.png';
 import PersonIcon from '../../assets/icons/PersonIcon.png';
@@ -6,14 +6,24 @@ import DatePicker from './DatePicker';
 import PickerPanel from './PickerPanel';
 
 const Filter = forwardRef(({ 
-  onFilterChange = () => {}
+  onFilterChange = () => {},
+  initialData
 }, ref) => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isPickerPanelOpen, setIsPickerPanelOpen] = useState(false);
-  const [checkInDate, setCheckInDate] = useState(null);
-  const [checkOutDate, setCheckOutDate] = useState(null);
-  const [rooms, setRooms] = useState(1);
-  const [guests, setGuests] = useState(2);
+  const [checkInDate, setCheckInDate] = useState(initialData?.checkInDate || null);
+  const [checkOutDate, setCheckOutDate] = useState(initialData?.checkOutDate || null);
+  const [rooms, setRooms] = useState(initialData?.rooms || 1);
+  const [guests, setGuests] = useState(initialData?.guests || 2);
+
+  useEffect(() => {
+    if (initialData) {
+      setCheckInDate(initialData.checkInDate);
+      setCheckOutDate(initialData.checkOutDate);
+      setRooms(initialData.rooms);
+      setGuests(initialData.guests);
+    }
+  }, [initialData]);
 
   // Expose method to parent component
   useImperativeHandle(ref, () => ({
@@ -29,6 +39,7 @@ const Filter = forwardRef(({
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     
     const formatDate = (date) => {
+      if (!date || typeof date.getDay !== 'function') return '';
       return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]}`;
     };
     
@@ -42,7 +53,8 @@ const Filter = forwardRef(({
   const handleDateSelect = (checkIn, checkOut) => {
     setCheckInDate(checkIn);
     setCheckOutDate(checkOut);
-    onFilterChange({ checkIn, checkOut, rooms, guests });
+    // Send keys matching parent `filterData` shape: checkInDate / checkOutDate
+    onFilterChange({ checkInDate: checkIn, checkOutDate: checkOut, rooms, guests });
   };
 
   const handleRoomGuestApply = (selectedRooms, selectedGuests) => {

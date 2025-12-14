@@ -110,3 +110,26 @@
 .nav-text {
   flex: 1;
 }
+
+.sidebar-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.sidebar-signout {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #133E87;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-align: left;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.sidebar-signout:hover {
+  background: rgba(203, 220, 235, 0.5);
+}

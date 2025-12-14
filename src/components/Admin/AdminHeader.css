@@ -93,3 +93,17 @@
   white-space: nowrap;
   margin-top: -1px;
 }
+
+.admin-signout-button {
+  background: transparent;
+  border: none;
+  color: #133E87;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+.admin-signout-button:hover {
+  text-decoration: underline;
+}

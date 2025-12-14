@@ -74,7 +74,8 @@ const BookingPage = () => {
   }, [filterData]);
 
   const handleFilterChange = (newFilterData) => {
-    setFilterData(newFilterData);
+    // Merge partial updates from Filter so changing rooms/guests doesn't wipe existing dates
+    setFilterData(prev => ({ ...prev, ...newFilterData }));
   };
 
   const handleRoomSelect = useCallback((roomId) => {
@@ -174,8 +175,11 @@ const BookingPage = () => {
         state: {
           rooms: selectedRoomsData,
           roomCount: totalRoomsCount,
+          // provide full formatted strings so GuestInfoPage shows correctly
           checkIn: formatDateRange().split(' - ')[0],
           checkOut: formatDateRange().split(' - ')[1],
+          // include primary room type name for guest summary
+          roomType: selectedRoomsData[0]?.name,
           guests: `${filterData.guests} adult${filterData.guests > 1 ? 's' : ''}`,
           nights: nights,
           total: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice),
@@ -241,7 +245,9 @@ const BookingPage = () => {
         id: room.id,
         name: `${room.name}${quantity > 1 ? ` x${quantity}` : ''}`,
         price: room.price,
-        details: `${filterData.guests} guest${filterData.guests > 1 ? 's' : ''}, ${nights} night${nights > 1 ? 's' : ''}\nNon-refundable`,
+        capacity: room.capacity,
+        // Show room capacity (guests per room) in details instead of global requested guests
+        details: `${room.capacity} guest${room.capacity > 1 ? 's' : ''}, ${nights} night${nights > 1 ? 's' : ''}\nNon-refundable`,
         quantity: quantity
       };
     }),
@@ -263,7 +269,9 @@ const BookingPage = () => {
       <div className="booking-content">
         <div className="booking-container">
           <div className="filter-section">
-            <Filter ref={filterRef} onFilterChange={handleFilterChange} />
+            <Filter ref={filterRef} 
+            onFilterChange={handleFilterChange}
+            initialData={filterData} />
           </div>
 
           <div className="booking-layout">

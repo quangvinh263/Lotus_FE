@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 import Logo from '../../assets/images/Logo.png';
@@ -8,10 +8,13 @@ import CheckOutIcon from '../../assets/icons/CheckOutIcon.svg';
 import ReservationIcon from '../../assets/icons/ReservationIcon.svg';
 import CalendarIcon from '../../assets/icons/CalenderIcon.svg';
 import ServiceIcon from '../../assets/icons/ServiceIcon.svg';
+import { AuthContext } from '../../context/AuthContext';
 
 const Sidebar = ({ variant = 'default' }) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { logout } = useContext(AuthContext);
 
   const menuItems = [
     { id: 'dashboard', label: 'Tổng quan', path: '/reception/dashboard', icon: HotelIcon },

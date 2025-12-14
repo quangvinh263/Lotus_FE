@@ -11,7 +11,7 @@ import FacilitiesPage from './pages/Public/FacilitiesPage'
 import AboutUsPage from './pages/Public/AboutUsPage'
 import BookingPage from './pages/Public/BookingPage'
 import GuestInfoPage from './pages/Public/GuestInfoPage'
-import PaymentPage from './pages/Public/PaymentPage'
+import PaymentResultPage from './pages/Public/PaymentResultPage'
 import ReceptionDashboard from './pages/Reception/ReceptionDashboard'
 import ServiceManagementPage from './pages/Reception/ServiceManagementPage'
 import BookingManagementPage from './pages/Reception/BookingManagementPage'
@@ -35,7 +35,7 @@ function App() {
     <Router>
       <ToastContainer />
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/complete-profile" element={<FirstTimePersonalInfoPage />} />
@@ -46,7 +46,7 @@ function App() {
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/booking" element={<BookingPage />} />
         <Route path="/guest-info" element={<GuestInfoPage />} />
-        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/payment-result" element={<PaymentResultPage />} />
         
         {/* Reception Routes */}
         <Route path="/reception/dashboard" element={<ReceptionDashboard />} />
