@@ -147,7 +147,7 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
       } else {
         // Không tìm thấy -> tạo mới
         console.log('Không tìm thấy → Tạo khách hàng mới');
-        
+        console.log('Thông tin khách hàng mới:', guestInfo);
         const createResult = await createCustomer(guestInfo);
         
         if (!createResult.success) {
