@@ -182,7 +182,7 @@ function CreateBookingForm({ onAddRoom, selectedRooms, onRemoveRoom, checkInDate
         // Reset form after successful creation
         setGuestInfo({
           fullName: '',
-          phone: '',
+          phoneNumber: '',
           address: '',
           gender: 'male',
           dateOfBirth: ''
