@@ -257,11 +257,13 @@ const CheckOutManagement = () => {
           return;
         }
         
+        // Save return path for payment callback
+        localStorage.setItem('paymentReturnPath', '/reception/checkout');
+        
         // Open ZaloPay payment URL if available
         if (result.data?.paymentUrl || result.data?.orderUrl) {
           const paymentUrl = result.data.paymentUrl || result.data.orderUrl;
-          window.open(paymentUrl, '_blank');
-          alert('Đã mở link thanh toán ZaloPay. Vui lòng hoàn tất thanh toán trên trang ZaloPay.');
+          window.location.href = paymentUrl; // Redirect instead of window.open
         } else {
           alert('Đã tạo yêu cầu thanh toán ZaloPay thành công!');
         }

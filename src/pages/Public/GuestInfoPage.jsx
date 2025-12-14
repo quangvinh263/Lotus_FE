@@ -230,6 +230,8 @@ function GuestInfoPage() {
       const paymentUrl = payRes.paymentUrl || payRes.data?.paymentUrl;
       if (paymentUrl) {
         console.log('✅ Redirecting to ZaloPay:', paymentUrl);
+        // Save guest name for payment result page
+        localStorage.setItem('paymentGuestName', formData.fullName);
         window.location.href = paymentUrl;
         return;
       }
