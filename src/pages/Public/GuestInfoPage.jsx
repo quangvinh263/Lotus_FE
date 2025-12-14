@@ -42,13 +42,25 @@ function GuestInfoPage() {
 
   const { auth } = useContext(AuthContext);
 
+  // Normalize gender values from various formats to 'male'|'female'|'other'
+  const normalizeGender = (g) => {
+    if (!g) return '';
+    const s = String(g).trim().toLowerCase();
+    if (s === 'male' || s === 'm' || s === 'nam' || s === '1' || s === 'true') return 'male';
+    if (s === 'female' || s === 'f' || s === 'nu' || s === 'nữ' || s === '0' || s === 'false') return 'female';
+    if (s === 'other' || s === 'o' || s === 'khac' || s === 'khác') return 'other';
+    return '';
+  };
+
   // If user is logged in, try to fetch their personal info and prefill the form
   useEffect(() => {
     const loadPersonalInfo = async () => {
       try {
         if (bookingData?.guestInfo) {
-          // If bookingData already contains guestInfo (from previous step), use it
-          setFormData(prev => ({ ...prev, ...bookingData.guestInfo }));
+          // If bookingData already contains guestInfo (from previous step), use it (normalize gender)
+          const incoming = { ...bookingData.guestInfo };
+          if (incoming.gender) incoming.gender = normalizeGender(incoming.gender);
+          setFormData(prev => ({ ...prev, ...incoming }));
           return;
         }
 
@@ -63,7 +75,7 @@ function GuestInfoPage() {
             fullName: customer.fullName || customer.name || prev.fullName,
             email: customer.email || prev.email,
             phone: customer.phoneNumber || customer.phone || prev.phone,
-            gender: customer.gender || prev.gender,
+            gender: normalizeGender(customer.gender) || prev.gender,
             address: customer.address || prev.address
           }));
         }
@@ -189,7 +201,12 @@ function GuestInfoPage() {
     if (typeof val === 'number') return val;
     if (!val) return 0;
     try {
-      const s = String(val).replace(/[^0-9.-]+/g, '');
+      // Remove all except digits, dash, dot, comma
+      let s = String(val).replace(/[^\d.,-]/g, '');
+      // Remove thousand separators (dots and commas not at the end)
+      // Keep only the last dot or comma as decimal point
+      s = s.replace(/[.,](?=\d{3})/g, ''); // Remove dots/commas followed by exactly 3 digits (thousand sep)
+      s = s.replace(/,/g, '.'); // Convert remaining comma to dot (decimal point)
       const n = Number(s);
       return Number.isFinite(n) ? n : 0;
     } catch (e) {
