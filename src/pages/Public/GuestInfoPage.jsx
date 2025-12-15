@@ -74,7 +74,7 @@ function GuestInfoPage() {
             ...prev,
             fullName: customer.fullName || customer.name || prev.fullName,
             email: customer.email || prev.email,
-            phone: customer.phoneNumber || customer.phone || prev.phone,
+            phone: customer.phone || customer.phone || prev.phone,
             gender: normalizeGender(customer.gender) || prev.gender,
             address: customer.address || prev.address
           }));
@@ -155,7 +155,7 @@ function GuestInfoPage() {
         // Create new customer
         const customerData = {
           fullName: formData.fullName,
-          phoneNumber: formData.phone,
+          phone: formData.phone,
           address: formData.address,
           gender: formData.gender === 'male' ? true : formData.gender === 'female' ? false : null,
           dateOfBirth: null // Optional, can be added to form later
