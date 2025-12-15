@@ -19,7 +19,7 @@ function PaymentResultPage() {
     const name = savedName || qp.get('buyer_name') || qp.get('fullName') || qp.get('customerName') || '';
     
     // Get booking reference - prioritize reservationId
-    const ref = qp.get('reservationId') || qp.get('orderId') || qp.get('transactionId') || qp.get('zptranid') || qp.get('apptransid') || qp.get('reference') || '';
+    const ref = qp.get('id') || qp.get('orderId') || qp.get('transactionId') || qp.get('zptranid') || qp.get('apptransid') || qp.get('reference') || '';
     
     setGuestName(name);
     setBookingRef(ref);
