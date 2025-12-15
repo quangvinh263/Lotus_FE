@@ -123,7 +123,7 @@ function GuestInfoPage() {
     }
 
     // Require gender and address
-    if (!formData.gender || !['Male', 'Female', 'Other'].includes(formData.gender)) {
+    if (!formData.gender || !['male', 'female', 'other'].includes(formData.gender)) {
       newErrors.gender = 'Please select a gender';
     }
 
