@@ -194,17 +194,23 @@ function GuestInfoPage() {
 
     console.log('📦 Booking payload:', payload);
 
+      console.log('📤 Creating booking, isNewCustomer:', isNewCustomer, 'customerId:', customerId);
       const res = await createOnlineBooking(payload);
+      console.log('📥 Booking response:', res);
+      
       if (!res.success) {
         // ⚠️ ROLLBACK: If we created a new customer but booking failed, delete the customer
         if (isNewCustomer && customerId) {
           console.warn('⚠️ Booking failed, rolling back new customer:', customerId);
           const rollbackResult = await deleteCustomer(customerId);
+          console.log('🔄 Rollback result:', rollbackResult);
           if (rollbackResult.success) {
             console.log('✅ Rollback successful: Customer deleted');
           } else {
             console.error('❌ Rollback failed:', rollbackResult.message);
           }
+        } else {
+          console.log('ℹ️ No rollback needed. isNewCustomer:', isNewCustomer, 'customerId:', customerId);
         }
         
         toast.error(res.message || 'Failed to create booking');
