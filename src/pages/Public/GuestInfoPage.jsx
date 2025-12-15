@@ -123,7 +123,7 @@ function GuestInfoPage() {
     }
 
     // Require gender and address
-    if (!formData.gender || !['male', 'female', 'other'].includes(formData.gender)) {
+    if (!formData.gender || !['Male', 'Female', 'Other'].includes(formData.gender)) {
       newErrors.gender = 'Please select a gender';
     }
 
@@ -157,7 +157,7 @@ function GuestInfoPage() {
           fullName: formData.fullName,
           phone: formData.phone,
           address: formData.address,
-          gender: formData.gender === 'male' ? true : formData.gender === 'female' ? false : null,
+          gender: formData.gender === 'male' ? 'Male' : formData.gender === 'female' ? 'Female' : 'Other',
           dateOfBirth: null // Optional, can be added to form later
         };
 
@@ -259,8 +259,7 @@ function GuestInfoPage() {
       // Remove thousand separators (dots and commas not at the end)
       // Keep only the last dot or comma as decimal point
       s = s.replace(/[.,](?=\d{3})/g, ''); // Remove dots/commas followed by exactly 3 digits (thousand sep)
-      s = s.repla
-      ce(/,/g, '.'); // Convert remaining comma to dot (decimal point)
+      s = s.replace(/,/g, '.'); // Convert remaining comma to dot (decimal point)
       const n = Number(s);
       return Number.isFinite(n) ? n : 0;
     } catch (e) {
