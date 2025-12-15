@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import NavBar from '../../components//Public/NavBar';
 import '../../styles/GuestInfoPage.css';
 import { AuthContext } from '../../context/AuthContext';
-import { getPersonalInfo, createCustomer, findCustomerByPhone } from '../../api/customerApi';
+import { getPersonalInfo, createCustomer, findCustomerByPhone, deleteCustomer } from '../../api/customerApi';
 import { createOnlineBooking } from '../../api/bookingApi';
 import { processDepositZaloPayPayment } from '../../api/paymentApi';
 import { toast } from 'react-toastify';
@@ -145,6 +145,7 @@ function GuestInfoPage() {
     try {
       // Step 1: Find or create customer
       let customerId = null;
+      let isNewCustomer = false; // Track if we created a new customer
 
       // Try to find existing customer by phone
       const findRes = await findCustomerByPhone(formData.phone);
@@ -169,6 +170,7 @@ function GuestInfoPage() {
         }
 
         customerId = createRes.customerId;
+        isNewCustomer = true; // Mark that we created this customer
         console.log('✅ Created new customer:', customerId);
       }
 
@@ -194,6 +196,17 @@ function GuestInfoPage() {
 
       const res = await createOnlineBooking(payload);
       if (!res.success) {
+        // ⚠️ ROLLBACK: If we created a new customer but booking failed, delete the customer
+        if (isNewCustomer && customerId) {
+          console.warn('⚠️ Booking failed, rolling back new customer:', customerId);
+          const rollbackResult = await deleteCustomer(customerId);
+          if (rollbackResult.success) {
+            console.log('✅ Rollback successful: Customer deleted');
+          } else {
+            console.error('❌ Rollback failed:', rollbackResult.message);
+          }
+        }
+        
         toast.error(res.message || 'Failed to create booking');
         setIsProcessing(false);
         return;
@@ -210,6 +223,12 @@ function GuestInfoPage() {
     console.log('🔍 Extracted reservationId:', reservationId);
 
       if (!reservationId) {
+        // ⚠️ ROLLBACK: Delete customer if we created one
+        if (isNewCustomer && customerId) {
+          console.warn('⚠️ Reservation ID not found, rolling back new customer:', customerId);
+          await deleteCustomer(customerId);
+        }
+        
         toast.error('Booking created but reservation ID not found');
         setIsProcessing(false);
         return;
@@ -221,6 +240,12 @@ function GuestInfoPage() {
       // Call ZaloPay deposit payment API
       const payRes = await processDepositZaloPayPayment(reservationId, depositAmount);
       if (!payRes.success) {
+        // ⚠️ ROLLBACK: Delete customer if we created one
+        if (isNewCustomer && customerId) {
+          console.warn('⚠️ Payment failed, rolling back new customer:', customerId);
+          await deleteCustomer(customerId);
+        }
+        
         toast.error(payRes.message || 'Failed to create ZaloPay deposit link');
         setIsProcessing(false);
         return;
@@ -236,6 +261,12 @@ function GuestInfoPage() {
         return;
       }
 
+      // ⚠️ ROLLBACK: Delete customer if we created one
+      if (isNewCustomer && customerId) {
+        console.warn('⚠️ Payment URL not found, rolling back new customer:', customerId);
+        await deleteCustomer(customerId);
+      }
+      
       toast.error('Payment URL not found in response');
       setIsProcessing(false);
     } catch (err) {
